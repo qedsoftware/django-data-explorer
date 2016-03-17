@@ -1,0 +1,23 @@
+{
+  "name": "django-querybuilder",
+  "private": true,
+  "scripts": {
+    "test": "gulp test",
+    "deps": "gulp dependencies",
+    "build": "gulp build",
+    "start": "gulp"
+  },
+  "devDependencies": {
+    "bower": "^1.7.7",
+    "gulp": "^3.9.1",
+    "gulp-bower": "0.0.13",
+    "karma": "^0.13.22",
+    "karma-coverage": "^0.5.5",
+    "karma-mocha-reporter": "^1.2.2",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-qunit": "^0.1.9",
+    "karma-wiredep": "^1.0.1",
+    "phantomjs-prebuilt": "^2.1.4",
+    "qunitjs": "^1.22.0"
+  }
+}

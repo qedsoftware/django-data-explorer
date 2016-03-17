@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../django_querybuilder/static/js/filterui.js"></script>
+    <script src="../../django_querybuilder/static/libs/jquery/dist/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>FilterUI example page</title>
+</head>
+<body>
+    <script>
+        filterUI('#filter');
+    </script>
+
+    <form id="filter">
+        Checkbox: <input type="checkbox" name="checkbox"><br>
+        Date: <input type="date" name="date"><br>
+        Datetime: <input type="datetime" name="datetime"><br>
+        email: <input type="email" name="email"><br>
+        Number: <input type="number" name="number"><br>
+        Radio: <input type="radio" name="radio1"><br>
+        Radio: <input type="radio" name="radio2"><br>
+        Range: <input type="range" name="range"><br>
+        Search: <input type="search" name="search"><br>
+        Time: <input type="time" name="time"><br>
+    </form>
+
+</body>
+</html>

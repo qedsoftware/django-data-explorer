@@ -1,3 +1,9 @@
 __pycache__
 *.pyc
-example/reports
+/example/reports
+/node_modules
+/bower_components
+npm-debug.log
+/django_querybuilder/static/libs
+/js_tests/coverage
+/reports
