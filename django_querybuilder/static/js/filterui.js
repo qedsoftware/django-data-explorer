@@ -1,9 +1,41 @@
-/* Stub of the filterUI module */
+FilterForm = function(containerID) {
+    $(function() {
 
-filterUI = function (elementID) {
-    $(onLoad(elementID));
-};
+        deserializeForms();
+        setSerializationOnChangeEvent();
+        setSubmitEvent();
 
-onLoad = function(elementID) {
-    $(elementID);
+        function getHashString() {
+            return window.location.hash.substring(1);
+        }
+
+        function deserializeForms() {
+            var data = getHashString();
+            $('filter-form').find('form').deserialize(data);
+        }
+
+        function serializeForms() {
+            var newHash = $('filter-form').find('form').serialize();
+            window.location.hash = newHash;
+        }
+
+        function setSerializationOnChangeEvent() {
+            $(containerID).on("change", function(event) {
+                serializeForms();
+            });
+        }
+
+        function setSubmitEvent() {
+            $(containerID).on(
+                "submit",
+                function(event) {
+                    event.preventDefault();
+                    $(this).trigger({
+                        type: "update:FilterForm",
+                        formData: $(this).serializeArray()
+                    });
+                }
+            );
+        }
+    });
 };

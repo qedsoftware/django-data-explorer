@@ -2,6 +2,7 @@
   "name": "django-querybuilder",
   "private": true,
   "dependencies": {
-    "jquery": "^2.2.2"
+    "jquery": "^2.2.2",
+    "jquery-deserialize": "^1.3.3"
   }
 }
