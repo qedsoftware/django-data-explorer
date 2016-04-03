@@ -1,5 +1,7 @@
 from django_querybuilder import Table
 
+from .models import Book
 
-class EmptyTable(Table):
-    pass
+
+EmptyTable = Table()
+BasicBookTable = Table(Book)

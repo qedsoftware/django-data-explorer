@@ -1,1 +1,1 @@
-from django_querybuilder.widgets import Table
+from django_querybuilder.table import Table
