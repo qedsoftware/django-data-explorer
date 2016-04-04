@@ -8,9 +8,12 @@
     "start": "gulp"
   },
   "devDependencies": {
+    "autoprefixer": "^6.3.3",
     "bower": "^1.7.7",
     "gulp": "^3.9.1",
     "gulp-bower": "0.0.13",
+    "gulp-postcss": "^6.1.0",
+    "gulp-sass": "^2.2.0",
     "karma": "^0.13.22",
     "karma-coverage": "^0.5.5",
     "karma-mocha-reporter": "^1.2.2",

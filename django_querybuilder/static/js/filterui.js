@@ -1,9 +1,14 @@
-FilterForm = function(containerID) {
+FilterForm = function(containerID, tabs) {
+    'use strict';
     $(function() {
 
         deserializeForms();
         setSerializationOnChangeEvent();
         setSubmitEvent();
+        if (tabs && tabs instanceof Array) {
+            setTabs();
+            setFreewall();
+        }
 
         function getHashString() {
             return window.location.hash.substring(1);
@@ -36,6 +41,27 @@ FilterForm = function(containerID) {
                     });
                 }
             );
+        }
+
+        function setTabs() {
+            $(containerID + '_ff').tabs();
+        }
+
+        function setFreewall() {
+            for (var idx in tabs) {
+                var wall = new freewall(tabs[idx]);
+                wall.reset({
+                    selector: '.ff-group',
+                    animate: true,
+                    cellW: 250,
+                    cellH: 'auto',
+                    onResize: function() {
+                        wall.fitWidth();
+                    }
+                });
+                wall.fitWidth();
+            }
+
         }
     });
 };

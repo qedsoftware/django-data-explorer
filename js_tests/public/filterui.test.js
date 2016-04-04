@@ -34,6 +34,12 @@ test('Serialize form with no input test', function(assert) {
     assert.equal(window.location.hash, '#textField=');
 });
 
+test('Serialize form with no input test', function(assert) {
+    FilterForm('#filter');
+    $('#filter').trigger("change");
+    assert.equal(window.location.hash, '#textField=');
+});
+
 test('Serialize form with one field filled test', function(assert) {
     FilterForm('#filter');
     var formField = $('#filter input[name=textField]');

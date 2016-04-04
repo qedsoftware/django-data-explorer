@@ -5,5 +5,6 @@ __pycache__
 /bower_components
 npm-debug.log
 /django_querybuilder/static/libs
+/django_querybuilder/static/css
 /js_tests/coverage
 /reports

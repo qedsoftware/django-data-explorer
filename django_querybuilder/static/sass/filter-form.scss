@@ -1,0 +1,21 @@
+@import "../libs/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+
+.ff-tabs-list {
+  @extend .nav, .nav-tabs, .nav-justified;
+}
+
+.ff-tab-pane {
+  margin: 2em 4em;
+}
+
+.ff-group {
+  input {
+    @extend .form-control;
+  }
+  width: 200px;
+}
+
+.ff-submit {
+  @extend .btn, .btn-primary;
+  margin: 2em;
+}

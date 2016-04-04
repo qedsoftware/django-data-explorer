@@ -3,6 +3,9 @@
   "private": true,
   "dependencies": {
     "jquery": "^2.2.2",
-    "jquery-deserialize": "^1.3.3"
+    "jquery-ui": "^1.11.4",
+    "jquery-deserialize": "^1.3.3",
+    "bootstrap-sass": "^3.3.6",
+    "freewall": "^1.0.5"
   }
 }

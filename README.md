@@ -19,6 +19,16 @@ the following from the root of your Django checkout:
     npm install
     npm run deps
 
+Then build frontend files:
+
+    npm run build
+
+For development run
+
+    npm run start
+
+that way build will happen automatically each time you change any related files.
+
 Running tests
 =============
 
