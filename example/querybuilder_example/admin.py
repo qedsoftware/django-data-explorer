@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from querybuilder_example import models
+
+
+admin.site.register(models.Book)

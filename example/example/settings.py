@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_jenkins',
-    'querybuilder_example'
+    'querybuilder_example',
+    'datatableview'
 ]
 
 PROJECT_APPS = ['django_querybuilder', 'querybuilder_example']

@@ -1,11 +1,14 @@
 import operator
 from functools import reduce
 
+from django.utils.encoding import smart_text
+from django.utils.six import python_2_unicode_compatible
+
 from datatableview.datatables import Datatable
 
 
 class QuerysetDatatable(Datatable):
-    def __init__(self, object_list=[], url='/', *args, **kwargs):
+    def __init__(self, object_list=(), url='/', *args, **kwargs):
         super(QuerysetDatatable, self).__init__(
             object_list, url, *args, **kwargs)
         self.allowed_options = [
@@ -51,15 +54,23 @@ class QuerysetDatatable(Datatable):
         return queryset
 
 
+@python_2_unicode_compatible
 class Table:
-    def __init__(self, model=None):
+    def __init__(self, model):
         self.model = model
 
-    def filter_queryset(self, query_config):
+    def get_datatable(self, query_config):
         class ModelQuerysetDatatable(QuerysetDatatable):
             class Meta:
                 model = self.model
         datatable = ModelQuerysetDatatable(
             self.model.objects.all(), "/", query_config=query_config)
+        return datatable
+
+    def filter_queryset(self, query_config):
+        datatable = self.get_datatable(query_config)
         datatable.populate_records()
         return list(datatable._records)
+
+    def __str__(self):
+        return smart_text(self.get_datatable({}))

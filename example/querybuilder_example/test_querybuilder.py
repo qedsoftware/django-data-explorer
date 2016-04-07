@@ -1,13 +1,8 @@
 from django.test import TestCase
+from django.utils.encoding import smart_text
 
 from .models import Author, Book
-from .querybuilder import BasicBookTable, EmptyTable
-
-
-class TableTestCase(TestCase):
-    def test_empty(self):
-        table = EmptyTable
-        self.assertIsNotNone(table)
+from .querybuilder import BasicBookTable
 
 
 class TableFiltersTestCase(TestCase):
@@ -52,3 +47,9 @@ class TableFiltersTestCase(TestCase):
         table = BasicBookTable
         records = table.filter_queryset(query_config)
         self.assertEquals(records, expected)
+
+
+class TableStrRepresentation(TestCase):
+    def test_str(self):
+        text = smart_text(BasicBookTable)
+        self.assertIn("Title", text)
