@@ -1,21 +1,109 @@
-@import "../libs/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+$column-width: 150px;
+$font-stack: 'Open Sans', Calibri, Arial, sans-serif;
 
-.ff-tabs-list {
-  @extend .nav, .nav-tabs, .nav-justified;
+ul.ff-tabs-list {
+  font-family: $font-stack;
+  color: #999;
+  position: relative;
+  display: flex;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  flex-flow: row wrap;
+  justify-content: center;
+  border-bottom: solid 1px #ddd;
+  li {
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin: 0;
+    text-align: center;
+    flex: 1;
+  }
+  a {
+    color: inherit;
+    position: relative;
+      display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 0.2em;
+    text-decoration: none;
+    &:focus {
+      outline: none;
+    }
+  }
+  .ui-tabs-active {
+    color: #337ab7;
+    background-color: #e1edfa;
+    border-radius: 0.5em 0.5em 0 0;
+  }
+  .ui-tabs-panel {
+  }
 }
 
 .ff-tab-pane {
-  margin: 2em 4em;
+  font-family: $font-stack;
 }
 
 .ff-group {
-  input {
-    @extend .form-control;
+  width: $column-width;
+  label {
+    font-size: x-small;
+    margin: 0;
+    font-weight: 900;
+    color: #666;
   }
-  width: 200px;
+  input {
+    outline: none;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    &:focus {
+      box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    }
+    &[type='text'], &[type='email'], &[type='number'], &[type='password'],
+    &[type='date'], &[type='search'], &[type='time'], &[type='datetime']  {
+      padding: 0.2em 0.5em;
+      width: $column-width;
+    }
+    &[type='radio'], &[type='checkbox'] {
+      font-size: 1.2em;
+      appearance: none;
+      margin-left: 0.5em;
+      width: 1.2em;
+      height: 1.2em;
+      content: '';
+      background: #fff;
+      position: relative;
+      &:checked:after {
+        position: absolute;
+        left: 0.2em;
+        content: '✔';
+        color: black;
+      }
+    }
+    &[type='radio'] {
+      border-radius: 0.5em;
+    }
+  }
 }
 
 .ff-submit {
-  @extend .btn, .btn-primary;
-  margin: 2em;
+  background-color: #3DA0DB;
+  border: none;
+  color: white;
+  padding: 0.5em 1em;
+  border-radius: 0.3em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  &:hover {
+    background-color: #337ab7;
+    cursor: pointer;
+  }
+}
+
+.ff-footer {
+  margin: 0.5em;
 }

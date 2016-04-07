@@ -2,12 +2,14 @@ FilterForm = function(containerID, tabs) {
     'use strict';
     $(function() {
 
+        var walls = [];
+
         deserializeForms();
         setSerializationOnChangeEvent();
         setSubmitEvent();
         if (tabs && tabs instanceof Array) {
-            setTabs();
             setFreewall();
+            setTabs();
         }
 
         function getHashString() {
@@ -44,24 +46,31 @@ FilterForm = function(containerID, tabs) {
         }
 
         function setTabs() {
-            $(containerID + '_ff').tabs();
+            $(containerID + '_ff').tabs({
+                activate: rearrangeAllColumns
+            });
+        }
+
+        function rearrangeAllColumns() {
+            for (var i in walls) {
+                walls[i].fitWidth();
+            }
         }
 
         function setFreewall() {
             for (var idx in tabs) {
                 var wall = new freewall(tabs[idx]);
+                walls.push(wall);
                 wall.reset({
                     selector: '.ff-group',
                     animate: true,
-                    cellW: 250,
+                    cellW: 170,
                     cellH: 'auto',
-                    onResize: function() {
-                        wall.fitWidth();
-                    }
+                    gutterY: 0,
+                    onResize: rearrangeAllColumns
                 });
-                wall.fitWidth();
+                rearrangeAllColumns();
             }
-
         }
     });
 };
