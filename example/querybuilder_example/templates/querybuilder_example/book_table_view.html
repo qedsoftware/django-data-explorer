@@ -1,12 +1,29 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+  <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+
+  <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.9/css/jquery.dataTables.css">
+
+  {# Bootstrap #}
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+  {# django-datatable-view #}
+  <script type="text/javascript" charset="utf8" src="{% static 'django_querybuilder/js/datatableview.js' %}"></script>
+  <script type="text/javascript" charset="utf8">
+      datatableview.auto_initialize = true;
+  </script>
 </head>
 <body>
 
-{{ table }}
+<div class="container">
+  {{ table }}
+</div>
 
 </body>
 </html>

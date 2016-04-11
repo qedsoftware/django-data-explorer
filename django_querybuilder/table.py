@@ -8,7 +8,7 @@ from datatableview.datatables import Datatable
 
 
 class QuerysetDatatable(Datatable):
-    def __init__(self, object_list=(), url='/', *args, **kwargs):
+    def __init__(self, object_list=(), url='', *args, **kwargs):
         super(QuerysetDatatable, self).__init__(
             object_list, url, *args, **kwargs)
         self.allowed_options = [
@@ -63,6 +63,7 @@ class Table:
         class ModelQuerysetDatatable(QuerysetDatatable):
             class Meta:
                 model = self.model
+                structure_template = "django_querybuilder/default_structure.html"
         datatable = ModelQuerysetDatatable(
             self.model.objects.all(), "/", query_config=query_config)
         return datatable
