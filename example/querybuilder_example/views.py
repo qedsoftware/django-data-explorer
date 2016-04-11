@@ -1,6 +1,10 @@
 from django.views.generic import TemplateView
 
-from querybuilder_example.querybuilder import BasicBookTable, CityMap
+from django_querybuilder import TableEndpoint
+
+from querybuilder_example.querybuilder import (BasicAuthorTable,
+                                               BasicBookTable, CityMap)
+from .models import Author, Book
 
 
 class BookTableView(TemplateView):
@@ -8,7 +12,8 @@ class BookTableView(TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
-            'table': BasicBookTable
+            'book_table': BasicBookTable,
+            'author_table': BasicAuthorTable,
         }
 
 
@@ -19,3 +24,11 @@ class CityMapView(TemplateView):
         return {
             "map": CityMap
         }
+
+
+class AuthorEndpoint(TableEndpoint):
+    model = Author
+
+
+class BookEndpoint(TableEndpoint):
+    model = Book
