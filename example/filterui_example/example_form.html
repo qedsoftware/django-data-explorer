@@ -11,71 +11,83 @@
     <meta charset="UTF-8">
     <title>FilterUI example page</title>
 </head>
-<body>
+<body style="margin: 1em">
     <script>
-        FilterForm('#filter', ['#tab_3']);
+        FilterForm('#filter', ['#tab_1', "#tab_2"]);
         $(function () {
             $("#filter").on("update:FilterForm", function(event) {
                 console.log(event);
             });
         });
-
     </script>
-
     <filter-form id="filter_ff">
         <ul class="ff-tabs-list">
-            <li><a href="#tab_3">Tab 1</a></li>
+            <li><a href="#tab_1">Tab 1</a></li>
             <li><a href="#tab_2">Tab 2</a></li>
-            <li><a href="#tab_1">Tab 3</a></li>
+            <li><a href="#tab_3">Tab 3</a></li>
         </ul>
-        <form id="filter" >
-            <div id="tab_1" class="ff-tab-pane">
-                <h1>Click on Tab 1 to see example</h1>
+        <form id="filter">
+            <div id="tab_3" class="ff-tab-pane">
+                <h1>Click on tab 1 or tab 2 to see examples</h1>
             </div>
             <div id="tab_2" class="ff-tab-pane">
-                Checkbox: <input type="checkbox" name="checkbox"><br>
-                Date: <input type="date" name="date"><br>
-                Datetime: <input type="datetime" name="datetime"><br>
-                email: <input type="email" name="email"><br>
-                Number: <input type="number" name="number"><br>
-                Radio: <input type="radio" name="radio1"><br>
-                Radio: <input type="radio" name="radio2"><br>
-                Range: <input type="range" name="range"><br>
-                Search: <input type="search" name="search"><br>
-                Time: <input type="time" name="time"><br>
-                <input type="submit">
-            </div>
-            <div id="tab_3" class="ff-tab-pane">
                 <div class="ff-group">
-                    <p><label for="id_name">Name:</label> <input  id="id_name" name="name" type="text" />
-                    <p><label for="id_price">Price:</label> <input  id="id_price" name="price" step="any" type="number" />
-                    <p><label for="id_description">Description:</label> <input  id="id_description" name="description" type="text" />
+                    <label>Checkbox</label><input type="checkbox" name="checkbox">
                 </div>
                 <div class="ff-group">
-                    <p><label for="id_price__lt">Price  lt:</label> <input  id="id_price__lt" name="price__lt" step="any" type="number" />
-                    <p><label for="id_release_year">Release year:</label> <input  id="id_release_year" name="release_year" step="any" type="number" />
-                    <p><label for="id_release_year__gt">Release year  gt:</label> <input  id="id_release_year__gt" name="release_year__gt" step="any" type="number" />
-                    <p><label for="id_release_year__lt">Release year  lt:</label> <input  id="id_release_year__lt" name="release_year__lt" step="any" type="number" />
-                    <p><label for="id_manufacturer__name">Manufacturer  name:</label> <input  id="id_manufacturer__name" name="manufacturer__name" type="text" />
+                    <label>Date</label><input type="date" name="date">
+                    <label>Datetime</label><input type="datetime" name="datetime">
                 </div>
                 <div class="ff-group">
-                    <p><label for="id_name">Name:</label> <input  id="id_name" name="name" type="text" />
-                    <p><label for="id_price">Price:</label> <input  id="id_price" name="price" step="any" type="number" />
-                    <p><label for="id_description">Description:</label> <input  id="id_description" name="description" type="text" />
-                    <p><label for="id_release_date">Release date:</label> <input  id="id_release_date" name="release_date" type="text" />
-                    <p><label for="id_price__gt">Price  gt:</label> <input  id="id_price__gt" name="price__gt" step="any" type="number" />
+                    <label>email</label><input type="email" name="email">
+                    <label>Number</label><input type="number" name="number">
                 </div>
                 <div class="ff-group">
-                    <p><label for="id_price__lt">Price  lt:</label> <input  id="id_price__lt" name="price__lt" step="any" type="number" />
-                    <p><label for="id_release_year__lt">Release year  lt:</label> <input  id="id_release_year__lt" name="release_year__lt" step="any" type="number" />
-                    <p><label for="id_manufacturer__name">Manufacturer  name:</label> <input  id="id_manufacturer__name" name="manufacturer__name" type="text" />
+                    <label>Radio</label>
+                    <input type="radio" name="radio1">
+                    <input type="radio" name="radio1">
+                </div>
+                <div class="ff-group">
+                    <label>Search</label><input type="search" name="search">
+                </div>
+                <div class="ff-group">
+                    <label>Time</label><input type="time" name="time">
                 </div>
             </div>
-            <input class="ff-submit" type="submit" />
+            <div id="tab_1" class="ff-tab-pane">
+                <div class="ff-group">
+                    <label for="id_name">Name:</label> <input  id="id_name" name="name" type="text" />
+                    <label for="id_price">Price:</label> <input  id="id_price" name="price" step="any" type="number" />
+                    <label for="id_description">Description:</label> <input  id="id_description" name="description" type="text" />
+                </div>
+                <div class="ff-group">
+                    <label for="id_release_year">Release year:</label> <input  id="id_release_year" name="release_year" step="any" type="number" />
+                    <label for="id_release_year__gt">Release year  gt:</label> <input  id="id_release_year__gt" name="release_year__gt" step="any" type="number" />
+                    <label for="id_release_year__lt">Release year  lt:</label> <input  id="id_release_year__lt" name="release_year__lt" step="any" type="number" />
+                </div>
+                <div class="ff-group">
+                    <label for="id_price__lt">Price  lt:</label> <input  id="id_price__lt" name="price__lt" step="any" type="number" />
+                    <label for="id_manufacturer__name">Manufacturer  name:</label> <input  id="id_manufacturer__name" name="manufacturer__name" type="text" />
+                </div>
+                <div class="ff-group">
+                    <label for="id_name">Name:</label> <input  id="id_name" name="name" type="text" />
+                    <label for="id_price">Price:</label> <input  id="id_price" name="price" step="any" type="number" />
+                </div>
+                <div class="ff-group">
+                    <label for="id_description">Description:</label> <input  id="id_description" name="description" type="text" />
+                    <label for="id_release_date">Release date:</label> <input  id="id_release_date" name="release_date" type="text" />
+                    <label for="id_price__gt">Price  gt:</label> <input  id="id_price__gt" name="price__gt" step="any" type="number" />
+                </div>
+                <div class="ff-group">
+                    <label for="id_price__lt">Price  lt:</label> <input  id="id_price__lt" name="price__lt" step="any" type="number" />
+                    <label for="id_release_year__lt">Release year  lt:</label> <input  id="id_release_year__lt" name="release_year__lt" step="any" type="number" />
+                    <label for="id_manufacturer__name">Manufacturer  name:</label> <input  id="id_manufacturer__name" name="manufacturer__name" type="text" />
+                </div>
+            </div>
+            <div class="ff-footer">
+                <input class="ff-submit" type="submit" />
+            </div>
         </form>
-
     </filter-form>
-
-
 </body>
 </html>

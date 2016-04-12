@@ -8,3 +8,4 @@ npm-debug.log
 /django_querybuilder/static/css
 /js_tests/coverage
 /reports
+/example/src

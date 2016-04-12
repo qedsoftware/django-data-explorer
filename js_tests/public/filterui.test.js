@@ -8,10 +8,19 @@ module('application.filterUI', {
 });
 
 var firstFormHTML =
-    '<filter-form>' +
+    '<filter-form id="filter_ff">' +
         '<form id="filter">' +
-            '<input type="text" name="textField">' +
-            '<input type="submit"' +
+            '<ul class="ff-tabs-list">' +
+                '<li><a href="#tab_1">Tab 1</a></li>' +
+            '</ul>' +
+            '<div class="ff-tab-pane" id="tab_1">' +
+                '<div class="ff-group">' +
+                    '<input type="text" name="textField">' +
+                '</div>' +
+                '<div class="ff-footer">' +
+                    '<input class="ff-sumbit" type="submit">' +
+                '</div>' +
+            '</div>' +
         '</form>' +
     '</filter-form>';
 
@@ -29,13 +38,7 @@ function cleanHash() {
 }
 
 test('Serialize form with no input test', function(assert) {
-    FilterForm('#filter');
-    $('#filter').trigger("change");
-    assert.equal(window.location.hash, '#textField=');
-});
-
-test('Serialize form with no input test', function(assert) {
-    FilterForm('#filter');
+    FilterForm('#filter', ['#tab_1']);
     $('#filter').trigger("change");
     assert.equal(window.location.hash, '#textField=');
 });
