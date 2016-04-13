@@ -29,8 +29,11 @@ class QuerysetDatatable(Datatable):
 
     def normalize_config_filters(self, config, query_config):
         filters = []
-        for column_name, lookup, term in query_config.get('filters', ''):
-            filters.append((column_name, lookup, term))
+        filters_input = query_config.get('filters', None)
+        if filters_input:
+            for filter in filters_input.split(','):
+                column_name, lookup, term = filter.split(';')
+                filters.append((column_name, lookup, term))
         return filters
 
     def search_column(self, column, terms, lookup_types):
@@ -56,22 +59,26 @@ class QuerysetDatatable(Datatable):
 
 @python_2_unicode_compatible
 class Table:
-    def __init__(self, model):
+    def __init__(self, name, model):
+        self.name = name
         self.model = model
 
     def get_datatable(self, query_config):
         class ModelQuerysetDatatable(QuerysetDatatable):
             class Meta:
                 model = self.model
-                structure_template = "django_querybuilder/default_structure.html"
-        datatable = ModelQuerysetDatatable(
-            self.model.objects.all(), "/", query_config=query_config)
+        datatable = ModelQuerysetDatatable(self.model.objects.all(),
+                                           self.get_endpoint_url(),
+                                           query_config=query_config)
         return datatable
 
     def filter_queryset(self, query_config):
         datatable = self.get_datatable(query_config)
         datatable.populate_records()
         return list(datatable._records)
+
+    def get_endpoint_url(self):
+        return "/querybuilder/querybuilder-endpoint-%s" % (self.name)
 
     def __str__(self):
         return smart_text(self.get_datatable({}))

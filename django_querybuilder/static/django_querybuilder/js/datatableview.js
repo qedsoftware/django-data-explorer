@@ -81,11 +81,7 @@ var datatableview = {
             options = $.extend({}, datatableview.defaults, opts, {
                 "aaSorting": sorting_options,
                 "aoColumns": column_options,
-                "ajax": function (data, callback, settings) {
-                    callback({data: [
-                        ["Blah", "blah", "asd", "sd", "date"]
-                    ]});
-                },
+                "sAjaxSource": datatable.attr('data-source-url'),
                 "iDisplayLength": datatable.attr('data-page-length'),
                 "fnInfoCallback": function(oSettings, iStart, iEnd, iMax, iTotal, sPre){
                     $("#" + datatable.attr('data-result-counter-id')).html(parseInt(iTotal).toLocaleString());

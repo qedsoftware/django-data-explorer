@@ -1,7 +1,7 @@
 from django_querybuilder import Map, Table
 
-from .models import Book
+from .models import Author, Book
 
-
-BasicBookTable = Table(Book)
 CityMap = Map(Book)
+BasicAuthorTable = Table("author-table", Author)
+BasicBookTable = Table("book-table", Book)
