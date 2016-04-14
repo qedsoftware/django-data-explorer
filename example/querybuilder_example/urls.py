@@ -1,5 +1,7 @@
 from django.conf.urls import url
-from .views import AuthorEndpoint, BookEndpoint, BookTableView, CityMapView, PriceDateBookFormView
+
+from .views import (AuthorEndpoint, BookEndpoint, BookTableView, CityMapView,
+                    Endpoint, PriceDateBookFormView)
 
 urlpatterns = [
     url(r'^$', BookTableView.as_view(), name='book-table'),
@@ -10,4 +12,5 @@ urlpatterns = [
     url(r'^querybuilder-endpoint-book-table/',
         BookEndpoint.as_view(),
         name="book-endpoint"),
+    url(r'^endpoint/', Endpoint.as_view()),
 ]

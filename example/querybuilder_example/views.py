@@ -1,11 +1,12 @@
 from django.views.generic import TemplateView
 
-from django_querybuilder import TableEndpoint
+from django_querybuilder import QuerybuilderEndpoint, TableEndpoint
 
 from querybuilder_example.querybuilder import (BasicAuthorTable,
                                                BasicBookTable, CityMap)
 from .models import Author, Book
 from .querybuilder import BookFilter
+from . import querybuilder
 
 
 class BookTableView(TemplateView):
@@ -42,3 +43,7 @@ class AuthorEndpoint(TableEndpoint):
 
 class BookEndpoint(TableEndpoint):
     model = Book
+
+
+class Endpoint(QuerybuilderEndpoint):
+    querybuilder = querybuilder

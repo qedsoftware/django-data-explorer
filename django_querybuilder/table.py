@@ -1,6 +1,7 @@
 import operator
 from functools import reduce
 
+from django.http import JsonResponse
 from django.utils.encoding import smart_text
 from django.utils.six import python_2_unicode_compatible
 
@@ -76,6 +77,22 @@ class Table:
         datatable = self.get_datatable(query_config)
         datatable.populate_records()
         return list(datatable._records)
+
+    def get_data(self, query_config):
+        datatable = self.get_datatable(query_config)
+        datatable.populate_records()
+        response_data = {
+            'data': self.parse_data(datatable.get_records()),
+        }
+        return JsonResponse(response_data)
+
+    def parse_data(self, records):
+        data = []
+        for record in records:
+            record.pop('pk')
+            record.pop('_extra_data')
+            data.append(dict(record))
+        return data
 
     def get_endpoint_url(self):
         return "/querybuilder/querybuilder-endpoint-%s" % (self.name)

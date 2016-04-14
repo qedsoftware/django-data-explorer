@@ -1,4 +1,5 @@
 from django_querybuilder.filterform import FilterForm
+from django_querybuilder.endpoint import QuerybuilderEndpoint
 from django_querybuilder.map import Map
 from django_querybuilder.table import Table
 from django_querybuilder.views import TableEndpoint
