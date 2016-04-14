@@ -1,0 +1,9 @@
+include LICENSE
+include README.md
+include karma.conf.js
+include gulpfile.js
+include bower.json
+include package.json
+recursive-include django_querybuilder/static *
+recursive-include django_querybuilder/templates *
+recursive-include docs *
