@@ -17,5 +17,13 @@ class EndpointTest(TestCase):
         request = self.factory.post('myurl', {'widget_id': 'author-table'})
         response = self.view.as_view()(request)
         content = json.loads(response.content.decode())
-        self.assertEqual(content["data"],
+        self.assertEqual(content['status'], 'OK')
+        self.assertEqual(content['data'],
                          [{"0": "1", "1": "name", "2": "2016-05-23"}])
+
+    def test_no_widget(self):
+        request = self.factory.post('myurl',
+                                    {'widget_id': 'non-existing-table'})
+        response = self.view.as_view()(request)
+        content = json.loads(response.content.decode())
+        self.assertEqual(content['status'], 'WIDGET_NOT_FOUND')

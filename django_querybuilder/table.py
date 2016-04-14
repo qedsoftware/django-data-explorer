@@ -1,7 +1,6 @@
 import operator
 from functools import reduce
 
-from django.http import JsonResponse
 from django.utils.encoding import smart_text
 from django.utils.six import python_2_unicode_compatible
 
@@ -81,10 +80,7 @@ class Table:
     def get_data(self, query_config):
         datatable = self.get_datatable(query_config)
         datatable.populate_records()
-        response_data = {
-            'data': self.parse_data(datatable.get_records()),
-        }
-        return JsonResponse(response_data)
+        return self.parse_data(datatable.get_records())
 
     def parse_data(self, records):
         data = []
