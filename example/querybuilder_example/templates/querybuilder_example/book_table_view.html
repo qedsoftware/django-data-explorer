@@ -4,14 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-
-  <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.9/css/jquery.dataTables.css">
-
-  {# Bootstrap #}
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static 'libs/datatables/media/js/jquery.dataTables.min.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'libs/datatables/media/css/jquery.dataTables.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/data-table-view.css' %}">
 
   {# django-datatable-view #}
   <script type="text/javascript" charset="utf8" src="{% static 'django_querybuilder/js/datatableview.js' %}"></script>
