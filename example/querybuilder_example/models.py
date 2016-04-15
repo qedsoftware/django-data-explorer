@@ -17,6 +17,7 @@ class Book(models.Model):
 @python_2_unicode_compatible
 class City(models.Model):
     name = models.CharField(unique=True, max_length=100)
+    citizens_number = models.DecimalField(decimal_places=0, max_digits=9)
     latitude = models.DecimalField(decimal_places=6, max_digits=9)
     longitude = models.DecimalField(decimal_places=6, max_digits=9)
 

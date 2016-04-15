@@ -1,7 +1,26 @@
-from django_querybuilder import Map, Table
+from django_querybuilder import Map, Table, FilterForm
 
-from .models import Author, Book
+from .models import Author, Book, City
 
-CityMap = Map(Book)
+
+class BookFilter(FilterForm):
+    class Meta:
+        model = Book
+        fields = {
+            'pages': ['lt', 'gt'],
+            'publication_date': ['exact', 'year__gt', 'year'],
+        }
+
+
+class CityFilter(FilterForm):
+
+    class Meta:
+        model = City
+        fields = {
+            'name': ['exact'],
+        }
+
+CityFilterInstance = CityFilter({'name': 'City_2'})
+CityMap = Map(widget_id="city-map", model=City, filterform=CityFilterInstance)
 BasicAuthorTable = Table("author-table", Author)
 BasicBookTable = Table("book-table", Book)

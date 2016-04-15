@@ -1,3 +1,4 @@
+import datetime
 import json
 import six
 
@@ -6,7 +7,7 @@ from django.test import TestCase
 from django.utils.encoding import smart_text
 
 from .models import Author, Book
-from .querybuilder import BasicBookTable
+from .querybuilder import BasicBookTable, BookFilter
 from .views import BookEndpoint
 
 
@@ -91,3 +92,51 @@ class TableStrRepresentation(TestCase):
     def test_str(self):
         text = smart_text(BasicBookTable)
         self.assertIn("Title", text)
+
+
+class FilterFormTestCase(TestCase):
+    def setUp(self):
+        self.author1 = Author.objects.create(name="Author_1")
+        self.author2 = Author.objects.create(name="Author_2")
+        self.testbook1 = Book.objects.create(
+            title="Book_1", pages=20, author=self.author1)
+        self.testbook2 = Book.objects.create(
+            title="Book_2", author=self.author2, pages=10)
+        self.testbook3 = Book.objects.create(
+            title="Book_3", author=self.author2, publication_date=datetime.date(2008, 6, 24))
+
+    def test_filter_lt_condition(self):
+        filterform = BookFilter()
+        filter_data = {'pages__lt': '15'}
+        filtered = filterform.filter_queryset(filter_data, Book.objects.all())
+        self.assertQuerysetEqual(filtered, ['Book_2'], lambda b: b.title, False)
+
+    def test_filter_no_results(self):
+        filterform = BookFilter()
+        filter_data = {'pages__gt': '25'}
+        filtered = filterform.filter_queryset(filter_data, Book.objects.all())
+        self.assertQuerysetEqual(filtered, [], lambda b: b.title, False)
+
+    def test_empty_filter(self):
+        filterform = BookFilter()
+        filter_data = {}
+        filtered = filterform.filter_queryset(filter_data, Book.objects.all())
+        self.assertQuerysetEqual(filtered, ['Book_1','Book_2','Book_3'], lambda b: b.title, False)
+
+    def test_excluding_filter(self):
+        filterform = BookFilter()
+        filter_data = {
+            'pages__gt': 15,
+            'pages__lt': 14,
+        }
+        filtered = filterform.filter_queryset(filter_data, Book.objects.all())
+        self.assertQuerysetEqual(filtered, [], lambda b: b.title, False)
+
+    def test_filter_exact(self):
+        filterform = BookFilter()
+        filter_data = {
+            'publication_date': '2008-06-24',
+            'publication_date__year': 2008,
+        }
+        filtered = filterform.filter_queryset(filter_data, Book.objects.all())
+        self.assertQuerysetEqual(filtered, ['Book_3'], lambda b: b.title, False)

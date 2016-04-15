@@ -1,8 +1,15 @@
+{% load leaflet_tags %}
+
+{% block extra_assets %}
+  {% leaflet_js %}
+  {% leaflet_css %}
+{% endblock %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Map example</title>
+    <meta charset="UTF-8">
+    <title>Map example</title>
 </head>
 <body>
 

@@ -5,6 +5,7 @@ from django_querybuilder import TableEndpoint
 from querybuilder_example.querybuilder import (BasicAuthorTable,
                                                BasicBookTable, CityMap)
 from .models import Author, Book
+from .querybuilder import BookFilter
 
 
 class BookTableView(TemplateView):
@@ -23,6 +24,15 @@ class CityMapView(TemplateView):
     def get_context_data(self, **kwargs):
         return {
             "map": CityMap
+        }
+
+
+class PriceDateBookFormView(TemplateView):
+    template_name = "querybuilder_example/book_filter_view.html"
+
+    def get_context_data(self, **kwargs):
+        return {
+            "filterform": BookFilter
         }
 
 

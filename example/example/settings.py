@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'querybuilder_example',
 
     'django_querybuilder',
-    'datatableview'
+    'datatableview',
+
+    'leaflet',
 ]
 
 PROJECT_APPS = ['django_querybuilder', 'querybuilder_example']
