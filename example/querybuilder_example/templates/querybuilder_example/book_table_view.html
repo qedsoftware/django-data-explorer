@@ -5,15 +5,8 @@
   <meta charset="UTF-8">
   <title>Title</title>
   <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
-  <script src="{% static 'libs/datatables/media/js/jquery.dataTables.min.js' %}"></script>
-  <link rel="stylesheet" type="text/css" href="{% static 'libs/datatables/media/css/jquery.dataTables.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'css/data-table-view.css' %}">
-
-  {# django-datatable-view #}
-  <script type="text/javascript" charset="utf8" src="{% static 'django_querybuilder/js/datatableview.js' %}"></script>
-  <script type="text/javascript" charset="utf8">
-      datatableview.auto_initialize = true;
-  </script>
+  {% include "django_querybuilder/css_assets.html" %}
+  {% include "django_querybuilder/js_assets.html" %}
 </head>
 <body>
 
