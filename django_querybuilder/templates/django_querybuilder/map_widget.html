@@ -1,84 +1,8 @@
 <div id="{{ widget_id }}" style="width: 1200px; height: 600px">
 
 <script type="text/javascript">
-  (function () {
-    'use strict';
-    
-    var data = JSON.parse("{{ data|escapejs }}");
-
-    var osmURL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-    var osmAttrib = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmURL, {attribution: osmAttrib});
-
-    var layer_data = new L.LayerGroup();
-    var array_markers = new Array();
-
-    var widgetId = '{{ widget_id }}';
-
-    var map = L.map(widgetId, {
-        center: [0.01, 51.405],
-        zoom: 13,
-        fullscreenControl: true,
-        fullscreenOptions: {
-            position: 'topleft'
-        },
-        layers: [osm, layer_data]
-    }); 
-    
-    for(var i = 0; i < data.length; i++){
-        var obj = data[i];
-        var lon = 0.0;
-        var lat = 0.0;
-        for(var key in obj.fields) {
-            if (key == 'longitude') {
-                lon = parseFloat(obj.fields[key]);
-            }
-            if (key == 'latitude') {
-                lat = parseFloat(obj.fields[key]);
-            }
-        }
-        var marker = L.marker([lat, lon]);
-
-        var first_iteration = true;
-        var popup_text = "";
-
-        for (var key in obj.fields) {
-            if (key != 'latitude' && key != 'longitude') {
-                if (first_iteration) {
-                    first_iteration = false;
-                    popup_text = popup_text + '<strong>' + key + ': </strong>' + obj.fields[key] + '<br>';
-                }
-                else {
-                    popup_text = popup_text + '<strong>' + key + ': </strong>' + obj.fields[key] + '<br>';
-                }
-            }
-        }
-
-        marker.bindPopup(
-            popup_text
-        );
-
-        marker.addTo(map);
-        marker.addTo(layer_data);
-        array_markers.push(marker);
-    }
-
-    if (array_markers.length > 0) {
-        var group = L.featureGroup(array_markers);
-        map.fitBounds(group.getBounds());
-    }
-
-    var baseLayers = {
-        "OpenStreetMap": osm
-    };
-
-    var overlays = {
-        "Data Layer": layer_data
-    };
-
-    L.control.layers(baseLayers, overlays).addTo(map);
-
-  })();
+    var mapData = "{{ map_data | escapejs }}";
+    var leaflet_map = new Map(mapData);
 </script>
 
 </div>

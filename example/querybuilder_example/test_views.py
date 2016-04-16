@@ -12,5 +12,5 @@ class TestCityMapView(TestCase):
         self.objects_list = [self.fakecity1, self.fakecity2, self.fakecity3]
 
     def test_get(self):
-        response = self.client.get(reverse("city-map"))
-        self.assertIn("map", response.context)
+        response = self.client.get(reverse("city-map-filter"))
+        self.assertEquals(200, response.status_code)

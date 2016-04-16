@@ -1,0 +1,31 @@
+{% load leaflet_tags %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> City filter and map example </title>
+    <script src="{% static 'js/filterui.js' %}"></script>
+    <script src="{% static 'js/map.js' %}"></script>
+    <script src="{% static 'js/querybuilderapi.js' %}"></script>
+    <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'libs/jquery-deserialize/dist/jquery.deserialize.min.js' %}"></script>
+    <script src="{% static 'libs/freewall/freewall.js' %}"></script>
+    <script src="{% static 'libs/jquery-ui/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'libs/jquery-ui/ui/tabs.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/filter-form.css' %}" />
+    {% block extra_assets %}
+        {% leaflet_js %}
+        {% leaflet_css %}
+    {% endblock %}
+</head>
+<body>
+    <div>
+        {{ city_filterform }}
+    </div>
+    <div>
+        {{ city_map }}
+    </div>
+</body>
+</html>

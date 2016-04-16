@@ -20,7 +20,7 @@ class CityFilter(FilterForm):
             'name': ['exact'],
         }
 
-CityFilterInstance = CityFilter({'name': 'City_2'})
+CityFilterInstance = CityFilter()
 CityMap = Map(widget_id="city-map", model=City, filterform=CityFilterInstance)
 BasicAuthorTable = Table("author-table", Author)
 BasicBookTable = Table("book-table", Book)
