@@ -1,5 +1,5 @@
+@import "variables";
 $column-width: 150px;
-$font-stack: 'Open Sans', Calibri, Arial, sans-serif;
 
 ul.ff-tabs-list {
   font-family: $font-stack;
@@ -52,7 +52,7 @@ ul.ff-tabs-list {
     font-size: x-small;
     margin: 0;
     font-weight: 900;
-    color: #666;
+    color: $label-grey;
   }
   input {
     outline: none;
