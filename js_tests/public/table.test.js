@@ -10,12 +10,22 @@ var tableHTML =
     '</table>';
 
 test('Update after form submission.', function(assert) {
+    FakeQuerybuilderAPI = (function(){
+        var QuerybuilderAPI = function(url) {
+        }
+        QuerybuilderAPI.prototype = {
+            retrieveData: function(endpointName, parameters, callback) {
+                callback();
+            }
+        }
+        return QuerybuilderAPI;
+    })();
     assert.expect(1);
 
     $("#qunit-fixture").append(tableHTML);
 
     var form = new FilterForm("#filter");
-    var api = new QuerybuilderAPI();
+    var api = new FakeQuerybuilderAPI("/endpoint/");
     new Table("#table", '#filter', "blah", api);
     $("#table").on("update:Table", function(event) {
         assert.ok(true);
