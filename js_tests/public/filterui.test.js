@@ -109,3 +109,18 @@ test('Serialize returns form data test', function(assert) {
     formField.val('someText');
     $('#filter').trigger('submit');
 });
+
+test('Submit event calls callback function test', function(assert) {
+    var form = new FilterForm('#filter');
+    form.onSubmit(function(event) {
+        event.preventDefault();
+        assert.ok(true);
+    });
+    $('#filter').trigger('submit');
+});
+
+test('Reference is stored in the DOM test', function (assert) {
+    var form = new FilterForm('#filter');
+    var loadedForm = $('#filter').data('FilterForm');
+    assert.equal(form, loadedForm);
+});

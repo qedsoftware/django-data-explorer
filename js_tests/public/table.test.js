@@ -16,8 +16,8 @@ test('Update after form submission.', function(assert) {
 
     var form = new FilterForm("#filter");
     var api = new QuerybuilderAPI();
-    new Table("#table", form, "blah", api);
-    $("#table").on("update:Table", function() {
+    new Table("#table", '#filter', "blah", api);
+    $("#table").on("update:Table", function(event) {
         assert.ok(true);
     });
     $("#filter").trigger("submit");

@@ -2,14 +2,14 @@ var MapScript = (function() {
 
 MapLinker = (function(){
     'use strict';
-    var MapLinker = function(containerID, form, endpointName, api) {
+    var MapLinker = function(containerID, formID, endpointName, api) {
         this.containerID = containerID;
-        this.form = form;
+        this.form = $(formID).data('FilterForm');
         this.endpointName = endpointName;
         this.api = api;
         var _this = this;
         this.form.onSubmit(function(event) {
-            event.preventDefault()
+            event.preventDefault();
             var dict = {};
             if (event.formData !== undefined) {
                 for (var i = 0; i < event.formData.length; i++) {
@@ -25,7 +25,7 @@ MapLinker = (function(){
                 filteredData: filteredData
             });
         });
-    }
+    };
 
     MapLinker.prototype = {
         retrieveData: function(filter_data) {
@@ -44,8 +44,9 @@ Map = function() {
     this.layer_data;
     this.widgetId = mapData.widget_id;
     this.endpoint = '/' + mapData.endpoint_id + '/';
-    this.form = new FilterForm('#filter');
-    
+    this.formID = '#filter';
+    new FilterForm(this.formID);
+
     function isFunction(possibleFunction) {
         return typeof(possibleFunction) === typeof(Function);
     }
@@ -66,7 +67,10 @@ Map = function() {
             }
         });
 
-    this.init(mapData);
+    var that = this;
+    $(function () {
+        that.init(mapData);
+    });
     return Map;
 };
 
@@ -74,7 +78,7 @@ Map.prototype = {
         init: function(mapData) {
             'use strict';
             var _this = this;
-            this.map_class = new MapLinker(_this.widgetId, _this.form, _this.endpoint, new QuerybuilderAPI());
+            this.map_class = new MapLinker(_this.widgetId, _this.formID, _this.endpoint, new QuerybuilderAPI());
 
             var osmURL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
             var osmAttrib = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';

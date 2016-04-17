@@ -5,11 +5,14 @@ FilterForm = (function(){
 
         this.containerID = containerID;
 
+        var that = this;
+
         $(function () {
             var walls = [];
 
             deserializeForms();
             setSerializationOnChangeEvent();
+            saveReferenceInDOM(that);
 
             if (tabs && tabs instanceof Array) {
                 setFreewall();
@@ -62,6 +65,10 @@ FilterForm = (function(){
                     });
                     rearrangeAllColumns();
                 }
+            }
+
+            function saveReferenceInDOM(that) {
+                $(containerID).data('FilterForm', that);
             }
         });
 
