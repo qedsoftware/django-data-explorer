@@ -103,13 +103,15 @@ class FilterFormTestCase(TestCase):
         self.testbook2 = Book.objects.create(
             title="Book_2", author=self.author2, pages=10)
         self.testbook3 = Book.objects.create(
-            title="Book_3", author=self.author2, publication_date=datetime.date(2008, 6, 24))
+            title="Book_3", author=self.author2,
+            publication_date=datetime.date(2008, 6, 24))
 
     def test_filter_lt_condition(self):
         filterform = BookFilter()
         filter_data = {'pages__lt': '15'}
         filtered = filterform.filter_queryset(filter_data, Book.objects.all())
-        self.assertQuerysetEqual(filtered, ['Book_2'], lambda b: b.title, False)
+        self.assertQuerysetEqual(
+            filtered, ['Book_2'], lambda b: b.title, False)
 
     def test_filter_no_results(self):
         filterform = BookFilter()
@@ -121,7 +123,8 @@ class FilterFormTestCase(TestCase):
         filterform = BookFilter()
         filter_data = {}
         filtered = filterform.filter_queryset(filter_data, Book.objects.all())
-        self.assertQuerysetEqual(filtered, ['Book_1','Book_2','Book_3'], lambda b: b.title, False)
+        self.assertQuerysetEqual(
+            filtered, ['Book_1', 'Book_2', 'Book_3'], lambda b: b.title, False)
 
     def test_excluding_filter(self):
         filterform = BookFilter()
@@ -139,22 +142,30 @@ class FilterFormTestCase(TestCase):
             'publication_date__year': 2008,
         }
         filtered = filterform.filter_queryset(filter_data, Book.objects.all())
-        self.assertQuerysetEqual(filtered, ['Book_3'], lambda b: b.title, False)
+        self.assertQuerysetEqual(
+            filtered, ['Book_3'], lambda b: b.title, False)
 
 
 class MapGetDataTestCase(TestCase):
     def setUp(self):
-        self.city1 = City.objects.create(name="City_1", citizens_number=3, latitude=30.0, longitude=20.0)
-        self.city2 = City.objects.create(name="City_2", citizens_number=33, latitude=33.0, longitude=21.0)
-        self.city3 = City.objects.create(name="City_3", citizens_number=333, latitude=35.0, longitude=22.0)
-    
+        self.city1 = City.objects.create(name="City_1", citizens_number=3,
+                                         latitude=30.0, longitude=20.0)
+        self.city2 = City.objects.create(name="City_2", citizens_number=33,
+                                         latitude=33.0, longitude=21.0)
+        self.city3 = City.objects.create(name="City_3", citizens_number=333,
+                                         latitude=35.0, longitude=22.0)
+
     def test_get_all_data(self):
         city_map = CityMap
         query_config = {}
         data = city_map.get_data(query_config)
-        self.assertEqual(data, [{'name': 'City_1', 'citizens_number': 3, 'latitude': 30.0, 'longitude': 20.0}, 
-                                {'name': 'City_2', 'citizens_number': 33, 'latitude': 33.0, 'longitude': 21.0},
-                                {'name': 'City_3', 'citizens_number': 333, 'latitude': 35.0, 'longitude': 22.0}])
+        self.assertEqual(data, [
+                                {'name': 'City_1', 'citizens_number': 3,
+                                 'latitude': 30.0, 'longitude': 20.0},
+                                {'name': 'City_2', 'citizens_number': 33,
+                                 'latitude': 33.0, 'longitude': 21.0},
+                                {'name': 'City_3', 'citizens_number': 333,
+                                 'latitude': 35.0, 'longitude': 22.0}])
 
     def test_get_some_data(self):
         city_map = CityMap
@@ -164,7 +175,7 @@ class MapGetDataTestCase(TestCase):
         }
         data = city_map.get_data(query_config)
         self.assertEqual(data[0]['name'], "City_2")
-    
+
     def test_get_no_data(self):
         city_map = CityMap
         query_config = {

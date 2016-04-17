@@ -1,6 +1,7 @@
 import json
 
-from django_filters.filterset import BaseFilterSet, get_declared_filters, FilterSetOptions, filters_for_model
+from django_filters.filterset import (BaseFilterSet, get_declared_filters,
+                                      FilterSetOptions, filters_for_model)
 from django.template.loader import render_to_string
 from django.utils import six
 from django.utils.six import python_2_unicode_compatible
@@ -40,7 +41,8 @@ class FilterFormMetaclass(type):
 
 
 class BaseFilterForm(BaseFilterSet):
-    def __init__(self, initial=None, data=None, queryset=None, prefix=None, strict=None):
+    def __init__(self, initial=None, data=None, queryset=None, prefix=None,
+                 strict=None):
         self.initial = initial or {}
         BaseFilterSet.__init__(self, data, queryset, prefix, strict)
 
@@ -67,5 +69,6 @@ class FilterForm(six.with_metaclass(FilterFormMetaclass, BaseFilterForm)):
             'name': 'filterform',
             'filter': self.filters,
         }
-        text = render_to_string('django_querybuilder/filterform_template.html', context)
+        text = render_to_string('django_querybuilder/filterform_template.html',
+                                context)
         return text

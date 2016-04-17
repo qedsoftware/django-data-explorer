@@ -17,10 +17,12 @@ class Map(object):
 
     def filter_data(self, data=None):
         data = data or {}
-        if self.filterform == None:
+        if self.filterform is None:
             return self.model.objects.all()
         else:
-            return self.filterform.filter_queryset(queryset=self.model.objects.all(), filter_data=data) or {}
+            queryset = self.model.objects.all()
+            return self.filterform.filter_queryset(queryset=queryset,
+                                                   filter_data=data) or {}
 
     def get_endpoint_url(self):
         return "endpoint"
@@ -42,5 +44,7 @@ class Map(object):
             'widget_id': self.widget_id,
             'endpoint': self.get_endpoint_url(),
         }
-        text = render_to_string(self.template_name, {'map_data': json.dumps(map_data), 'widget_id': self.widget_id})
+        text = render_to_string(
+            self.template_name, {'map_data': json.dumps(map_data),
+                                 'widget_id': self.widget_id})
         return text
