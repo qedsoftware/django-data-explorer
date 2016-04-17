@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <script src="../../django_querybuilder/static/js/filterui.js"></script>
+    <script src="../../django_querybuilder/static/js/table.js"></script>
     <script src="../../django_querybuilder/static/libs/jquery/dist/jquery.min.js"></script>
     <script src="../../django_querybuilder/static/libs/jquery-deserialize/dist/jquery.deserialize.min.js"></script>
     <script src="../../django_querybuilder/static/libs/freewall/freewall.js"></script>
@@ -13,10 +14,11 @@
 </head>
 <body style="margin: 1em">
     <script>
-        FilterForm('#filter', ['#tab_1', "#tab_2"]);
+        var form = new FilterForm('#filter', ['#tab_1', "#tab_2"]);
         $(function () {
-            $("#filter").on("update:FilterForm", function(event) {
-                console.log(event);
+            $("#filter").on("submit", function(event) {
+                event.preventDefault();
+                console.log(form.serialize());
             });
         });
     </script>

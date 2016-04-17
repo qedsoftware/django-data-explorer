@@ -14,9 +14,9 @@ test('Update after form submission.', function(assert) {
 
     $("#qunit-fixture").append(tableHTML);
 
-    FilterForm("#filter");
+    var form = new FilterForm("#filter");
     var api = new QuerybuilderAPI();
-    new Table("#table", "#filter", "blah", api);
+    new Table("#table", form, "blah", api);
     $("#table").on("update:Table", function() {
         assert.ok(true);
     });

@@ -1,20 +1,21 @@
 Table = (function(){
     'use strict';
 
-    var Table = function(containerID, formID, endpointName, api) {
+    var Table = function(containerID, form, endpointName, api) {
         this.containerID = containerID;
-        this.formID = formID;
+        this.form = form;
         this.endpointName = endpointName;
         this.api = api;
 
         var _this = this;
-        $(this.formID).on("update:FilterForm", function(event) {
+        form.onSubmit(function(event) {
+            event.preventDefault();
             var data = _this.retrieveData();
             $(containerID).trigger({
                 type: "update:Table"
             });
         });
-    }
+    };
 
     Table.prototype = {
         retrieveData: function() {
