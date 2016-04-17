@@ -1,8 +1,8 @@
-from datatableview.views import DatatableView
+from datatableview.views.legacy import LegacyDatatableView
 from .table import QuerysetDatatable
 
 
-class TableEndpoint(DatatableView):
+class TableEndpoint(LegacyDatatableView):
     datatable_class = QuerysetDatatable
 
     def get_json_response_object(self, datatable):

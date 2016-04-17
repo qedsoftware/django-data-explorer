@@ -19,7 +19,7 @@ class EndpointTest(TestCase):
         content = json.loads(response.content.decode())
         self.assertEqual(content['status'], 'OK')
         self.assertEqual(content['data'],
-                         [{"0": "1", "1": "name", "2": "2016-05-23"}])
+                         [{"0": "name", "1": "2016-05-23"}])
 
     def test_no_widget(self):
         request = self.factory.post('myurl',

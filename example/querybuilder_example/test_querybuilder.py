@@ -65,15 +65,15 @@ class TableEndpointView(TestCase):
     def test_basic_view(self):
         data = self.get_data_from_response({})
         self.assertEqual(len(data), 2)
-        self.assertEqual(data[0]['2'], "TestBook1")
-        self.assertEqual(data[1]['2'], "TestBook2")
+        self.assertEqual(data[0]['1'], "TestBook1")
+        self.assertEqual(data[1]['1'], "TestBook2")
 
     def test_filtered_view(self):
         data = self.get_data_from_response(
             {'filters': 'title;exact;TestBook1'}
         )
         self.assertEqual(len(data), 1)
-        self.assertEqual(data[0]['2'], "TestBook1")
+        self.assertEqual(data[0]['1'], "TestBook1")
 
     def test_filtered_view_no_results(self):
         data = self.get_data_from_response(

@@ -4,10 +4,10 @@ from functools import reduce
 from django.utils.encoding import smart_text
 from django.utils.six import python_2_unicode_compatible
 
-from datatableview.datatables import Datatable
+from datatableview.datatables import LegacyDatatable
 
 
-class QuerysetDatatable(Datatable):
+class QuerysetDatatable(LegacyDatatable):
     def __init__(self, object_list=(), url='', *args, **kwargs):
         super(QuerysetDatatable, self).__init__(
             object_list, url, *args, **kwargs)
@@ -59,14 +59,21 @@ class QuerysetDatatable(Datatable):
 
 @python_2_unicode_compatible
 class Table:
-    def __init__(self, name, model):
+    def __init__(self, name, model, columns=None):
+        """
+        :param columns: columns to display, (column header, model field) list
+                        all model fields by default
+                        supports related field
+        """
         self.name = name
         self.model = model
+        self.columns = columns
 
     def get_datatable(self, query_config):
         class ModelQuerysetDatatable(QuerysetDatatable):
             class Meta:
                 model = self.model
+                columns = self.columns
         datatable = ModelQuerysetDatatable(self.model.objects.all(),
                                            self.get_endpoint_url(),
                                            query_config=query_config)
