@@ -18,6 +18,8 @@ class CityFilter(FilterForm):
         model = City
         fields = {
             'name': ['exact'],
+            'latitude': ['lt'],
+            'citizens_number': ['gt'],
         }
 
 CityFilterInstance = CityFilter()

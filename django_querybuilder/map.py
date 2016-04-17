@@ -1,6 +1,6 @@
 import json
 
-from django.template import Context
+from django.forms.models import model_to_dict
 from django.template.loader import render_to_string
 from django.utils.six import python_2_unicode_compatible
 
@@ -20,10 +20,22 @@ class Map(object):
         if self.filterform == None:
             return self.model.objects.all()
         else:
-            return self.filterform.filter_queryset(queryset=self.model.objects.all()) or {}
+            return self.filterform.filter_queryset(queryset=self.model.objects.all(), filter_data=data) or {}
 
     def get_endpoint_url(self):
         return "endpoint"
+
+    def get_data(self, query_config):
+        map_data = self.filter_data(data=query_config)
+        return self.parse_data(map_data)
+
+    def parse_data(self, data):
+        parsed_data = []
+        for object in data:
+            dict_obj = model_to_dict(object)
+            del dict_obj['id']
+            parsed_data.append(dict_obj)
+        return parsed_data
 
     def __str__(self):
         map_data = {
