@@ -6,8 +6,8 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.utils.encoding import smart_text
 
-from .models import Author, Book
-from .querybuilder import BasicBookTable, BookFilter
+from .models import Author, Book, City
+from .querybuilder import BasicBookTable, BookFilter, CityFilter, CityMap
 from .views import BookEndpoint
 
 
@@ -140,3 +140,36 @@ class FilterFormTestCase(TestCase):
         }
         filtered = filterform.filter_queryset(filter_data, Book.objects.all())
         self.assertQuerysetEqual(filtered, ['Book_3'], lambda b: b.title, False)
+
+
+class MapGetDataTestCase(TestCase):
+    def setUp(self):
+        self.city1 = City.objects.create(name="City_1", citizens_number=3, latitude=30.0, longitude=20.0)
+        self.city2 = City.objects.create(name="City_2", citizens_number=33, latitude=33.0, longitude=21.0)
+        self.city3 = City.objects.create(name="City_3", citizens_number=333, latitude=35.0, longitude=22.0)
+    
+    def test_get_all_data(self):
+        city_map = CityMap
+        query_config = {}
+        data = city_map.get_data(query_config)
+        self.assertEqual(data, [{'name': 'City_1', 'citizens_number': 3, 'latitude': 30.0, 'longitude': 20.0}, 
+                                {'name': 'City_2', 'citizens_number': 33, 'latitude': 33.0, 'longitude': 21.0},
+                                {'name': 'City_3', 'citizens_number': 333, 'latitude': 35.0, 'longitude': 22.0}])
+
+    def test_get_some_data(self):
+        city_map = CityMap
+        query_config = {
+            'citizens_number__gt': 30,
+            'latitude__lt': 34.0,
+        }
+        data = city_map.get_data(query_config)
+        self.assertEqual(data[0]['name'], "City_2")
+    
+    def test_get_no_data(self):
+        city_map = CityMap
+        query_config = {
+            'citizens_number__gt': 30,
+            'latitude__lt': 20.0,
+        }
+        data = city_map.get_data(query_config)
+        self.assertEqual(data, [])
