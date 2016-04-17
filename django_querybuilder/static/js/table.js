@@ -1,14 +1,14 @@
 Table = (function(){
     'use strict';
 
-    var Table = function(containerID, form, endpointName, api) {
+    var Table = function(containerID, formID, endpointName, api) {
         this.containerID = containerID;
-        this.form = form;
+        this.form = $(formID).data('FilterForm');
         this.endpointName = endpointName;
         this.api = api;
 
         var _this = this;
-        form.onSubmit(function(event) {
+        this.form.onSubmit(function(event) {
             event.preventDefault();
             var data = _this.retrieveData();
             $(containerID).trigger({
