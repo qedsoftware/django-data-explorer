@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.utils.encoding import smart_text
 
+import django_querybuilder
 from django_querybuilder import FilterForm
 
 from .models import Author, Book, City
@@ -207,3 +208,9 @@ class MapGetDataTestCase(TestCase):
         query_config = 'citizens_number__gt=30&latitude__lt=20.0'
         data = city_map.get_data(query_config)
         self.assertEqual(data, [])
+
+    @staticmethod
+    def test_map_no_descr():
+        """Make sure that the constructor works for maps without descriptions.
+        """
+        django_querybuilder.Map("nonexistent", City)

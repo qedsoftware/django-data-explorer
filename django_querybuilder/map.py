@@ -13,12 +13,12 @@ class Map(object):
         self.longitude = 0
         self.template_name = "django_querybuilder/map_widget.html"
         self.filterform = filterform
-        assert hasattr(description_func, '__call__') is True
+
         if description_func is None:
-            self.description_func = lambda model: ("Latitude: {}<br>Longitude: {}".format(
+            description_func = lambda model: ("Latitude: {}<br>Longitude: {}".format(
                 str(model.latitude), str(model.longitude)))
-        else:
-            self.description_func = description_func
+        assert hasattr(description_func, '__call__') is True
+        self.description_func = description_func
 
     def filter_data(self, data=None):
         data = data or {}
