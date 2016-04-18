@@ -99,10 +99,7 @@ test('Deserialize one of two forms test', function(assert) {
 test('Serialize returns form data test', function(assert) {
     $('#qunit-fixture').on("submit", function(event) {
         event.preventDefault();
-        assert.deepEqual(form.serialize(), [{
-            name: 'textField',
-            value: 'someText'
-        }]);
+        assert.deepEqual(form.serialize(), 'textField=someText');
     });
     var form = new FilterForm('#filter');
     var formField = $('#filter input[name=textField]');

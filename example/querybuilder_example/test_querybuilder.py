@@ -1,6 +1,7 @@
 import datetime
 import json
 
+import mock
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.utils.encoding import smart_text
@@ -144,6 +145,13 @@ class FilterFormTestCase(TestCase):
         self.assertQuerysetEqual(
             filtered, ['Book_3'], lambda b: b.title, False)
 
+    @mock.patch("django_querybuilder.FilterForm.filter_queryset")
+    def test_filter_queryset_query_string(self, filter_queryset_mock):
+        filterform = BookFilter()
+        filterform.filter_queryset_query_string("a=b&c=d", "queryset here")
+        parsed = filter_queryset_mock.call_args[0][0]
+        self.assertEqual(parsed, {"a": ["b"], "c": ["d"]})
+
 
 class MapGetDataTestCase(TestCase):
     def setUp(self):
@@ -168,18 +176,12 @@ class MapGetDataTestCase(TestCase):
 
     def test_get_some_data(self):
         city_map = CityMap
-        query_config = {
-            'citizens_number__gt': 30,
-            'latitude__lt': 34.0,
-        }
+        query_config = 'citizens_number__gt=30&latitude__lt=34.0'
         data = city_map.get_data(query_config)
         self.assertEqual(data[0]['name'], "City_2")
 
     def test_get_no_data(self):
         city_map = CityMap
-        query_config = {
-            'citizens_number__gt': 30,
-            'latitude__lt': 20.0,
-        }
+        query_config = 'citizens_number__gt=30&latitude__lt=20.0'
         data = city_map.get_data(query_config)
         self.assertEqual(data, [])

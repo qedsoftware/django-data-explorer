@@ -7,6 +7,7 @@ django-leaflet==0.18.1
 flake8==2.5.4
 lazy-object-proxy==1.2.1
 mccabe==0.4.0
+mock==1.3.0
 pep8==1.7.0
 pyflakes==1.0.0
 pylint==1.5.4

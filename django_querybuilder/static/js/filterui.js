@@ -76,7 +76,7 @@ FilterForm = (function(){
 
     FilterForm.prototype = {
         serialize: function() {
-             return $(this.containerID).serializeArray()
+             return $(this.containerID).serialize();
         },
         onSubmit: function(callback) {
             $(this.containerID).on("submit", function(event) {

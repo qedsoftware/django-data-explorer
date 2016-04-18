@@ -21,8 +21,8 @@ class Map(object):
             return self.model.objects.all()
         else:
             queryset = self.model.objects.all()
-            return self.filterform.filter_queryset(queryset=queryset,
-                                                   filter_data=data) or {}
+            return self.filterform.filter_queryset_query_string(
+                queryset=queryset, query_string=data) or {}
 
     @staticmethod
     def get_endpoint_url():

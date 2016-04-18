@@ -1,8 +1,9 @@
-from django_filters.filterset import (BaseFilterSet, get_declared_filters,
-                                      FilterSetOptions, filters_for_model)
+from django.http import QueryDict
 from django.template.loader import render_to_string
 from django.utils import six
 from django.utils.six import python_2_unicode_compatible
+from django_filters.filterset import (BaseFilterSet, get_declared_filters,
+                                      FilterSetOptions, filters_for_model)
 
 
 class FilterFormMetaclass(type):
@@ -61,6 +62,10 @@ class FilterForm(six.with_metaclass(FilterFormMetaclass, BaseFilterForm)):
             result = queryset.filter(**kwargs)
 
         return result
+
+    def filter_queryset_query_string(self, query_string, queryset):
+        querydict = QueryDict(query_string)
+        return self.filter_queryset(querydict, queryset)
 
     def __str__(self):
         context = {
