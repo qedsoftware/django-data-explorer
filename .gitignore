@@ -9,3 +9,5 @@ npm-debug.log
 /js_tests/coverage
 /reports
 /example/src
+/build
+/django_querybuilder.egg-info/

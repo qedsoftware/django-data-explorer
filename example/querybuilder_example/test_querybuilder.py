@@ -1,13 +1,12 @@
 import datetime
 import json
-import six
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.utils.encoding import smart_text
 
 from .models import Author, Book, City
-from .querybuilder import BasicBookTable, BookFilter, CityFilter, CityMap
+from .querybuilder import BasicBookTable, BookFilter, CityMap
 from .views import BookEndpoint
 
 
@@ -49,7 +48,7 @@ class TableFiltersTestCase(TestCase):
     def _assert_filtered_book_table(self, query_config, expected):
         table = BasicBookTable
         records = table.filter_queryset(query_config)
-        self.assertEquals(records, expected)
+        self.assertEqual(records, expected)
 
 
 class TableEndpointView(TestCase):
@@ -160,12 +159,12 @@ class MapGetDataTestCase(TestCase):
         query_config = {}
         data = city_map.get_data(query_config)
         self.assertEqual(data, [
-                                {'name': 'City_1', 'citizens_number': 3,
-                                 'latitude': 30.0, 'longitude': 20.0},
-                                {'name': 'City_2', 'citizens_number': 33,
-                                 'latitude': 33.0, 'longitude': 21.0},
-                                {'name': 'City_3', 'citizens_number': 333,
-                                 'latitude': 35.0, 'longitude': 22.0}])
+            {'name': 'City_1', 'citizens_number': 3,
+             'latitude': 30.0, 'longitude': 20.0},
+            {'name': 'City_2', 'citizens_number': 33,
+             'latitude': 33.0, 'longitude': 21.0},
+            {'name': 'City_3', 'citizens_number': 333,
+             'latitude': 35.0, 'longitude': 22.0}])
 
     def test_get_some_data(self):
         city_map = CityMap

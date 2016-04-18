@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from .views import (AuthorEndpoint, BookEndpoint, BookTableView, CityMapView,
+from .views import (AuthorEndpoint, BookEndpoint, BookTableView,
                     Endpoint, PriceDateBookFormView, CityMapFilterView)
 
 urlpatterns = [

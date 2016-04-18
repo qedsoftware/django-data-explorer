@@ -1,5 +1,5 @@
 import operator
-from functools import reduce
+import functools
 
 from django.utils.encoding import smart_text
 from django.utils.six import python_2_unicode_compatible
@@ -27,12 +27,13 @@ class QuerysetDatatable(LegacyDatatable):
             config[option] = normalizer_f(config, query_config)
         return config
 
-    def normalize_config_filters(self, config, query_config):
+    @staticmethod
+    def normalize_config_filters(dummy, query_config):
         filters = []
         filters_input = query_config.get('filters', None)
         if filters_input:
-            for filter in filters_input.split(','):
-                column_name, lookup, term = filter.split(';')
+            for filter_params in filters_input.split(','):
+                column_name, lookup, term = filter_params.split(';')
                 filters.append((column_name, lookup, term))
         return filters
 
@@ -46,19 +47,31 @@ class QuerysetDatatable(LegacyDatatable):
             column = self.columns[column_name]
             search_f = getattr(
                 self, 'search_%s' % (column_name), self.search_column)
-            q = search_f(column, term, [lookup])
-            if q is not None:
-                table_queries.append(q)
+            query = search_f(column, term, [lookup])
+            if query is not None:
+                table_queries.append(query)
 
         if table_queries:
-            q = reduce(operator.and_, table_queries)
-            queryset = queryset.filter(q)
+            query = functools.reduce(operator.and_, table_queries)
+            queryset = queryset.filter(query)
 
         return queryset
 
+    def get_records_list(self):
+        return self._records
+
+
+def parse_data(records):
+    data = []
+    for record in records:
+        for attr in ['pk', '_extra_data']:
+            record.pop(attr)
+        data.append(dict(record))
+    return data
+
 
 @python_2_unicode_compatible
-class Table:
+class Table(object):
     def __init__(self, name, model, columns=None):
         """
         :param columns: columns to display, (column header, model field) list
@@ -71,7 +84,7 @@ class Table:
 
     def get_datatable(self, query_config):
         class ModelQuerysetDatatable(QuerysetDatatable):
-            class Meta:
+            class Meta(object):
                 model = self.model
                 columns = self.columns
         datatable = ModelQuerysetDatatable(self.model.objects.all(),
@@ -82,20 +95,12 @@ class Table:
     def filter_queryset(self, query_config):
         datatable = self.get_datatable(query_config)
         datatable.populate_records()
-        return list(datatable._records)
+        return list(datatable.get_records_list())
 
     def get_data(self, query_config):
         datatable = self.get_datatable(query_config)
         datatable.populate_records()
-        return self.parse_data(datatable.get_records())
-
-    def parse_data(self, records):
-        data = []
-        for record in records:
-            record.pop('pk')
-            record.pop('_extra_data')
-            data.append(dict(record))
-        return data
+        return parse_data(datatable.get_records())
 
     def get_endpoint_url(self):
         return "/querybuilder/querybuilder-endpoint-%s" % (self.name)

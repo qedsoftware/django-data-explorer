@@ -17,10 +17,10 @@ class QuerybuilderEndpoint(View):
 
     def get_widget_by_id(self, widget_id):
         for attribute_name in dir(self.querybuilder):
-            Item = getattr(self.querybuilder, attribute_name)
+            item = getattr(self.querybuilder, attribute_name)
             try:
-                if isinstance(Item, Table) and Item.name == widget_id:
-                    return Item
+                if isinstance(item, Table) and item.name == widget_id:
+                    return item
             except TypeError:
                 continue
         return None
