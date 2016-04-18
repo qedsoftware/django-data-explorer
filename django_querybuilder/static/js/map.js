@@ -30,7 +30,7 @@ MapLinker = (function(){
 })();
 
 Map = function() {
-    
+
     mapData = JSON.parse(mapData);
     this.array_markers = Array();
     this.map;
@@ -85,7 +85,7 @@ Map.prototype = {
                     position: 'topleft'
                 },
                 layers: [osm, this.layer_data]
-            }); 
+            });
 
             var baseLayers = {
                 "OpenStreetMap": osm
@@ -96,50 +96,22 @@ Map.prototype = {
             };
 
             L.control.layers(baseLayers, overlays).addTo(this.map);
-            
+
             $("#filter").trigger("submit");
         }
     };
-    
+
 Map.prototype.addMarker = function(obj, _this) {
-        var lon = 0.0;
-        var lat = 0.0;
-        for(var key in obj.fields) {
-            if (key == 'longitude') {
-                lon = parseFloat(obj.fields[key]);
-            }
-            if (key == 'latitude') {
-                lat = parseFloat(obj.fields[key]);
-            }
-        }
-        var marker = L.marker([lat, lon]);
-        var firstIteration = true;
-        var popup_text = "";
+        var lon = obj.latitude;
+        var lat = obj.longitude;
 
-        for (var key in obj.fields) {
-            if (key != 'latitude' && key != 'longitude') {
-                if (firstIteration) {
-                    firstIteration = false;
-                    popup_text = popup_text + '<strong>' + key + ': </strong>' + obj.fields[key] + '<br>';
-                }
-                else {
-                    popup_text = popup_text + '<strong>' + key + ': </strong>' + obj.fields[key] + '<br>';
-                }
-            }
-        }
+        var marker = L.marker({"lat": obj.latitude, "lng": obj.longitude});
+        var popup_text = obj.latitude + ", " + obj.longitude;
 
-        marker.bindPopup(
-            popup_text
-        );
+        marker.bindPopup(popup_text);
 
-        marker.addTo(_this.map);
         marker.addTo(_this.layer_data);
         _this.array_markers.push(marker);
-
-        if (_this.array_markers.length > 0) {
-            var group = L.featureGroup(_this.array_markers);
-            _this.map.fitBounds(group.getBounds());
-        }       
     };
     return MapScript;
 })();
