@@ -1,19 +1,24 @@
 import json
 
-from django.forms.models import model_to_dict
 from django.template.loader import render_to_string
 from django.utils.six import python_2_unicode_compatible
 
 
 @python_2_unicode_compatible
 class Map(object):
-    def __init__(self, name, model, filterform=None):
+    def __init__(self, name, model, filterform=None, description_func=None):
         self.model = model
         self.name = name
         self.latitude = 0
         self.longitude = 0
         self.template_name = "django_querybuilder/map_widget.html"
         self.filterform = filterform
+        assert hasattr(description_func, '__call__') is True
+        if description_func is None:
+            self.description_func = lambda model: ("Latitude: {}<br>Longitude: {}".format(
+                str(model.latitude), str(model.longitude)))
+        else:
+            self.description_func = description_func
 
     def filter_data(self, data=None):
         data = data or {}
@@ -32,12 +37,14 @@ class Map(object):
         map_data = self.filter_data(data=query_config)
         return self.parse_data(map_data)
 
-    @staticmethod
-    def parse_data(data):
+    def parse_data(self, data):
         parsed_data = []
         for obj in data:
-            dict_obj = model_to_dict(obj)
-            del dict_obj['id']
+            dict_obj = {
+                'description': self.description_func(obj),
+                'latitude': obj.latitude,
+                'longitude': obj.longitude
+            }
             parsed_data.append(dict_obj)
         return parsed_data
 

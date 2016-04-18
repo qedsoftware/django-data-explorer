@@ -186,18 +186,21 @@ class MapGetDataTestCase(TestCase):
         query_config = {}
         data = city_map.get_data(query_config)
         self.assertEqual(data, [
-            {'name': 'City_1', 'citizens_number': 3,
+            {'description': "City City_1 with latitude 30 " +
+                            "and longitude 20",
              'latitude': 30.0, 'longitude': 20.0},
-            {'name': 'City_2', 'citizens_number': 33,
+            {'description': "City City_2 with latitude 33 " +
+                            "and longitude 21",
              'latitude': 33.0, 'longitude': 21.0},
-            {'name': 'City_3', 'citizens_number': 333,
+            {'description': "City City_3 with latitude 35 " +
+                            "and longitude 22",
              'latitude': 35.0, 'longitude': 22.0}])
 
     def test_get_some_data(self):
         city_map = CityMap
         query_config = 'citizens_number__gt=30&latitude__lt=34.0'
         data = city_map.get_data(query_config)
-        self.assertEqual(data[0]['name'], "City_2")
+        self.assertEqual(data[0]['latitude'], 33.0)
 
     def test_get_no_data(self):
         city_map = CityMap
