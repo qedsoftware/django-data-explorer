@@ -14,6 +14,7 @@ class QuerybuilderEndpoint(View):
     def dispatch(self, *args, **kwargs):
         return super(QuerybuilderEndpoint, self).dispatch(*args, **kwargs) # pylint: disable=no-member
 
+    @method_decorator(csrf_exempt)
     def post(self, request):
         widget = self.get_widget_by_id(request.POST.get('widget_id'))
         if widget:

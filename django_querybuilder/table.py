@@ -1,6 +1,8 @@
 import operator
 import functools
+import json
 
+from django.template.loader import render_to_string
 from django.utils.encoding import smart_text
 from django.utils.six import python_2_unicode_compatible
 
@@ -81,12 +83,14 @@ class Table(object):
         self.name = name
         self.model = model
         self.columns = columns
+        self.template_name = 'django_querybuilder/table_widget.html'
 
     def get_datatable(self, query_config):
         class ModelQuerysetDatatable(QuerysetDatatable):
             class Meta(object):
                 model = self.model
                 columns = self.columns
+                structure_template = "django_querybuilder/datatable_template.html"
         datatable = ModelQuerysetDatatable(self.model.objects.all(),
                                            self.get_endpoint_url(),
                                            query_config=query_config)
@@ -102,8 +106,36 @@ class Table(object):
         datatable.populate_records()
         return parse_data(datatable.get_records())
 
-    def get_endpoint_url(self):
-        return "/querybuilder/querybuilder-endpoint-%s" % (self.name)
+    @staticmethod
+    def get_endpoint_url():
+        return "/querybuilder/endpoint/"
+
+    def render_datatable(self):
+        datatable = self.get_datatable({})
+        smart_text(datatable)  # to make sure it's configured
+        context = {
+            'url': datatable.url,
+            'config': datatable.config,
+            'datatable': datatable,
+            'columns': datatable.columns.values(),
+            'table_id': self.name + '_t'
+        }
+        datatable_text = render_to_string(
+            datatable.config['structure_template'], context)
+        return datatable_text
 
     def __str__(self):
-        return smart_text(self.get_datatable({}))
+        table_data = {
+            'containerID': '#' + self.name,
+            'formID': '#filter',
+            'endpointName': self.name,
+            'endpointUrl': self.get_endpoint_url(),
+            'table_id': self.name,
+        }
+        table_text = render_to_string(
+            self.template_name, {
+                'table_data': json.dumps(table_data),
+                'widget_id': self.name
+                },)
+        datatable_text = self.render_datatable()
+        return table_text + datatable_text
