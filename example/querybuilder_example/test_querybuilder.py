@@ -7,7 +7,6 @@ from django.test import TestCase
 from django.utils.encoding import smart_text
 
 import django_querybuilder
-from django_querybuilder import FilterForm
 
 from .models import Author, Book, City
 from .querybuilder import BasicBookTable, BookFilter, CityMap
@@ -154,23 +153,6 @@ class FilterFormTestCase(TestCase):
         filterform.filter_queryset_query_string("a=b&c=d", "queryset here")
         parsed = filter_queryset_mock.call_args[0][0]
         self.assertEqual(parsed, {"a": ["b"], "c": ["d"]})
-
-    def test_parse_form(self):
-        class SimpleFilter(FilterForm):
-            class Meta(object):
-                model = Book
-                fields = {
-                    'pages': ['exact', 'gt'],
-                }
-        filterform = SimpleFilter()
-        parsed = '<filter-form id="filter_ff">\n\n    <form id="filter">\n        ' \
-             '<div class="ff-group"><p><label for="id_pages">Pages:</label> ' \
-             '<input id="id_pages" name="pages" step="any" type="number" /></p></div>\n' \
-             '<div class="ff-group"><p><label for="id_pages__gt">Pages:</label> ' \
-             '<input id="id_pages__gt" name="pages__gt" step="any" type="number" /></p></div>\n' \
-             '        <input type="submit" />\n    ' \
-             '</form>\n\n</filter-form>'
-        self.assertEqual(str(filterform), parsed)
 
 
 class MapGetDataTestCase(TestCase):

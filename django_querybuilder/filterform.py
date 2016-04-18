@@ -72,11 +72,11 @@ class FilterForm(six.with_metaclass(FilterFormMetaclass, BaseFilterForm)):
         return self.filter_queryset(querydict, queryset)
 
     def __str__(self):
-        row_html = '<p%(html_class_attr)s>%(label)s %(field)s</p>'
+        row_html = '%(label)s %(field)s'
         form_str = self.form._html_output(
             normal_row=_wrap_filter_in_group(row_html),
             error_row='%s',
-            row_ender='</p>',
+            row_ender='',
             help_text_html='%s',
             errors_on_separate_row=True)
 

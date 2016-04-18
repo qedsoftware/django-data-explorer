@@ -1,10 +1,22 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title> FilterForm example </title>
+    <script src="{% static 'js/filterui.js' %}"></script>
+    <script src="{% static 'js/table.js' %}"></script>
+
+    <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'libs/jquery-deserialize/dist/jquery.deserialize.min.js' %}"></script>
+    <script src="{% static 'libs/freewall/freewall.js' %}"></script>
+    <script src="{% static 'libs/jquery-ui/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'libs/jquery-ui/ui/tabs.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/filter-form.css' %}" />
+
 </head>
-<body>
+<body style="margin: 1em">
     {{ filterform }}
 </body>
 </html>

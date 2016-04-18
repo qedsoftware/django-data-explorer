@@ -1,8 +1,16 @@
+<script>
+    var form = new FilterForm('#filter', ['#tab']);
+</script>
 <filter-form id="filter_ff">
-{% block content %}
+    <ul class="ff-tabs-list">
+        <li><a href="#tab">Filters</a></li>
+    </ul>
     <form id="filter">
-        {{ form_str }}
-        <input type="submit" />
+        <div id="tab" class="ff-tab-pane">
+            {{ form_str }}
+        </div>
+        <div class="ff-footer">
+            <input class="ff-submit" type="submit" />
+        </div>
     </form>
-{% endblock %}
 </filter-form>
