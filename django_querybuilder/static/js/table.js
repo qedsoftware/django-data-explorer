@@ -10,16 +10,19 @@ Table = (function(){
         var _this = this;
         this.form.onSubmit(function(event) {
             event.preventDefault();
-            var data = _this.retrieveData();
-            $(containerID).trigger({
-                type: "update:Table"
+            var parameters = _this.form.serialize();
+            _this.retrieveData(parameters, function(data) {
+                $(containerID).trigger({
+                    type: "update:Table",
+                    message: data
+                });
             });
         });
     };
 
     Table.prototype = {
-        retrieveData: function() {
-            return this.api.retrieveData(this.endpointName, {});
+        retrieveData: function(parameters, callback) {
+            this.api.retrieveData(this.endpointName, parameters, callback);
         }
     };
 
