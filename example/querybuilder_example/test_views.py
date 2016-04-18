@@ -22,4 +22,4 @@ class TestCityMapView(TestCase):
 
     def test_get(self):
         response = self.client.get(reverse("city-map-filter"))
-        self.assertEquals(200, response.status_code)
+        self.assertEqual(200, response.status_code)

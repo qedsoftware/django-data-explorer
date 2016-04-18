@@ -4,7 +4,8 @@ from .models import Author, Book, City
 
 
 class BookFilter(FilterForm):
-    class Meta:
+
+    class Meta(object):
         model = Book
         fields = {
             'pages': ['lt', 'gt'],
@@ -14,7 +15,7 @@ class BookFilter(FilterForm):
 
 class CityFilter(FilterForm):
 
-    class Meta:
+    class Meta(object):
         model = City
         fields = {
             'name': ['exact'],

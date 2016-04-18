@@ -1,5 +1,3 @@
-import json
-
 from django_filters.filterset import (BaseFilterSet, get_declared_filters,
                                       FilterSetOptions, filters_for_model)
 from django.template.loader import render_to_string
@@ -8,14 +6,14 @@ from django.utils.six import python_2_unicode_compatible
 
 
 class FilterFormMetaclass(type):
-    def __new__(cls, name, bases, attrs):
+    def __new__(mcs, name, bases, attrs):
         try:
             parents = [b for b in bases if issubclass(b, FilterForm)]
         except NameError:
             parents = None
         declared_filters = get_declared_filters(bases, attrs, False)
         new_class = super(
-            FilterFormMetaclass, cls).__new__(cls, name, bases, attrs)
+            FilterFormMetaclass, mcs).__new__(mcs, name, bases, attrs)
 
         if not parents:
             return new_class
@@ -53,7 +51,7 @@ class FilterForm(six.with_metaclass(FilterFormMetaclass, BaseFilterForm)):
         if filter_data is None or filter_data == {}:
             filter_data = self.initial
         kwargs = {}
-        for key, value in filter_data.items():
+        for key, _ in filter_data.items():
             if filter_data[key]:
                 kwargs[key] = filter_data[key]
 

@@ -1,6 +1,5 @@
 import sys
 
-from django_querybuilder import QuerybuilderEndpoint, TableEndpoint
 from django.views.generic import TemplateView
 
 from django_querybuilder import QuerybuilderEndpoint, TableEndpoint

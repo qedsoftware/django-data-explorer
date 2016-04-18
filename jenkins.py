@@ -29,6 +29,11 @@ def run_django_unittests():
 def run_unittests():
     print('Running unittests')
     run_django_unittests()
+    do_call([
+        "pylint", "--load-plugins", "pylint_django",
+        "django_querybuilder",
+        "example/querybuilder_example"
+    ])
     do_call(['which', 'npm'])
     do_call(['npm', 'install'])
     do_call(['npm', 'run', 'deps'])
