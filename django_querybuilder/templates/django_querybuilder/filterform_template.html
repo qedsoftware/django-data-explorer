@@ -1,12 +1,8 @@
 <filter-form id="filter_ff">
 {% block content %}
     <form id="filter">
-        <div class="ff-group">
-            {% for key, value in filter.items %}
-                <label for="id_{{ key }}" >{{ key }}:</label> <input id="id_{{ key }}" name="{{ key }}" type="{{ value.field.widget.input_type }}" /><br>
-            {% endfor %}
-            <input type="submit" />
-        </div>
+        {{ form_str }}
+        <input type="submit" />
     </form>
 {% endblock %}
 </filter-form>

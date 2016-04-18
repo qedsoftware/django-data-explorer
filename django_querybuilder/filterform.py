@@ -46,6 +46,10 @@ class BaseFilterForm(BaseFilterSet):
         BaseFilterSet.__init__(self, data, queryset, prefix, strict)
 
 
+def _wrap_filter_in_group(line):
+    return '<div class="ff-group">' + line + '</div>'
+
+
 @python_2_unicode_compatible
 class FilterForm(six.with_metaclass(FilterFormMetaclass, BaseFilterForm)):
     def filter_queryset(self, filter_data=None, queryset=None):
@@ -68,9 +72,17 @@ class FilterForm(six.with_metaclass(FilterFormMetaclass, BaseFilterForm)):
         return self.filter_queryset(querydict, queryset)
 
     def __str__(self):
+        row_html = '<p%(html_class_attr)s>%(label)s %(field)s</p>'
+        form_str = self.form._html_output(
+            normal_row=_wrap_filter_in_group(row_html),
+            error_row='%s',
+            row_ender='</p>',
+            help_text_html='%s',
+            errors_on_separate_row=True)
+
         context = {
             'name': 'filterform',
-            'filter': self.filters,
+            'form_str': form_str,
         }
         text = render_to_string('django_querybuilder/filterform_template.html',
                                 context)
