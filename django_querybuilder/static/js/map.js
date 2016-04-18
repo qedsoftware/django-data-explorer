@@ -106,7 +106,7 @@ Map.prototype.addMarker = function(obj, _this) {
         var lat = obj.longitude;
 
         var marker = L.marker({"lat": obj.latitude, "lng": obj.longitude});
-        var popup_text = obj.latitude + ", " + obj.longitude;
+        var popup_text = obj.description;
 
         marker.bindPopup(popup_text);
 
