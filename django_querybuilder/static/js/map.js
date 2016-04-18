@@ -10,26 +10,19 @@ MapLinker = (function(){
         var _this = this;
         this.form.onSubmit(function(event) {
             event.preventDefault();
-            var dict = {};
-            if (event.formData !== undefined) {
-                for (var i = 0; i < event.formData.length; i++) {
-                    var key = event.formData[i].name;
-                    var value = event.formData[i].value;
-                    dict[key] = value;
-                }
-            }
-            var filteredData = _this.retrieveData(dict);
-            
-            $(containerID).trigger({
-                type: "update:Map",
-                filteredData: filteredData
+            var parameters = _this.form.serialize();
+            _this.retrieveData(parameters, function(filteredData) {
+                $('#' + containerID).trigger({
+                    type: "update:Map",
+                    filteredData: filteredData
+                });
             });
         });
     };
 
     MapLinker.prototype = {
-        retrieveData: function(filter_data) {
-            return this.api.retrieveData(this.endpointName, filter_data);
+        retrieveData: function(parameters, callback) {
+            return this.api.retrieveData(this.containerID, parameters, callback);
         }
     };
 
@@ -42,28 +35,25 @@ Map = function() {
     this.array_markers = Array();
     this.map;
     this.layer_data;
-    this.widgetId = mapData.widget_id;
-    this.endpoint = '/' + mapData.endpoint_id + '/';
+    this.widgetId = mapData.name;
+    this.endpoint = '/' + mapData.endpoint + '/';
     this.formID = '#filter';
+    var _this = this;
     new FilterForm(this.formID);
 
-    function isFunction(possibleFunction) {
-        return typeof(possibleFunction) === typeof(Function);
-    }
-    
     $('#' + this.widgetId).on("update:Map", function(event) {
-            for (var i = 0; i < this.array_markers.length; i++) {
-                this.map.removeLayer(this.array_markers[i]);
-                this.layer_data.removeLayer(this.array_markers[i]);
+            for (var i = 0; i < _this.array_markers.length; i++) {
+                _this.map.removeLayer(_this.array_markers[i]);
+                _this.layer_data.removeLayer(_this.array_markers[i]);
             }
-            for (var i = 0; i < event.filteredData.length; i++) {
-                var obj = data[i];
-                addMarker(obj);
+            for (var i = 0; i < event.filteredData.data.length; i++) {
+                var obj = event.filteredData.data[i];
+                _this.addMarker(obj, _this);
             }
 
-            if (this.array_markers.length > 0) {
-                var group = L.featureGroup(this.array_markers);
-                this.map.fitBounds(group.getBounds());
+            if (_this.array_markers.length > 0) {
+                var group = L.featureGroup(_this.array_markers);
+                _this.map.fitBounds(group.getBounds());
             }
         });
 
@@ -78,7 +68,7 @@ Map.prototype = {
         init: function(mapData) {
             'use strict';
             var _this = this;
-            this.map_class = new MapLinker(_this.widgetId, _this.formID, _this.endpoint, new QuerybuilderAPI());
+            this.map_class = new MapLinker(_this.widgetId, _this.formID, _this.endpoint, new QuerybuilderAPI(_this.endpoint));
 
             var osmURL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
             var osmAttrib = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
@@ -111,7 +101,7 @@ Map.prototype = {
         }
     };
     
-Map.prototype.addMarker = function(obj) {
+Map.prototype.addMarker = function(obj, _this) {
         var lon = 0.0;
         var lat = 0.0;
         for(var key in obj.fields) {
@@ -142,13 +132,13 @@ Map.prototype.addMarker = function(obj) {
             popup_text
         );
 
-        marker.addTo(this.map);
-        marker.addTo(this.layer_data);
-        this.array_markers.push(marker);
+        marker.addTo(_this.map);
+        marker.addTo(_this.layer_data);
+        _this.array_markers.push(marker);
 
-        if (this.array_markers.length > 0) {
-            var group = L.featureGroup(this.array_markers);
-            this.map.fitBounds(group.getBounds());
+        if (_this.array_markers.length > 0) {
+            var group = L.featureGroup(_this.array_markers);
+            _this.map.fitBounds(group.getBounds());
         }       
     };
     return MapScript;

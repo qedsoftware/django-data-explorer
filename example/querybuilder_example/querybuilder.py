@@ -24,7 +24,7 @@ class CityFilter(FilterForm):
         }
 
 CityFilterInstance = CityFilter()
-CityMap = Map(widget_id="city-map", model=City, filterform=CityFilterInstance)
+CityMap = Map(name="city-map", model=City, filterform=CityFilterInstance)
 BasicAuthorTable = Table("author-table", Author, ['name', 'birth_date'])
 BasicBookTable = Table(
     "book-table", Book, [("Author name", 'author__name'),
