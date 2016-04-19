@@ -114,7 +114,8 @@ var datatableview = {
                     //     $(n[i]).empty();
                     // }
                     return infoString;
-                }
+                },
+                "bFilter": false,
             });
             try {
                 options = confirm_datatable_options(options, datatable);
