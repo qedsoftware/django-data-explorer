@@ -3,7 +3,7 @@
 <script type="text/javascript">
     var tableData = {{ table_data | safe }};
     var api = new QuerybuilderAPI(tableData.endpointUrl);
-    var table = new Table(tableData.containerID, '', tableData.endpointName, api);
+    var table = new Table(tableData.containerID, tableData.formID, tableData.endpointName, api);
 </script>
 
 </div>

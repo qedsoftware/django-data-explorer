@@ -4,16 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
   {% include "django_querybuilder/css_assets.html" %}
   {% include "django_querybuilder/js_assets.html" %}
 </head>
 <body>
 
+
+
 <div class="container">
+  {{ filterform }}
   {{ author_table }}
-  </div>
-<div class="container">
   {{ book_table }}
 </div>
 

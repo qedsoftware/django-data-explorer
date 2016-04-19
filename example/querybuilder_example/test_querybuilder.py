@@ -26,32 +26,12 @@ class TableFiltersTestCase(TestCase):
         self.objects_list = [self.testbook1, self.testbook2, self.nontestbook]
 
     def test_no_filters(self):
-        self._assert_filtered_book_table({}, self.objects_list)
+        records = BasicBookTable.get_data("")
+        self.assertEqual(len(records), 3)
 
     def test_single_text_filter(self):
-        self._assert_filtered_book_table(
-            {'filters': 'title;exact;TestBook1'},
-            [self.testbook1]
-        )
-        self._assert_filtered_book_table(
-            {'filters': 'title;startswith;TestBook'},
-            [self.testbook1, self.testbook2]
-        )
-        self._assert_filtered_book_table(
-            {'filters': 'title;contains;TestBook'},
-            self.objects_list
-        )
-
-    def test_multiple_filters(self):
-        self._assert_filtered_book_table(
-            {'filters': 'title;exact;TestBook1,pages;exact;20'},
-            [self.testbook1]
-        )
-
-    def _assert_filtered_book_table(self, query_config, expected):
-        table = BasicBookTable
-        records = table.filter_queryset(query_config)
-        self.assertEqual(records, expected)
+        records = BasicBookTable.get_data("pages__gt=19")
+        self.assertEqual(len(records), 1)
 
 
 class TableEndpointView(TestCase):

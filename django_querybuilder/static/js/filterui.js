@@ -80,6 +80,8 @@ FilterForm = (function(){
         },
         onSubmit: function(callback) {
             $(this.containerID).on("submit", function(event) {
+                event.preventDefault();
+                event.stopPropagation();
                 callback(event);
             })
         }

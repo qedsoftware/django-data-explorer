@@ -27,12 +27,14 @@ def city_description_function(model):
     return "City %s with latitude %d and longitude %d" % (str(model), model.latitude,
                                                           model.longitude)
 
+
 CityFilterInstance = CityFilter()
 CityMap = Map(name="city-map", model=City, filterform=CityFilterInstance,
               description_func=city_description_function)
 BasicAuthorTable = Table("author-table", Author, ['name', 'birth_date'])
 BasicBookTable = Table(
-    "book-table", Book, [("Author name", 'author__name'),
-                         'title',
-                         'pages',
-                         'publication_date'])
+    "book-table", Book, columns=[
+        ("Author name", 'author__name'),
+        'title',
+        'pages',
+        'publication_date'], filterform=BookFilter())

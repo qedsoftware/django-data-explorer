@@ -3,20 +3,21 @@ Table = (function(){
 
     var Table = function(containerID, formID, endpointName, api) {
         this.containerID = containerID;
-        this.form = $(formID).data('FilterForm');
         this.endpointName = endpointName;
         this.api = api;
 
         var _this = this;
-        if (!!formID) {
-            this.form.onSubmit(function(event) {
-                event.preventDefault();
-                var parameters = _this.form.serialize();
-                $(containerID).data('Table:params', parameters);
-                _this.tableview._fnAjaxUpdate();
-            });
-        }
+
         $(function () {
+            if (!!formID) {
+                _this.form = $(formID).data('FilterForm');
+                _this.form.onSubmit(function(event) {
+                    event.preventDefault();
+                    var parameters = _this.form.serialize();
+                    $(containerID).data('Table:params', parameters);
+                    _this.tableview._fnAjaxUpdate();
+                });
+            }
             $(containerID).data('Table', _this);
             _this.tableview = datatableview.initialize($(containerID + '_t'), {
                 tableID: containerID,

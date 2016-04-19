@@ -16,6 +16,7 @@ class BookTableView(TemplateView):
         return {
             'book_table': BasicBookTable,
             'author_table': BasicAuthorTable,
+            "filterform": BookFilter
         }
 
 

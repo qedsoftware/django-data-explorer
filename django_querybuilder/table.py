@@ -74,7 +74,7 @@ def parse_data(records):
 
 @python_2_unicode_compatible
 class Table(object):
-    def __init__(self, name, model, columns=None):
+    def __init__(self, name, model, columns=None, filterform=None):
         """
         :param columns: columns to display, (column header, model field) list
                         all model fields by default
@@ -83,27 +83,27 @@ class Table(object):
         self.name = name
         self.model = model
         self.columns = columns
+        self.filterform = filterform
         self.template_name = 'django_querybuilder/table_widget.html'
 
-    def get_datatable(self, query_config):
+    def full_queryset(self):
+        return self.model.objects.all()
+
+    def get_datatable(self, queryset):
         class ModelQuerysetDatatable(QuerysetDatatable):
             class Meta(object):
                 model = self.model
                 columns = self.columns
                 structure_template = "django_querybuilder/datatable_template.html"
-        datatable = ModelQuerysetDatatable(self.model.objects.all(),
-                                           self.get_endpoint_url(),
-                                           query_config=query_config)
+        datatable = ModelQuerysetDatatable(queryset, self.get_endpoint_url())
         return datatable
 
-    def filter_queryset(self, query_config):
-        datatable = self.get_datatable(query_config)
-        datatable.populate_records()
-        return list(datatable.get_records_list())
-
-    def get_data(self, query_config):
-        datatable = self.get_datatable(query_config)
-        datatable.populate_records()
+    def get_data(self, parameters):
+        queryset = self.full_queryset()
+        if self.filterform is not None:
+            queryset = self.filterform.filter_queryset_query_string(
+                parameters, queryset)
+        datatable = self.get_datatable(queryset)
         return parse_data(datatable.get_records())
 
     @staticmethod
@@ -111,7 +111,8 @@ class Table(object):
         return "/querybuilder/endpoint/"
 
     def render_datatable(self):
-        datatable = self.get_datatable({})
+        queryset = self.full_queryset()
+        datatable = self.get_datatable(queryset)
         smart_text(datatable)  # to make sure it's configured
         context = {
             'url': datatable.url,
@@ -127,7 +128,7 @@ class Table(object):
     def __str__(self):
         table_data = {
             'containerID': '#' + self.name,
-            'formID': '#filter',
+            'formID': "#filter" if self.filterform is not None else "",
             'endpointName': self.name,
             'endpointUrl': self.get_endpoint_url(),
             'table_id': self.name,
@@ -136,6 +137,6 @@ class Table(object):
             self.template_name, {
                 'table_data': json.dumps(table_data),
                 'widget_id': self.name
-                },)
+            })
         datatable_text = self.render_datatable()
         return table_text + datatable_text
