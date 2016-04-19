@@ -26,9 +26,28 @@ test('Update after form submission.', function(assert) {
 
     var form = new FilterForm("#filter");
     var api = new FakeQuerybuilderAPI("/endpoint/");
-    new Table("#table", '#filter', "blah", api);
+    new Table("#table", '#filter', "endpoint", api);
     $("#table").on("update:Table", function(event) {
         assert.ok(true);
     });
     $("#filter").trigger("submit");
+});
+
+test('Initialize without FilterForm', function(assert) {
+    FakeQuerybuilderAPI = (function(){
+        var QuerybuilderAPI = function(url) {
+        }
+        QuerybuilderAPI.prototype = {
+            retrieveData: function(endpointName, parameters, callback) {
+                callback();
+            }
+        }
+        return QuerybuilderAPI;
+    })();
+
+    $("#qunit-fixture").append(tableHTML);
+
+    var api = new FakeQuerybuilderAPI("/endpoint/");
+    new Table("#table", '', "endpoint", api);
+    assert.ok(true);
 });

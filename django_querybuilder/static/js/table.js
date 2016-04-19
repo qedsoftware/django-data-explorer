@@ -8,16 +8,26 @@ Table = (function(){
         this.api = api;
 
         var _this = this;
-        this.form.onSubmit(function(event) {
-            event.preventDefault();
-            var parameters = _this.form.serialize();
-            _this.retrieveData(parameters, function(data) {
-                $(containerID).trigger({
-                    type: "update:Table",
-                    message: data
+        if (!!formID) {
+            this.form.onSubmit(function(event) {
+                event.preventDefault();
+                var parameters = _this.form.serialize();
+                _this.retrieveData(parameters, function(data) {
+                    $(containerID).trigger({
+                        type: "update:Table",
+                        message: data
+                    });
                 });
             });
+        }
+        $(function () {
+            $(containerID).data('Table', _this);
+            datatableview.initialize($(containerID + '_t'), {
+                tableID: containerID,
+                endpointName: endpointName
+            });
         });
+
     };
 
     Table.prototype = {

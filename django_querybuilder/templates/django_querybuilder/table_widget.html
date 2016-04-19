@@ -1,0 +1,9 @@
+<div id="{{ widget_id }}">
+
+<script type="text/javascript">
+    var tableData = {{ table_data | safe }};
+    var api = new QuerybuilderAPI(tableData.endpointUrl);
+    var table = new Table(tableData.containerID, '', tableData.endpointName, api);
+</script>
+
+</div>
