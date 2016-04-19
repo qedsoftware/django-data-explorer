@@ -12,22 +12,17 @@ Table = (function(){
             this.form.onSubmit(function(event) {
                 event.preventDefault();
                 var parameters = _this.form.serialize();
-                _this.retrieveData(parameters, function(data) {
-                    $(containerID).trigger({
-                        type: "update:Table",
-                        message: data
-                    });
-                });
+                $(containerID).data('Table:params', parameters);
+                _this.tableview._fnAjaxUpdate();
             });
         }
         $(function () {
             $(containerID).data('Table', _this);
-            datatableview.initialize($(containerID + '_t'), {
+            _this.tableview = datatableview.initialize($(containerID + '_t'), {
                 tableID: containerID,
                 endpointName: endpointName
             });
         });
-
     };
 
     Table.prototype = {
