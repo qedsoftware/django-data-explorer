@@ -6,7 +6,9 @@ var tableHTML =
             '<input type="submit">' +
         '</form>' +
     '</filter-form>' +
-    '<table id="table">' +
+    '<div id="table">' +
+    '</div>' +
+    '<table id="table_t">' +
     '</table>';
 
 test('Update after form submission.', function(assert) {
@@ -15,21 +17,20 @@ test('Update after form submission.', function(assert) {
         }
         QuerybuilderAPI.prototype = {
             retrieveData: function(endpointName, parameters, callback) {
-                callback();
+                assert.ok(true);
+                callback({data: []});
             }
         }
         return QuerybuilderAPI;
     })();
-    assert.expect(1);
+
+    assert.expect(2);
 
     $("#qunit-fixture").append(tableHTML);
 
     var form = new FilterForm("#filter");
     var api = new FakeQuerybuilderAPI("/endpoint/");
     new Table("#table", '#filter', "endpoint", api);
-    $("#table").on("update:Table", function(event) {
-        assert.ok(true);
-    });
     $("#filter").trigger("submit");
 });
 
@@ -39,7 +40,7 @@ test('Initialize without FilterForm', function(assert) {
         }
         QuerybuilderAPI.prototype = {
             retrieveData: function(endpointName, parameters, callback) {
-                callback();
+                callback({data: 'test'});
             }
         }
         return QuerybuilderAPI;

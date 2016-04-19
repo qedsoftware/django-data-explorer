@@ -82,7 +82,9 @@ var datatableview = {
                 "aaSorting": sorting_options,
                 "aoColumns": column_options,
                 "ajax": function (data, callback, settings) {
-                    $(opts.tableID).data('Table').retrieveData({}, function(response) {
+                    var table = $(opts.tableID).data('Table');
+                    var params = $(opts.tableID).data('Table:params');
+                    table.retrieveData(params, function(response) {
                         callback({data: response.data});
                     });
                 },
