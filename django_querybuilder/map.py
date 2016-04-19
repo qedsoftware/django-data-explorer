@@ -6,7 +6,7 @@ from django.utils.six import python_2_unicode_compatible
 
 @python_2_unicode_compatible
 class Map(object):
-    def __init__(self, name, model, filterform=None, description_func=None):
+    def __init__(self, name, model, filterform=None, description_func=None, coordinates_func=None):
         self.model = model
         self.name = name
         self.latitude = 0
@@ -17,8 +17,13 @@ class Map(object):
         if description_func is None:
             description_func = lambda model: ("Latitude: {}<br>Longitude: {}".format(
                 str(model.latitude), str(model.longitude)))
+        if coordinates_func is None:
+            coordinates_func = lambda model: {'latitude': model.latitude,
+                                              'longitude': model.longitude}
         assert hasattr(description_func, '__call__') is True
         self.description_func = description_func
+        assert hasattr(coordinates_func, '__call__') is True
+        self.coordinates_func = coordinates_func
 
     def filter_data(self, data=None):
         data = data or {}
@@ -31,7 +36,7 @@ class Map(object):
 
     @staticmethod
     def get_endpoint_url():
-        return "endpoint"
+        return "querybuilder/endpoint"
 
     def get_data(self, query_config):
         map_data = self.filter_data(data=query_config)
@@ -41,10 +46,9 @@ class Map(object):
         parsed_data = []
         for obj in data:
             dict_obj = {
-                'description': self.description_func(obj),
-                'latitude': obj.latitude,
-                'longitude': obj.longitude
+                'description': self.description_func(obj)
             }
+            dict_obj.update(self.coordinates_func(obj))
             parsed_data.append(dict_obj)
         return parsed_data
 
