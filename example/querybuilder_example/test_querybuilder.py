@@ -1,8 +1,6 @@
 import datetime
-import json
 
 import mock
-from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.utils.encoding import smart_text
 
@@ -10,7 +8,6 @@ import django_querybuilder
 
 from .models import Author, Book, City
 from .querybuilder import BasicBookTable, BookFilter, CityMap
-from .views import BookEndpoint
 
 
 class TableFiltersTestCase(TestCase):
@@ -32,42 +29,6 @@ class TableFiltersTestCase(TestCase):
     def test_single_text_filter(self):
         records = BasicBookTable.get_data("pages__gt=19")
         self.assertEqual(len(records), 1)
-
-
-class TableEndpointView(TestCase):
-    def setUp(self):
-        self.fakeauthor = Author.objects.create(name="FakeAuthor")
-        self.testbook1 = Book.objects.create(
-            title="TestBook1", pages=20, author=self.fakeauthor)
-        self.testbook2 = Book.objects.create(
-            title="TestBook2", pages=200, author=self.fakeauthor)
-        self.view = BookEndpoint
-        self.url = reverse('book-endpoint')
-
-    def test_basic_view(self):
-        data = self.get_data_from_response({})
-        self.assertEqual(len(data), 2)
-        self.assertEqual(data[0]['1'], "TestBook1")
-        self.assertEqual(data[1]['1'], "TestBook2")
-
-    def test_filtered_view(self):
-        data = self.get_data_from_response(
-            {'filters': 'title;exact;TestBook1'}
-        )
-        self.assertEqual(len(data), 1)
-        self.assertEqual(data[0]['1'], "TestBook1")
-
-    def test_filtered_view_no_results(self):
-        data = self.get_data_from_response(
-            {'filters': 'title;exact;TestBook1,title;exact;fakefake'}
-        )
-        self.assertEqual(len(data), 0)
-
-    def get_data_from_response(self, params):
-        response = self.client.get(
-            self.url, params, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-        content = json.loads(response.content.decode())
-        return content["data"]
 
 
 class TableStrRepresentation(TestCase):

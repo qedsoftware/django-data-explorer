@@ -8,6 +8,16 @@ from .table import Table
 
 
 class QuerybuilderEndpoint(View):
+    """JSON view that enables the widgets access to database.
+
+    Field querybuilder is module, where fields are looked up.
+
+    Add it to urls.py, as a standard view: QuerybuilderEndpoint().as_view().
+
+
+    POST requests should be of form: {"widget_id": ..., "query_config": ...}
+    and returns output of widget.get_data(query_config).
+    """
     querybuilder = None
 
     @method_decorator(csrf_exempt)

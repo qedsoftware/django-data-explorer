@@ -74,6 +74,7 @@ def parse_data(records):
 
 @python_2_unicode_compatible
 class Table(object):
+    """Datatable that reacts on FilterForm."""
     def __init__(self, name, model, columns=None, filterform=None):
         """
         :param columns: columns to display, (column header, model field) list

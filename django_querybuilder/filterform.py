@@ -52,6 +52,9 @@ def _wrap_filter_in_group(line):
 
 @python_2_unicode_compatible
 class FilterForm(six.with_metaclass(FilterFormMetaclass, BaseFilterForm)):
+    """Renders filters. Wrapper for django-filter. See django-filter
+    documentation for usage.
+    """
     def filter_queryset(self, filter_data=None, queryset=None):
         if filter_data is None or filter_data == {}:
             filter_data = self.initial

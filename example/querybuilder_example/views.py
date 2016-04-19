@@ -2,10 +2,9 @@ import sys
 
 from django.views.generic import TemplateView
 
-from django_querybuilder import QuerybuilderEndpoint, TableEndpoint
+from django_querybuilder import QuerybuilderEndpoint
 from querybuilder_example.querybuilder import (BasicAuthorTable,
                                                BasicBookTable, CityMap)
-from .models import Author, Book
 from .querybuilder import BookFilter, CityFilter
 
 
@@ -46,20 +45,6 @@ class PriceDateBookFormView(TemplateView):
         return {
             "filterform": BookFilter
         }
-
-
-class AuthorEndpoint(TableEndpoint):
-    model = Author
-    datatable_options = {
-        'columns': BasicAuthorTable.columns
-    }
-
-
-class BookEndpoint(TableEndpoint):
-    model = Book
-    datatable_options = {
-        'columns': BasicBookTable.columns
-    }
 
 
 class Endpoint(QuerybuilderEndpoint):

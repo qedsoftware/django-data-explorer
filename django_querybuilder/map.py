@@ -6,6 +6,16 @@ from django.utils.six import python_2_unicode_compatible
 
 @python_2_unicode_compatible
 class Map(object):
+    """Leaflet map visualizing dataset.
+
+    Can be used in pair with FilterForm.
+
+    By default, the model should have fields latitude and longitude. If it
+    doesn't, you should provide functions description_func and coordinates_func.
+    Both take a model as a parameter. The first one returns dict {"latitude":
+    ..., "longitude" ...}, the other one returns text that will be displayed
+    as popup. You can also define this functions to override default behavior.
+    """
     def __init__(self, name, model, filterform=None, description_func=None, coordinates_func=None):
         self.model = model
         self.name = name
