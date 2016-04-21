@@ -43,9 +43,9 @@ module.exports = function(config) {
       // source files, that you wanna generate coverage for
       // do not include tests or libraries
       // (these files will be instrumented by Istanbul)
-      'django_querybuilder/static/js/filterui.js': ['coverage'],
-      'django_querybuilder/static/js/table.js': ['coverage']
-      //'django_querybuilder/static/js/map.js': ['coverage'],
+      'django_querybuilder/static/django_querybuilder/js/filterui.js': ['coverage'],
+      'django_querybuilder/static/django_querybuilder/js/table.js': ['coverage']
+      //'django_querybuilder/static/django_querybuilder/js/map.js': ['coverage']
     },
 
 

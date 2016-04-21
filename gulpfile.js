@@ -9,9 +9,9 @@ var autoprefixer = require('autoprefixer');
 
 var config = {
     paths: {
-        libs: './django_querybuilder/static/libs/',
+        libs: './django_querybuilder/static/django_querybuilder/libs/',
         static: {
-            folders: ['django_querybuilder/static'],
+            folders: ['django_querybuilder/static/django_querybuilder'],
             sass: '/sass/**/*.scss',
             css: '/css'
         },
