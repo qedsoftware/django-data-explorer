@@ -3,9 +3,10 @@ import json
 from django.template.loader import render_to_string
 from django.utils.six import python_2_unicode_compatible
 
+from .widget import Widget
 
 @python_2_unicode_compatible
-class Map(object):
+class Map(Widget):
     """Leaflet map visualizing dataset.
 
     Can be used in pair with FilterForm.

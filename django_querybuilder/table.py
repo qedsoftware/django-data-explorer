@@ -8,6 +8,8 @@ from django.utils.six import python_2_unicode_compatible
 
 from datatableview.datatables import LegacyDatatable
 
+from .widget import Widget
+
 
 class QuerysetDatatable(LegacyDatatable):
     def __init__(self, object_list=(), url='', *args, **kwargs):
@@ -73,7 +75,7 @@ def parse_data(records):
 
 
 @python_2_unicode_compatible
-class Table(object):
+class Table(Widget):
     """Datatable that reacts on FilterForm."""
     def __init__(self, name, model, columns=None, filterform=None):
         """
