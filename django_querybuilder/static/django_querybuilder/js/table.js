@@ -21,9 +21,16 @@ Table = (function(){
             $(containerID).data('Table', _this);
             _this.tableview = datatableview.initialize($(containerID + '_t'), {
                 tableID: containerID,
-                endpointName: endpointName
+                endpointName: endpointName,
+                initComplete: initSubmit
             });
         });
+
+        function initSubmit() {
+            if (!!formID && _this.tableview) {
+                $(formID).trigger("submit");
+            }
+        }
     };
 
     Table.prototype = {

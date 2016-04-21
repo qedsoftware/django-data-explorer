@@ -84,7 +84,6 @@ var datatableview = {
                 "ajax": function (data, callback, settings) {
                     var table = $(opts.tableID).data('Table');
                     var params = $(opts.tableID).data('Table:params');
-                    console.log(params);
                     table.retrieveData(params, function(response) {
                         callback({data: response.data});
                     });
