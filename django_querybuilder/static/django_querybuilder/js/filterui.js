@@ -1,3 +1,9 @@
+/** Set of filters.
+ * @constructor
+ * @param {string} containerID - DOM element ID of the widget
+ * @param {string[]} [tabs] -
+    list of selectors pointing to divs corresponding to each tab
+ */
 FilterForm = (function(){
     'use strict';
 

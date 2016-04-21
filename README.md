@@ -45,3 +45,24 @@ Frontend
 All tests
 --------
     ./jenkins.py
+
+Docs
+====
+
+Generate JavaScript docs into directory `js_docs`:
+
+    npm run js-docs
+
+In Python, see docstrings for documentation. You can also browse them using
+`help` method and using:
+
+    python -m pydoc django_querybuilder
+
+Test coverage
+=============
+
+JavaScript test coverage is available in the test output. To see Python coverage
+report, execute in directory `example`:
+
+    coverage3 run ./manage.py test
+    coverage3 html ../django_querybuilder/*py

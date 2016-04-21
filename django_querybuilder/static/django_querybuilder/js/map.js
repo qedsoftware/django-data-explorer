@@ -1,4 +1,9 @@
-var MapScript = (function() {
+/** AJAX map widget.
+ * @constructor
+ * @description Reads from some global variables? Well, this has to be
+ *    refactored anyway.
+ */
+var Map = (function() {
 
 MapLinker = (function(){
     'use strict';
@@ -113,5 +118,5 @@ Map.prototype.addMarker = function(obj, _this) {
         marker.addTo(_this.layer_data);
         _this.array_markers.push(marker);
     };
-    return MapScript;
+    return Map;
 })();

@@ -6,6 +6,7 @@ var bower = require('gulp-bower');
 var sass = require('gulp-sass');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
+var child_exec = require('child_process').exec;
 
 var config = {
     paths: {
