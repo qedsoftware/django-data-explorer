@@ -7,6 +7,7 @@ from django.utils.encoding import smart_text
 from django.utils.six import python_2_unicode_compatible
 
 from datatableview.datatables import LegacyDatatable
+from datatableview.exceptions import SkipRecord
 
 
 class QuerysetDatatable(LegacyDatatable):
@@ -62,6 +63,20 @@ class QuerysetDatatable(LegacyDatatable):
     def get_records_list(self):
         return self._records
 
+    def get_all_records(self):
+        if not hasattr(self, '_records'):
+            self.populate_records()
+
+        page_data = []
+        for obj in self._records:
+            try:
+                record_data = self.get_record_data(obj)
+            except SkipRecord:
+                pass
+            else:
+                page_data.append(record_data)
+        return page_data
+
 
 def parse_data(records):
     data = []
@@ -105,7 +120,7 @@ class Table(object):
             queryset = self.filterform.filter_queryset_query_string(
                 parameters, queryset)
         datatable = self.get_datatable(queryset)
-        return parse_data(datatable.get_records())
+        return parse_data(datatable.get_all_records())
 
     @staticmethod
     def get_endpoint_url():

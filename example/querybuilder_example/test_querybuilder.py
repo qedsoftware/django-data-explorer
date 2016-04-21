@@ -30,6 +30,14 @@ class TableFiltersTestCase(TestCase):
         records = BasicBookTable.get_data("pages__gt=19")
         self.assertEqual(len(records), 1)
 
+    def test_many_records(self):
+        PAGE_DEFAULT = 25
+        for _ in range(PAGE_DEFAULT):
+            Book.objects.create(title="Book", author=self.fakeauthor)
+        records = BasicBookTable.get_data("")
+        self.assertEqual(len(records), PAGE_DEFAULT + 3)
+
+
 
 class TableStrRepresentation(TestCase):
     def test_str(self):
