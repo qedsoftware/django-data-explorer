@@ -3,8 +3,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
 
-from .map import Map
-from .table import Table
+from .widget import Widget
 
 
 class QuerybuilderEndpoint(View):
@@ -37,9 +36,7 @@ class QuerybuilderEndpoint(View):
         for attribute_name in dir(self.querybuilder):
             Item = getattr(self.querybuilder, attribute_name)
             try:
-                if isinstance(Item, Table) and Item.name == widget_id:
-                    return Item
-                if isinstance(Item, Map) and Item.name == widget_id:
+                if isinstance(Item, Widget) and Item.name == widget_id:
                     return Item
             except TypeError:
                 continue
