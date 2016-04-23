@@ -29,7 +29,10 @@ FilterForm = (function(){
             }
 
             function serializeForms() {
-                var newHash = $('filter-form').find('form').serialize();
+                var nonEmptyInputFields = $("filter-form input").filter(function () {
+                    return !!this.value;
+                });
+                var newHash = nonEmptyInputFields.serialize();
                 window.location.hash = newHash;
             }
 
