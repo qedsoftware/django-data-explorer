@@ -1,3 +1,8 @@
+/** Class that retrieves JSON responses from Querybuilder.
+ * @constructor
+ * @param {string} url - URL of JSON API view
+ */
+
 QuerybuilderAPI = (function(){
     'use strict';
 

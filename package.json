@@ -5,7 +5,8 @@
     "test": "gulp test",
     "deps": "gulp dependencies",
     "build": "gulp build",
-    "start": "gulp"
+    "start": "gulp",
+    "js-docs": "jsdoc django_querybuilder/static/django_querybuilder/js/* -d js_docs"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.3",
@@ -22,5 +23,8 @@
     "karma-wiredep": "^1.0.1",
     "phantomjs-prebuilt": "^2.1.4",
     "qunitjs": "^1.22.0"
+  },
+  "dependencies": {
+    "jsdoc": "^3.4.0"
   }
 }

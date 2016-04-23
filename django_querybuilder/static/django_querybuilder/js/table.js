@@ -1,3 +1,11 @@
+/** Class representing an AJAX datatable.
+ * @constructor
+ * @param containerID {string} - DOM element ID assigned to the widget
+ * @param formID {string} - ID of the FilterForm, optional
+ * @param endpointName {string} - name of the widget used for routing requests
+ * @param api {QuerybuilderAPI} - data source
+ */
+
 Table = (function(){
     'use strict';
 
