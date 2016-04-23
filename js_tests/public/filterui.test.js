@@ -40,7 +40,7 @@ function cleanHash() {
 test('Serialize form with no input test', function(assert) {
     new FilterForm('#filter', ['#tab_1']);
     $('#filter').trigger("change");
-    assert.equal(window.location.hash, '#textField=');
+    assert.equal(window.location.hash, '');
 });
 
 test('Serialize form with one field filled test', function(assert) {
@@ -58,15 +58,6 @@ test('Serialize same form multiple times test', function(assert) {
     formField.trigger("change");
     formField.trigger("change");
     assert.equal(window.location.hash, '#textField=someText');
-});
-
-test('Serialize two empty forms test', function(assert) {
-    $('#qunit-fixture').append(secondFormHTML);
-    new FilterForm('#filter');
-    new FilterForm('#secondFilter');
-    $('#filter').trigger("change");
-    $('#secondFilter').trigger("change");
-    assert.equal(window.location.hash, '#textField=&textField=');
 });
 
 test('Serialize two non-empty forms test', function(assert) {
