@@ -50,6 +50,7 @@ FilterForm = (function(){
 
             function setTabs() {
                 $(containerID + '_ff').tabs({
+                    create: rearrangeAllColumns,
                     activate: rearrangeAllColumns
                 });
             }

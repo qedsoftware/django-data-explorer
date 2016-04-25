@@ -38,12 +38,11 @@ ul.ff-tabs-list {
     background-color: #e1edfa;
     border-radius: 0.5em 0.5em 0 0;
   }
-  .ui-tabs-panel {
-  }
 }
 
 .ff-tab-pane {
   font-family: $font-stack;
+  margin: 0 0.5em;
 }
 
 .ff-group {
@@ -89,8 +88,13 @@ ul.ff-tabs-list {
   }
 }
 
+filter-form form .ff-tab-pane {
+  padding: 0 !important;
+}
+
 .ff-submit {
-  background-color: #3DA0DB;
+  background-color: $button-green;
+  font-size: small !important;
   border: none;
   color: white;
   padding: 0.5em 1em;
@@ -99,11 +103,12 @@ ul.ff-tabs-list {
   text-decoration: none;
   display: inline-block;
   &:hover {
-    background-color: #337ab7;
+    background-color: darken($button-green, 10%);
     cursor: pointer;
   }
 }
 
 .ff-footer {
+  font-family: $font-stack;
   margin: 0.5em;
 }
