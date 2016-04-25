@@ -1,12 +1,11 @@
 import json
 
 from django.template.loader import render_to_string
-from django.utils.six import python_2_unicode_compatible
 
-from .widget import Widget
+from .widget import MetaWidget
 
-@python_2_unicode_compatible
-class Map(Widget):
+
+class MetaMap(MetaWidget):
     """Leaflet map visualizing dataset.
 
     Can be used in pair with FilterForm.
@@ -17,9 +16,9 @@ class Map(Widget):
     ..., "longitude" ...}, the other one returns text that will be displayed
     as popup. You can also define this functions to override default behavior.
     """
+
     def __init__(self, name, model, filterform=None, description_func=None, coordinates_func=None):
-        self.model = model
-        self.name = name
+        super(MetaMap, self).__init__(name, model)
         self.latitude = 0
         self.longitude = 0
         self.template_name = "django_querybuilder/map_widget.html"
@@ -36,21 +35,19 @@ class Map(Widget):
         assert hasattr(coordinates_func, '__call__') is True
         self.coordinates_func = coordinates_func
 
-    def filter_data(self, data=None):
+    def filter_data(self, data=None, queryset=None):
         data = data or {}
-        if self.filterform is None:
-            return self.model.objects.all()
-        else:
-            queryset = self.model.objects.all()
+        if self.filterform is not None:
             return self.filterform.filter_queryset_query_string(
-                queryset=queryset, query_string=data) or {}
+                data, queryset)
+        return queryset
 
     @staticmethod
     def get_endpoint_url():
         return "querybuilder/endpoint"
 
-    def get_data(self, query_config):
-        map_data = self.filter_data(data=query_config)
+    def get_data(self, query_config, queryset):
+        map_data = self.filter_data(data=query_config, queryset=queryset)
         return self.parse_data(map_data)
 
     def parse_data(self, data):
@@ -63,10 +60,11 @@ class Map(Widget):
             parsed_data.append(dict_obj)
         return parsed_data
 
-    def __str__(self):
+    def render(self, widget_params):
         map_data = {
             'name': self.name,
             'endpoint': self.get_endpoint_url(),
+            'widget_params': json.dumps(widget_params)
         }
         text = render_to_string(
             self.template_name, {'map_data': json.dumps(map_data),

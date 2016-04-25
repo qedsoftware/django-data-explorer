@@ -9,10 +9,11 @@
 Table = (function(){
     'use strict';
 
-    var Table = function(containerID, formID, endpointName, api) {
+    var Table = function(containerID, formID, endpointName, api, widget_params) {
         this.containerID = containerID;
         this.endpointName = endpointName;
         this.api = api;
+        this.widget_params = widget_params;
 
         var _this = this;
 
@@ -22,11 +23,13 @@ Table = (function(){
                 _this.form.onSubmit(function(event) {
                     event.preventDefault();
                     var parameters = _this.form.serialize();
-                    $(containerID).data('Table:params', parameters);
+                    $(containerID).data('Table:query_config', parameters);
+                    $(containerID).data('Table:widget_params', _this.widget_params);
                     _this.tableview._fnAjaxUpdate();
                 });
             }
             $(containerID).data('Table', _this);
+            $(containerID).data('Table:widget_params', _this.widget_params);
             _this.tableview = datatableview.initialize($(containerID + '_t'), {
                 tableID: containerID,
                 endpointName: endpointName,
@@ -42,8 +45,8 @@ Table = (function(){
     };
 
     Table.prototype = {
-        retrieveData: function(parameters, callback) {
-            this.api.retrieveData(this.endpointName, parameters, callback);
+        retrieveData: function(query_config, widget_params, callback) {
+            this.api.retrieveData(this.endpointName, query_config, widget_params, callback);
         }
     };
 
