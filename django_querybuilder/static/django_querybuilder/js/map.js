@@ -7,7 +7,7 @@ var Map = (function() {
 
 MapLinker = (function(){
     'use strict';
-    var MapLinker = function(containerID, formID, endpointName, api) {
+    var MapLinker = function(containerID, formID, endpointName, api, widget_params) {
         this.containerID = containerID;
         this.form = $(formID).data('FilterForm');
         this.endpointName = endpointName;
@@ -15,8 +15,8 @@ MapLinker = (function(){
         var _this = this;
         this.form.onSubmit(function(event) {
             event.preventDefault();
-            var parameters = _this.form.serialize();
-            _this.retrieveData(parameters, function(filteredData) {
+            var query_config = _this.form.serialize();
+            _this.retrieveData(query_config, widget_params, function(filteredData) {
                 $('#' + containerID).trigger({
                     type: "update:Map",
                     filteredData: filteredData
@@ -26,8 +26,9 @@ MapLinker = (function(){
     };
 
     MapLinker.prototype = {
-        retrieveData: function(parameters, callback) {
-            return this.api.retrieveData(this.containerID, parameters, callback);
+        retrieveData: function(query_config, widget_params, callback) {
+            return this.api.retrieveData(this.containerID, query_config,
+                                         widget_params, callback);
         }
     };
 
@@ -43,6 +44,7 @@ Map = function() {
     this.widgetId = mapData.name;
     this.endpoint = '/' + mapData.endpoint + '/';
     this.formID = '#filter';
+    this.widget_params = mapData.widget_params
     var _this = this;
     new FilterForm(this.formID);
 
@@ -73,7 +75,8 @@ Map.prototype = {
         init: function(mapData) {
             'use strict';
             var _this = this;
-            this.map_class = new MapLinker(_this.widgetId, _this.formID, _this.endpoint, new QuerybuilderAPI(_this.endpoint));
+            this.map_class = new MapLinker(_this.widgetId, _this.formID, _this.endpoint,
+                                           new QuerybuilderAPI(_this.endpoint), _this.widget_params);
 
             var osmURL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
             var osmAttrib = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';

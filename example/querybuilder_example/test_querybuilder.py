@@ -144,4 +144,4 @@ class MapGetDataTestCase(TestCase):
     def test_map_no_descr():
         """Make sure that the constructor works for maps without descriptions.
         """
-        django_querybuilder.Map("nonexistent", City)
+        django_querybuilder.Widget("nonexistent", City)

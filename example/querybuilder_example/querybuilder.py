@@ -1,4 +1,4 @@
-from django_querybuilder import Map, Table, FilterForm
+from django_querybuilder import FilterForm, MetaMap, MetaTable, Widget
 
 from .models import Author, Book, City
 
@@ -29,12 +29,15 @@ def city_description_function(model):
 
 
 CityFilterInstance = CityFilter()
-CityMap = Map(name="city-map", model=City, filterform=CityFilterInstance,
-              description_func=city_description_function)
-BasicAuthorTable = Table("author-table", Author, ['name', 'birth_date'])
-BasicBookTable = Table(
+CityMetaMap = MetaMap(name="city-map", model=City, filterform=CityFilterInstance,
+                      description_func=city_description_function)
+CityMap = Widget(CityMetaMap, {})
+BasicAuthorMetaTable = MetaTable("author-table", Author, ['name', 'birth_date'])
+BasicBookMetaTable = MetaTable(
     "book-table", Book, columns=[
         ("Author name", 'author__name'),
         'title',
         'pages',
         'publication_date'], filterform=BookFilter())
+BasicAuthorTable = Widget(BasicAuthorMetaTable, {})
+BasicBookTable = Widget(BasicBookMetaTable, {})

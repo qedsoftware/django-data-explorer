@@ -4,12 +4,12 @@ import json
 
 from django.template.loader import render_to_string
 from django.utils.encoding import smart_text
-from django.utils.six import python_2_unicode_compatible
+from django.utils.html import mark_safe
 
 from datatableview.datatables import LegacyDatatable
 from datatableview.exceptions import SkipRecord
 
-from .widget import Widget
+from .widget import MetaWidget
 
 
 class QuerysetDatatable(LegacyDatatable):
@@ -89,8 +89,7 @@ def parse_data(records):
     return data
 
 
-@python_2_unicode_compatible
-class Table(Widget):
+class MetaTable(MetaWidget):
     """Datatable that reacts on FilterForm."""
     def __init__(self, name, model, columns=None, filterform=None):
         """
@@ -98,16 +97,12 @@ class Table(Widget):
                         all model fields by default
                         supports related field
         """
-        self.name = name
-        self.model = model
+        super(MetaTable, self).__init__(name, model)
         self.columns = columns
         self.filterform = filterform
         self.template_name = 'django_querybuilder/table_widget.html'
 
-    def full_queryset(self):
-        return self.model.objects.all()
-
-    def get_datatable(self, queryset):
+    def get_datatable(self, queryset=()):
         class ModelQuerysetDatatable(QuerysetDatatable):
             class Meta(object):
                 model = self.model
@@ -116,11 +111,10 @@ class Table(Widget):
         datatable = ModelQuerysetDatatable(queryset, self.get_endpoint_url())
         return datatable
 
-    def get_data(self, parameters):
-        queryset = self.full_queryset()
+    def get_data(self, query_config, queryset):
         if self.filterform is not None:
             queryset = self.filterform.filter_queryset_query_string(
-                parameters, queryset)
+                query_config, queryset)
         datatable = self.get_datatable(queryset)
         return parse_data(datatable.get_all_records())
 
@@ -128,9 +122,24 @@ class Table(Widget):
     def get_endpoint_url():
         return "/querybuilder/endpoint/"
 
+    def render(self, widget_params):
+        table_data = {
+            'containerID': '#' + self.name,
+            'formID': "#filter" if self.filterform is not None else "",
+            'endpointName': self.name,
+            'endpointUrl': self.get_endpoint_url(),
+            'table_id': self.name,
+            'widget_params': json.dumps(widget_params),
+        }
+        table_text = render_to_string(
+            self.template_name, {
+                'table_data': json.dumps(table_data),
+                'widget_id': self.name
+            })
+        return mark_safe(table_text + self.render_datatable())
+
     def render_datatable(self):
-        queryset = self.full_queryset()
-        datatable = self.get_datatable(queryset)
+        datatable = self.get_datatable()
         smart_text(datatable)  # to make sure it's configured
         context = {
             'url': datatable.url,
@@ -142,19 +151,3 @@ class Table(Widget):
         datatable_text = render_to_string(
             datatable.config['structure_template'], context)
         return datatable_text
-
-    def __str__(self):
-        table_data = {
-            'containerID': '#' + self.name,
-            'formID': "#filter" if self.filterform is not None else "",
-            'endpointName': self.name,
-            'endpointUrl': self.get_endpoint_url(),
-            'table_id': self.name,
-        }
-        table_text = render_to_string(
-            self.template_name, {
-                'table_data': json.dumps(table_data),
-                'widget_id': self.name
-            })
-        datatable_text = self.render_datatable()
-        return table_text + datatable_text

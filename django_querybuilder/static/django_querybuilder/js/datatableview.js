@@ -83,8 +83,9 @@ var datatableview = {
                 "aoColumns": column_options,
                 "ajax": function (data, callback, settings) {
                     var table = $(opts.tableID).data('Table');
-                    var params = $(opts.tableID).data('Table:params');
-                    table.retrieveData(params, function(response) {
+                    var query_config = $(opts.tableID).data('Table:query_config');
+                    var widget_params = $(opts.tableID).data('Table:widget_params');
+                    table.retrieveData(query_config, widget_params, function(response) {
                         callback({data: response.data});
                     });
                 },
