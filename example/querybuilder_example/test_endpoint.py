@@ -18,8 +18,10 @@ class EndpointTest(TestCase):
         response = self.view.as_view()(request)
         content = json.loads(response.content.decode())
         self.assertEqual(content['status'], 'OK')
-        self.assertEqual(content['data'],
-                         [{"0": "name", "1": "2016-05-23"}])
+        self.assertEqual(len(content['data']), 1)
+        row = content['data'][0]
+        self.assertEqual(row['0'], 'name')
+        self.assertEqual(row['1'], '2016-05-23')
 
     def test_no_widget(self):
         request = self.factory.post('myurl',

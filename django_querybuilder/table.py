@@ -79,6 +79,13 @@ class QuerysetDatatable(LegacyDatatable):
                 page_data.append(record_data)
         return page_data
 
+    def get_column_value(self, obj, column, **kwargs):
+        for source in column.sources:
+            if hasattr(source, "__call__"):
+                return source(obj)
+
+        return column.value(obj, **kwargs)
+
 
 def parse_data(records):
     data = []
