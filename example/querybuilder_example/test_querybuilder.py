@@ -58,27 +58,27 @@ class FilterFormTestCase(TestCase):
             publication_date=datetime.date(2008, 6, 24))
 
     def test_filter_lt_condition(self):
-        filterform = BookFilter()
+        filterform = BookFilter('filter-name')
         filter_data = {'pages__lt': '15'}
         filtered = filterform.filter_queryset(filter_data, Book.objects.all())
         self.assertQuerysetEqual(
             filtered, ['Book_2'], lambda b: b.title, False)
 
     def test_filter_no_results(self):
-        filterform = BookFilter()
+        filterform = BookFilter('filter-name')
         filter_data = {'pages__gt': '25'}
         filtered = filterform.filter_queryset(filter_data, Book.objects.all())
         self.assertQuerysetEqual(filtered, [], lambda b: b.title, False)
 
     def test_empty_filter(self):
-        filterform = BookFilter()
+        filterform = BookFilter('filter-name')
         filter_data = {}
         filtered = filterform.filter_queryset(filter_data, Book.objects.all())
         self.assertQuerysetEqual(
             filtered, ['Book_1', 'Book_2', 'Book_3'], lambda b: b.title, False)
 
     def test_excluding_filter(self):
-        filterform = BookFilter()
+        filterform = BookFilter('filter-name')
         filter_data = {
             'pages__gt': 15,
             'pages__lt': 14,
@@ -87,7 +87,7 @@ class FilterFormTestCase(TestCase):
         self.assertQuerysetEqual(filtered, [], lambda b: b.title, False)
 
     def test_filter_exact(self):
-        filterform = BookFilter()
+        filterform = BookFilter('filter-name')
         filter_data = {
             'publication_date': '2008-06-24',
             'publication_date__year': 2008,
@@ -98,7 +98,7 @@ class FilterFormTestCase(TestCase):
 
     @mock.patch("django_querybuilder.FilterForm.filter_queryset")
     def test_filter_queryset_query_string(self, filter_queryset_mock):
-        filterform = BookFilter()
+        filterform = BookFilter('filter-name')
         filterform.filter_queryset_query_string("a=b&c=d", "queryset here")
         parsed = filter_queryset_mock.call_args[0][0]
         self.assertEqual(parsed, {"a": ["b"], "c": ["d"]})

@@ -43,7 +43,7 @@ Map = function() {
     this.layer_data;
     this.widgetId = mapData.name;
     this.endpoint = '/' + mapData.endpoint + '/';
-    this.formID = '#filter';
+    this.formID = '#' + mapData.filter;
     this.widget_params = mapData.widget_params
     var _this = this;
     new FilterForm(this.formID);
@@ -105,7 +105,7 @@ Map.prototype = {
 
             L.control.layers(baseLayers, overlays).addTo(this.map);
 
-            $("#filter").trigger("submit");
+            $(_this.formID).trigger("submit");
         }
     };
 

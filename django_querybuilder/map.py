@@ -21,8 +21,8 @@ class MetaMap(MetaWidget):
         super(MetaMap, self).__init__(name, model)
         self.latitude = 0
         self.longitude = 0
-        self.template_name = "django_querybuilder/map_widget.html"
         self.filterform = filterform
+        self.template_name = "django_querybuilder/map_widget.html"
 
         if description_func is None:
             description_func = lambda model: ("Latitude: {}<br>Longitude: {}".format(
@@ -64,7 +64,8 @@ class MetaMap(MetaWidget):
         map_data = {
             'name': self.name,
             'endpoint': self.get_endpoint_url(),
-            'widget_params': json.dumps(widget_params)
+            'widget_params': json.dumps(widget_params),
+            'filter': self.filterform.filter_name if self.filterform is not None else "",
         }
         text = render_to_string(
             self.template_name, {'map_data': json.dumps(map_data),

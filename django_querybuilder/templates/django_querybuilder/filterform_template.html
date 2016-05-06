@@ -1,11 +1,11 @@
 <script>
-    var form = new FilterForm('#filter', ['#tab']);
+    var form = new FilterForm('#{{ name }}', ['#tab']);
 </script>
-<filter-form id="filter_ff">
+<filter-form id="{{ name }}_ff">
     <ul class="ff-tabs-list">
         <li><a href="#tab">Filters</a></li>
     </ul>
-    <form id="filter">
+    <form id="{{ name }}">
         <div id="tab" class="ff-tab-pane">
             {{ form_str }}
         </div>

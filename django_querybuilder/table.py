@@ -125,7 +125,7 @@ class MetaTable(MetaWidget):
     def render(self, widget_params):
         table_data = {
             'containerID': '#' + self.name,
-            'formID': "#filter" if self.filterform is not None else "",
+            'formID': '#' + self.filterform.filter_name if self.filterform is not None else "",
             'endpointName': self.name,
             'endpointUrl': self.get_endpoint_url(),
             'table_id': self.name,

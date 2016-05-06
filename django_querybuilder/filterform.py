@@ -40,9 +40,10 @@ class FilterFormMetaclass(type):
 
 
 class BaseFilterForm(BaseFilterSet):
-    def __init__(self, initial=None, data=None, queryset=None, prefix=None,
-                 strict=None):
+    def __init__(self, filter_name, initial=None, data=None, queryset=None,
+                 prefix=None, strict=None):
         self.initial = initial or {}
+        self.filter_name = filter_name
         BaseFilterSet.__init__(self, data, queryset, prefix, strict)
 
 
@@ -84,7 +85,7 @@ class FilterForm(six.with_metaclass(FilterFormMetaclass, BaseFilterForm)):
             errors_on_separate_row=True)
 
         context = {
-            'name': 'filterform',
+            'name': self.filter_name,
             'form_str': form_str,
         }
         text = render_to_string('django_querybuilder/filterform_template.html',

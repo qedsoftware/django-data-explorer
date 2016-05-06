@@ -3,9 +3,8 @@ import sys
 from django.views.generic import TemplateView
 
 from django_querybuilder import QuerybuilderEndpoint
-from querybuilder_example.querybuilder import (BasicAuthorTable,
+from querybuilder_example.querybuilder import (BasicAuthorTable, CityFilterInstance,
                                                BasicBookTable, CityMap)
-from .querybuilder import BookFilter, CityFilter
 
 
 class BookTableView(TemplateView):
@@ -15,7 +14,7 @@ class BookTableView(TemplateView):
         return {
             'book_table': BasicBookTable,
             'author_table': BasicAuthorTable,
-            "filterform": BookFilter
+            "filterform": BasicBookTable.metawidget.filterform
         }
 
 
@@ -33,17 +32,17 @@ class CityMapFilterView(TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
-            'city_filterform': CityFilter,
+            'city_filterform': CityMap.metawidget.filterform,
             'city_map': CityMap,
         }
 
 
-class PriceDateBookFormView(TemplateView):
-    template_name = "querybuilder_example/book_filter_view.html"
+class CityFilterView(TemplateView):
+    template_name = "querybuilder_example/city_filter_view.html"
 
     def get_context_data(self, **kwargs):
         return {
-            "filterform": BookFilter
+            "filterform": CityFilterInstance
         }
 
 

@@ -28,7 +28,7 @@ def city_description_function(model):
                                                           model.longitude)
 
 
-CityFilterInstance = CityFilter()
+CityFilterInstance = CityFilter("city-filter")
 CityMetaMap = MetaMap(name="city-map", model=City, filterform=CityFilterInstance,
                       description_func=city_description_function)
 CityMap = Widget(CityMetaMap, {})
@@ -38,6 +38,6 @@ BasicBookMetaTable = MetaTable(
         ("Author name", 'author__name'),
         'title',
         'pages',
-        'publication_date'], filterform=BookFilter())
+        'publication_date'], filterform=BookFilter("book-filter"))
 BasicAuthorTable = Widget(BasicAuthorMetaTable, {})
 BasicBookTable = Widget(BasicBookMetaTable, {})
