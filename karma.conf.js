@@ -44,8 +44,9 @@ module.exports = function(config) {
       // do not include tests or libraries
       // (these files will be instrumented by Istanbul)
       'django_querybuilder/static/django_querybuilder/js/filterui.js': ['coverage'],
-      'django_querybuilder/static/django_querybuilder/js/table.js': ['coverage']
-      //'django_querybuilder/static/django_querybuilder/js/map.js': ['coverage']
+      'django_querybuilder/static/django_querybuilder/js/table.js': ['coverage'],
+      'django_querybuilder/static/django_querybuilder/js/map.js': ['coverage'],
+      'django_querybuilder/static/django_querybuilder/js/querybuilderapi.js': ['coverage']
     },
 
 

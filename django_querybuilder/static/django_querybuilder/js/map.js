@@ -3,7 +3,7 @@
  * @description Reads from some global variables? Well, this has to be
  *    refactored anyway.
  */
-var Map = (function() {
+var MapScript = (function() {
 
 MapLinker = (function(){
     'use strict';
@@ -35,44 +35,48 @@ MapLinker = (function(){
     return MapLinker;
 })();
 
-Map = function() {
+Map = (function() {
+    'use strict'
 
-    mapData = JSON.parse(mapData);
-    this.array_markers = Array();
-    this.map;
-    this.layer_data;
-    this.widgetId = mapData.name;
-    this.endpoint = '/' + mapData.endpoint + '/';
-    this.formID = '#' + mapData.filter;
-    this.widget_params = mapData.widget_params
-    var _this = this;
-    new FilterForm(this.formID);
+    var Map = function(mapData) {
+        mapData = JSON.parse(mapData);
+        this.array_markers = Array();
+        this.map;
+        this.layer_data;
+        this.widgetId = mapData.name;
+        this.endpoint = '/' + mapData.endpoint + '/';
+        this.formID = '#' + mapData.filter;
+        this.widget_params = mapData.widget_params
+        var _this = this;
+        new FilterForm(this.formID);
 
-    $('#' + this.widgetId).on("update:Map", function(event) {
-            for (var i = 0; i < _this.array_markers.length; i++) {
-                _this.map.removeLayer(_this.array_markers[i]);
-                _this.layer_data.removeLayer(_this.array_markers[i]);
-            }
-            for (var i = 0; i < event.filteredData.data.length; i++) {
-                var obj = event.filteredData.data[i];
-                _this.addMarker(obj, _this);
-            }
+        $('#' + this.widgetId).on("update:Map", function(event) {
+                for (var i = 0; i < _this.array_markers.length; i++) {
+                    _this.map.removeLayer(_this.array_markers[i]);
+                    _this.layer_data.removeLayer(_this.array_markers[i]);
+                }
+                _this.array_markers = Array()
+                for (var i = 0; i < event.filteredData.data.length; i++) {
+                    var obj = event.filteredData.data[i];
+                    _this.addMarker(obj, _this);
+                }
 
-            if (_this.array_markers.length > 0) {
-                var group = L.featureGroup(_this.array_markers);
-                _this.map.fitBounds(group.getBounds());
-            }
+                if (_this.array_markers.length > 0) {
+                    var group = L.featureGroup(_this.array_markers);
+                    _this.map.fitBounds(group.getBounds());
+                }
+            });
+
+        $(function () {
+            _this.init();
         });
+    };
 
-    var that = this;
-    $(function () {
-        that.init(mapData);
-    });
     return Map;
-};
+})();
 
 Map.prototype = {
-        init: function(mapData) {
+        init: function() {
             'use strict';
             var _this = this;
             this.map_class = new MapLinker(_this.widgetId, _this.formID, _this.endpoint,
@@ -106,20 +110,20 @@ Map.prototype = {
             L.control.layers(baseLayers, overlays).addTo(this.map);
 
             $(_this.formID).trigger("submit");
+        },
+
+        addMarker: function(obj, _this) {
+            'use strict'
+        
+            var marker = L.marker({"lat": obj.latitude, "lng": obj.longitude});
+            var popup_text = obj.description;
+
+            marker.bindPopup(popup_text);
+
+            marker.addTo(_this.layer_data);
+            _this.array_markers.push(marker);
         }
     };
 
-Map.prototype.addMarker = function(obj, _this) {
-        var lon = obj.latitude;
-        var lat = obj.longitude;
-
-        var marker = L.marker({"lat": obj.latitude, "lng": obj.longitude});
-        var popup_text = obj.description;
-
-        marker.bindPopup(popup_text);
-
-        marker.addTo(_this.layer_data);
-        _this.array_markers.push(marker);
-    };
-    return Map;
-})();
+    return MapScript;
+})()
