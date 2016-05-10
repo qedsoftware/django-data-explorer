@@ -2,9 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Map example</title>
     {% include "django_querybuilder/css_assets.html" %}
     {% include "django_querybuilder/js_assets.html" %}
-    <title>Map example</title>
+    <style>
+        body {
+            margin: 50px;
+        }
+
+        #city-map {
+            width: 100%;
+            height: 300px;
+        }
+    </style>
 </head>
 <body>
 

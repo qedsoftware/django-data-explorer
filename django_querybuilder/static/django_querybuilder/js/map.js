@@ -5,30 +5,59 @@
  */
 var MapScript = (function() {
 
-MapLinker = (function(){
+TriggerMap = (function() {
+    'use strict'
+    var container;
+
+    var TriggerMap = function(containerID) {
+        container = containerID ? containerID : 'filter';
+    };
+
+    TriggerMap.prototype = {
+        setContainer: function(value) {
+            container = value;
+        },
+
+        getContainer: function() {
+            return container;
+        },
+
+        triggerMap: function(filteredData) {
+            $('#' + container).trigger("update:Map", [filteredData]);
+        }
+    };
+
+    return TriggerMap;
+})();
+
+MapLinker = (function() {
     'use strict';
-    var MapLinker = function(containerID, formID, endpointName, api, widget_params) {
-        this.containerID = containerID;
-        this.form = $(formID).data('FilterForm');
+    var MapLinker = function(formID, endpointName, api, widgetParams,
+                             triggerClass) {
+        if (formID) {
+            this.form = $(formID).data('FilterForm');
+        }
+        this.triggerClass = triggerClass;
         this.endpointName = endpointName;
         this.api = api;
         var _this = this;
-        this.form.onSubmit(function(event) {
-            event.preventDefault();
-            var query_config = _this.form.serialize();
-            _this.retrieveData(query_config, widget_params, function(filteredData) {
-                $('#' + containerID).trigger({
-                    type: "update:Map",
-                    filteredData: filteredData
-                });
+        if (this.form) {
+            this.form.onSubmit(function(event) {
+                event.preventDefault();
+                var queryConfig = _this.form.serialize();
+                _this.retrieveData(queryConfig, widgetParams, triggerClass.triggerMap);
             });
-        });
+        }
+        else {
+            _this.retrieveData({containerID: triggerClass.getContainer()},
+                               widgetParams, triggerClass.triggerMap);
+        }
     };
 
     MapLinker.prototype = {
-        retrieveData: function(query_config, widget_params, callback) {
-            return this.api.retrieveData(this.containerID, query_config,
-                                         widget_params, callback);
+        retrieveData: function(queryConfig, widgetParams, callback) {
+            return this.api.retrieveData(this.triggerClass.getContainer(),
+                                         queryConfig, widgetParams, callback);
         }
     };
 
@@ -37,32 +66,36 @@ MapLinker = (function(){
 
 Map = (function() {
     'use strict'
-
     var Map = function(mapData) {
         mapData = JSON.parse(mapData);
-        this.array_markers = Array();
+        this.arrayMarkers = Array();
         this.map;
         this.layer_data;
         this.widgetId = mapData.name;
         this.endpoint = '/' + mapData.endpoint + '/';
-        this.formID = '#' + mapData.filter;
-        this.widget_params = mapData.widget_params
+        this.formID;
+        if (mapData.filter) {
+            this.formID = '#' + mapData.filter
+        }
+        this.widgetParams = mapData.widgetParams;
         var _this = this;
         new FilterForm(this.formID);
 
-        $('#' + this.widgetId).on("update:Map", function(event) {
-                for (var i = 0; i < _this.array_markers.length; i++) {
-                    _this.map.removeLayer(_this.array_markers[i]);
-                    _this.layer_data.removeLayer(_this.array_markers[i]);
+        $('#' + this.widgetId).on("update:Map", function(event, filterData) {
+                for (var i = 0; i < _this.arrayMarkers.length; i++) {
+                    _this.map.removeLayer(_this.arrayMarkers[i]);
+                    _this.layer_data.removeLayer(_this.arrayMarkers[i]);
                 }
-                _this.array_markers = Array()
-                for (var i = 0; i < event.filteredData.data.length; i++) {
-                    var obj = event.filteredData.data[i];
-                    _this.addMarker(obj, _this);
+                _this.arrayMarkers = Array()
+                if (filterData) {
+                    for (var i = 0; i < filterData.data.length; i++) {
+                        var obj = filterData.data[i];
+                        _this.addMarker(obj, _this);
+                    }
                 }
 
-                if (_this.array_markers.length > 0) {
-                    var group = L.featureGroup(_this.array_markers);
+                if (_this.arrayMarkers.length > 0) {
+                    var group = L.featureGroup(_this.arrayMarkers);
                     _this.map.fitBounds(group.getBounds());
                 }
             });
@@ -79,15 +112,15 @@ Map.prototype = {
         init: function() {
             'use strict';
             var _this = this;
-            this.map_class = new MapLinker(_this.widgetId, _this.formID, _this.endpoint,
-                                           new QuerybuilderAPI(_this.endpoint), _this.widget_params);
-
+            this.triggerClass = new TriggerMap(_this.widgetId);
+            this.map_class = new MapLinker(_this.formID, _this.endpoint, new QuerybuilderAPI(_this.endpoint),
+                                           _this.widgetParams, _this.triggerClass);
             var osmURL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
             var osmAttrib = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
             var osm = new L.TileLayer(osmURL, {attribution: osmAttrib});
 
             this.layer_data = new L.LayerGroup();
-            this.array_markers = new Array();
+            this.arrayMarkers = new Array();
 
             this.map = L.map(this.widgetId, {
                 center: [0.01, 51.405],
@@ -108,20 +141,19 @@ Map.prototype = {
             };
 
             L.control.layers(baseLayers, overlays).addTo(this.map);
-
-            $(_this.formID).trigger("submit");
+            this.map_class.retrieveData({containerID: this.triggerClass.getContainer()},
+                                        _this.widgetParams, this.triggerClass.triggerMap);
         },
 
         addMarker: function(obj, _this) {
             'use strict'
-        
             var marker = L.marker({"lat": obj.latitude, "lng": obj.longitude});
-            var popup_text = obj.description;
+            var popupText = obj.description;
 
-            marker.bindPopup(popup_text);
+            marker.bindPopup(popupText);
 
             marker.addTo(_this.layer_data);
-            _this.array_markers.push(marker);
+            _this.arrayMarkers.push(marker);
         }
     };
 
