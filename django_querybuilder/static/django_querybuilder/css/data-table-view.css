@@ -1,0 +1,52 @@
+.dataTables_base_helpers, .dataTables_length, .dataTables_filter, .dataTables_info, .dataTables_paginate {
+  margin: 0.5em auto;
+  font-family: "Open Sans", Calibri, Arial, sans-serif;
+  font-size: small; }
+  .dataTables_base_helpers label, .dataTables_length label, .dataTables_filter label, .dataTables_info label, .dataTables_paginate label {
+    margin: 0;
+    font-weight: 900;
+    color: #666; }
+
+.dataTables_wrapper {
+  margin: 0.5em 0.5em; }
+
+.dataTables_length select {
+  font-family: "Open Sans", Calibri, Arial, sans-serif;
+  width: auto;
+  padding: 0.2em;
+  font-size: 1em;
+  border: 1px solid #666;
+  border-radius: 0;
+  height: 2em;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat transparent right;
+  background-position-x: -webkit-calc(100% - 0.2em);
+  background-position-x: calc(100% - 0.2em);
+  padding-right: 20px; }
+
+.dataTables_filter input {
+  font-family: "Open Sans", Calibri, Arial, sans-serif;
+  width: auto;
+  padding: 0.2em;
+  font-size: 1em;
+  border: 1px solid #666;
+  border-radius: 0;
+  height: 2em;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none; }
+
+.dataTables_filter a {
+  text-decoration: none;
+  color: #666; }
+
+.dataTable {
+  font-family: "Open Sans", Calibri, Arial, sans-serif;
+  font-size: smaller; }
+  .dataTable thead {
+    background-color: #F9F8F5;
+    color: #666; }
+  .dataTable a {
+    color: #4ea582; }
