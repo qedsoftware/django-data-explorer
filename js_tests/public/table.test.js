@@ -14,13 +14,13 @@ var tableHTML =
 test('Update after form submission.', function(assert) {
     FakeQuerybuilderAPI = (function(){
         var QuerybuilderAPI = function(url) {
-        }
+        };
         QuerybuilderAPI.prototype = {
             retrieveData: function(endpointName, query_config, widget_params, callback) {
                 assert.ok(true);
                 callback({data: []});
             }
-        }
+        };
         return QuerybuilderAPI;
     })();
 
@@ -37,12 +37,12 @@ test('Update after form submission.', function(assert) {
 test('Initialize without FilterForm', function(assert) {
     FakeQuerybuilderAPI = (function(){
         var QuerybuilderAPI = function(url) {
-        }
+        };
         QuerybuilderAPI.prototype = {
             retrieveData: function(endpointName, query_config, widget_params, callback) {
                 callback({data: 'test'});
             }
-        }
+        };
         return QuerybuilderAPI;
     })();
 

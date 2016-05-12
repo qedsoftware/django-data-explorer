@@ -7,6 +7,7 @@ var sass = require('gulp-sass');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var child_exec = require('child_process').exec;
+var jshint = require('gulp-jshint');
 
 var config = {
     paths: {
@@ -14,8 +15,10 @@ var config = {
         static: {
             folders: ['django_querybuilder/static/django_querybuilder'],
             sass: '/sass/**/*.scss',
-            css: '/css'
+            css: '/css',
+            js: '/js/**/*.js'
         },
+        js_tests: 'js_tests/public/*.js',
         sass: function() {
             return config.paths.static.folders.map(function(folder) {
                 return folder + config.paths.static.sass;
@@ -72,13 +75,34 @@ gulp.task('watch', function() {
 /**
  * Run test once and exit
  */
-gulp.task('test', function(done) {
-  new Server({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: true,
-    logLevel: "info"
-  }, done).start();
+gulp.task('unit_tests', function(done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true,
+        logLevel: "info"
+    }, done).start();
 });
+
+/**
+ * Run linter once and exit, tests will fail if there's a warning
+ */
+gulp.task('lint', function() {
+    var tasks = config.paths.static.folders.map(function(folder) {
+        return gulp.src(folder + config.paths.static.js)
+            .pipe(jshint())
+            .pipe(jshint.reporter('jshint-stylish'))
+            .pipe(jshint.reporter('fail'))
+    });
+    tasks.push(
+        gulp.src(config.paths.js_tests)
+            .pipe(jshint())
+            .pipe(jshint.reporter('jshint-stylish'))
+            .pipe(jshint.reporter('fail'))
+    );
+    return tasks;
+});
+
+gulp.task('test', ['unit_tests', 'lint']);
 
 /**
  * The default task (called when you run `gulp` from cli)

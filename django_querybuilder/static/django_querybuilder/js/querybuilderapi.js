@@ -7,8 +7,8 @@ QuerybuilderAPI = (function(){
     'use strict';
 
     var QuerybuilderAPI = function(url) {
-        this.url = url
-    }
+        this.url = url;
+    };
 
     QuerybuilderAPI.prototype = {
         retrieveData: function(endpointName, query_config, widget_params, callback) {
@@ -18,7 +18,7 @@ QuerybuilderAPI = (function(){
                 data: {
                     widget_id: endpointName,
                     widget_params: widget_params,
-                    query_config: query_config,
+                    query_config: query_config
                 },
                 success: function(data) {
                     callback(data);
@@ -28,7 +28,7 @@ QuerybuilderAPI = (function(){
                 }
             });
         }
-    }
+    };
 
     return QuerybuilderAPI;
 })();

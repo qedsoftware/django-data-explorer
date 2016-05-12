@@ -8,7 +8,7 @@ var datatableview = {
 
     getCookie: function(name) {
         var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
+        if (document.cookie && document.cookie !== '') {
             var cookies = document.cookie.split(';');
             for (var i = 0; i < cookies.length; i++) {
                 var cookie = jQuery.trim(cookies[i]);
@@ -73,7 +73,7 @@ var datatableview = {
             });
 
             // Arrange the sorting column requests and strip the priority information
-            sorting_options.sort(function(a, b){ return a[0] - b[0] });
+            sorting_options.sort(function(a, b){ return a[0] - b[0]; });
             for (var i = 0; i < sorting_options.length; i++) {
                 sorting_options[i] = sorting_options[i].slice(1);
             }
@@ -143,7 +143,7 @@ var datatableview = {
         });
         return $(initialized_datatables).dataTable();
     }
-}
+};
 
 $(function(){
     if (datatableview.auto_initialize) {

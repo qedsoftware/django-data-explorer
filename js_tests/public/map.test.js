@@ -28,13 +28,13 @@ function ajaxResponse(response, success) {
 test('Update Map after form submission.', function(assert) {
     FakeQuerybuilderAPI = (function(){
         var QuerybuilderAPI = function(url) {
-        }
+        };
         QuerybuilderAPI.prototype = {
             retrieveData: function(endpointName, queryConfig, widgetParams, callback) {
                 assert.ok(true);
                 callback({data: []});
             }
-        }
+        };
         return QuerybuilderAPI;
     })();
     assert.expect(2);
@@ -58,24 +58,24 @@ test('TriggerMap default constructor', function(assert) {
 test('TriggerMap constructor', function(assert) {
     var triggerClass = new TriggerMap('fake');
     assert.equal('fake', triggerClass.getContainer());
-})
+});
 
 test('TriggerMap setter', function(assert) {
     var triggerClass = new TriggerMap();
     triggerClass.setContainer('fake');
     assert.equal('fake', triggerClass.getContainer());
-})
+});
 
 test('Retrieve data without filter.', function(assert) {
     FakeQuerybuilderAPI = (function(){
         var QuerybuilderAPI = function(url) {
-        }
+        };
         QuerybuilderAPI.prototype = {
             retrieveData: function(endpointName, queryConfig, widgetParams, callback) {
                 assert.ok(true);
                 callback({data: []});
             }
-        }
+        };
         return QuerybuilderAPI;
     })();
     assert.expect(2);
@@ -121,7 +121,7 @@ test('Check if array marker is added and replaced.', function(assert) {
     m.addMarker({latitude: 20.0, longitude: 30.0, description: "fake"}, m);
     assert.equal(m.arrayMarkers.length, 1);
     $.ajax = ajaxResponse('{ "status": "OK", "data": [{ "description": "My dummy JSON.", "latitude": 20.0, "longitude": 30.0}] }', false);
-    var filteredData = {data: [{latitude: 21.0, longitude: 31.0, description: "fake_2"}]}
+    var filteredData = {data: [{latitude: 21.0, longitude: 31.0, description: "fake_2"}]};
     $('#map-example').trigger("update:Map", filteredData);
     assert.equal(m.arrayMarkers.length, 1);
     assert.equal(m.arrayMarkers[0]._latlng.lat, 21);

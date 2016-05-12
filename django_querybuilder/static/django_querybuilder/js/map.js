@@ -6,7 +6,7 @@
 var MapScript = (function() {
 
 TriggerMap = (function() {
-    'use strict'
+    'use strict';
     var container;
 
     var TriggerMap = function(containerID) {
@@ -65,40 +65,37 @@ MapLinker = (function() {
 })();
 
 Map = (function() {
-    'use strict'
+    'use strict';
     var Map = function(mapData) {
         mapData = JSON.parse(mapData);
-        this.arrayMarkers = Array();
-        this.map;
-        this.layer_data;
+        this.arrayMarkers = [];
+        this.map = null;
+        this.layer_data = null;
+        this.formID = mapData.filter ? '#' + mapData.filter : null;
         this.widgetId = mapData.name;
         this.endpoint = '/' + mapData.endpoint + '/';
-        this.formID;
-        if (mapData.filter) {
-            this.formID = '#' + mapData.filter
-        }
         this.widgetParams = mapData.widgetParams;
         var _this = this;
         new FilterForm(this.formID);
 
         $('#' + this.widgetId).on("update:Map", function(event, filterData) {
-                for (var i = 0; i < _this.arrayMarkers.length; i++) {
-                    _this.map.removeLayer(_this.arrayMarkers[i]);
-                    _this.layer_data.removeLayer(_this.arrayMarkers[i]);
+            for (var i = 0; i < _this.arrayMarkers.length; i++) {
+                _this.map.removeLayer(_this.arrayMarkers[i]);
+                _this.layer_data.removeLayer(_this.arrayMarkers[i]);
+            }
+            _this.arrayMarkers = [];
+            if (filterData) {
+                for (i = 0; i < filterData.data.length; i++) {
+                    var obj = filterData.data[i];
+                    _this.addMarker(obj, _this);
                 }
-                _this.arrayMarkers = Array()
-                if (filterData) {
-                    for (var i = 0; i < filterData.data.length; i++) {
-                        var obj = filterData.data[i];
-                        _this.addMarker(obj, _this);
-                    }
-                }
+            }
 
-                if (_this.arrayMarkers.length > 0) {
-                    var group = L.featureGroup(_this.arrayMarkers);
-                    _this.map.fitBounds(group.getBounds());
-                }
-            });
+            if (_this.arrayMarkers.length > 0) {
+                var group = L.featureGroup(_this.arrayMarkers);
+                _this.map.fitBounds(group.getBounds());
+            }
+        });
 
         $(function () {
             _this.init();
@@ -109,53 +106,53 @@ Map = (function() {
 })();
 
 Map.prototype = {
-        init: function() {
-            'use strict';
-            var _this = this;
-            this.triggerClass = new TriggerMap(_this.widgetId);
-            this.map_class = new MapLinker(_this.formID, _this.endpoint, new QuerybuilderAPI(_this.endpoint),
-                                           _this.widgetParams, _this.triggerClass);
-            var osmURL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-            var osmAttrib = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
-            var osm = new L.TileLayer(osmURL, {attribution: osmAttrib});
+    init: function() {
+        'use strict';
+        var _this = this;
+        this.triggerClass = new TriggerMap(_this.widgetId);
+        this.map_class = new MapLinker(_this.formID, _this.endpoint, new QuerybuilderAPI(_this.endpoint),
+                                       _this.widgetParams, _this.triggerClass);
+        var osmURL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+        var osmAttrib = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
+        var osm = new L.TileLayer(osmURL, {attribution: osmAttrib});
 
-            this.layer_data = new L.LayerGroup();
-            this.arrayMarkers = new Array();
+        this.layer_data = new L.LayerGroup();
+        this.arrayMarkers = [];
 
-            this.map = L.map(this.widgetId, {
-                center: [0.01, 51.405],
-                zoom: 13,
-                fullscreenControl: true,
-                fullscreenOptions: {
-                    position: 'topleft'
-                },
-                layers: [osm, this.layer_data]
-            });
+        this.map = L.map(this.widgetId, {
+            center: [0.01, 51.405],
+            zoom: 13,
+            fullscreenControl: true,
+            fullscreenOptions: {
+                position: 'topleft'
+            },
+            layers: [osm, this.layer_data]
+        });
 
-            var baseLayers = {
-                "OpenStreetMap": osm
-            };
+        var baseLayers = {
+            "OpenStreetMap": osm
+        };
 
-            var overlays = {
-                "Data Layer": this.layer_data
-            };
+        var overlays = {
+            "Data Layer": this.layer_data
+        };
 
-            L.control.layers(baseLayers, overlays).addTo(this.map);
-            this.map_class.retrieveData({containerID: this.triggerClass.getContainer()},
-                                        _this.widgetParams, this.triggerClass.triggerMap);
-        },
+        L.control.layers(baseLayers, overlays).addTo(this.map);
+        this.map_class.retrieveData({containerID: this.triggerClass.getContainer()},
+                                    _this.widgetParams, this.triggerClass.triggerMap);
+    },
 
-        addMarker: function(obj, _this) {
-            'use strict'
-            var marker = L.marker({"lat": obj.latitude, "lng": obj.longitude});
-            var popupText = obj.description;
+    addMarker: function(obj, _this) {
+        'use strict';
+        var marker = L.marker({"lat": obj.latitude, "lng": obj.longitude});
+        var popupText = obj.description;
 
-            marker.bindPopup(popupText);
+        marker.bindPopup(popupText);
 
-            marker.addTo(_this.layer_data);
-            _this.arrayMarkers.push(marker);
-        }
-    };
+        marker.addTo(_this.layer_data);
+        _this.arrayMarkers.push(marker);
+    }
+};
 
     return MapScript;
-})()
+})();

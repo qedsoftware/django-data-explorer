@@ -1,0 +1,5 @@
+{
+  "jquery": true,
+  "phantom": true,
+  "qunit": true
+}

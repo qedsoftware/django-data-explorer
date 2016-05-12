@@ -26,7 +26,6 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'django_querybuilder/static/js/*.js',
       'django_querybuilder/static/django_querybuilder/js/*.js/',
       'js_tests/public/*.js'
     ],

@@ -93,7 +93,7 @@ FilterForm = (function(){
                 event.preventDefault();
                 event.stopPropagation();
                 callback(event);
-            })
+            });
         }
     };
 
