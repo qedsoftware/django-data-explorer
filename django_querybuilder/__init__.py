@@ -12,6 +12,5 @@ from django_querybuilder.filterform import FilterForm
 from django_querybuilder.endpoint import QuerybuilderEndpoint
 from django_querybuilder.map import MetaMap
 from django_querybuilder.table import MetaTable
-from django_querybuilder.widget import Widget
 
-__all__ = ['FilterForm', 'QuerybuilderEndpoint', 'MetaMap', 'MetaTable', 'Widget']
+__all__ = ['FilterForm', 'QuerybuilderEndpoint', 'MetaMap', 'MetaTable']

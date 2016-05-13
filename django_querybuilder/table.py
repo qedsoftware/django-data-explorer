@@ -118,10 +118,14 @@ class MetaTable(MetaWidget):
         datatable = ModelQuerysetDatatable(queryset, self.get_endpoint_url())
         return datatable
 
-    def get_data(self, query_config, queryset):
+    def get_queryset(self, dummy):
+        return self.model.objects.all()
+
+    def get_data(self, endpoint, params, client_params):
+        queryset = self.get_queryset(params)
         if self.filterform is not None:
             queryset = self.filterform.filter_queryset_query_string(
-                query_config, queryset)
+                client_params, queryset)
         datatable = self.get_datatable(queryset)
         return parse_data(datatable.get_all_records())
 
@@ -129,14 +133,14 @@ class MetaTable(MetaWidget):
     def get_endpoint_url():
         return "/querybuilder/endpoint/"
 
-    def render(self, widget_params):
+    def render(self, endpoint, params):
         table_data = {
             'containerID': '#' + self.name,
             'formID': '#' + self.filterform.filter_name if self.filterform is not None else "",
             'endpointName': self.name,
-            'endpointUrl': self.get_endpoint_url(),
+            'endpointUrl': endpoint.get_url(),
             'table_id': self.name,
-            'widget_params': json.dumps(widget_params),
+            'params': json.dumps(params),
         }
         table_text = render_to_string(
             self.template_name, {

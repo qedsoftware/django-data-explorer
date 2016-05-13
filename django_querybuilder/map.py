@@ -42,12 +42,12 @@ class MetaMap(MetaWidget):
                 data, queryset)
         return queryset
 
-    @staticmethod
-    def get_endpoint_url():
-        return "querybuilder/endpoint"
+    def get_queryset(self, dummy):
+        return self.model.objects.all()
 
-    def get_data(self, query_config, queryset):
-        map_data = self.filter_data(data=query_config, queryset=queryset)
+    def get_data(self, endpoint, params, client_params):
+        queryset = self.get_queryset(params)
+        map_data = self.filter_data(data=client_params, queryset=queryset)
         return self.parse_data(map_data)
 
     def parse_data(self, data):
@@ -60,11 +60,11 @@ class MetaMap(MetaWidget):
             parsed_data.append(dict_obj)
         return parsed_data
 
-    def render(self, widget_params):
+    def render(self, endpoint, params):
         map_data = {
             'name': self.name,
-            'endpoint': self.get_endpoint_url(),
-            'widget_params': json.dumps(widget_params),
+            'endpoint': endpoint.get_url(),
+            'params': json.dumps(params),
             'filter': self.filterform.filter_name if self.filterform is not None else "",
         }
         text = render_to_string(

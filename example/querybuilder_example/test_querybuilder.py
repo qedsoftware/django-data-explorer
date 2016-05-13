@@ -4,10 +4,8 @@ import mock
 from django.test import TestCase
 from django.utils.encoding import smart_text
 
-import django_querybuilder
-
 from .models import Author, Book, City
-from .querybuilder import BasicBookTable, BookFilter, CityMap
+from .querybuilder import Endpoint, BookFilter
 
 
 class TableFiltersTestCase(TestCase):
@@ -23,25 +21,25 @@ class TableFiltersTestCase(TestCase):
         self.objects_list = [self.testbook1, self.testbook2, self.nontestbook]
 
     def test_no_filters(self):
-        records = BasicBookTable.get_data("")
+        records = Endpoint.get_widget("book-table", ()).get_data("")
         self.assertEqual(len(records), 3)
 
     def test_single_text_filter(self):
-        records = BasicBookTable.get_data("pages__gt=19")
+        records = Endpoint.get_widget("book-table", ()).get_data("pages__gt=19")
         self.assertEqual(len(records), 1)
 
     def test_many_records(self):
         PAGE_DEFAULT = 25
         for _ in range(PAGE_DEFAULT):
             Book.objects.create(title="Book", author=self.fakeauthor)
-        records = BasicBookTable.get_data("")
+        records = Endpoint.get_widget("book-table", ()).get_data("")
         self.assertEqual(len(records), PAGE_DEFAULT + 3)
 
 
 
 class TableStrRepresentation(TestCase):
     def test_str(self):
-        text = smart_text(BasicBookTable)
+        text = smart_text(Endpoint.get_widget("book-table", ()))
         self.assertIn("Title", text)
 
 
@@ -114,7 +112,7 @@ class MapGetDataTestCase(TestCase):
                                          latitude=35.0, longitude=22.0)
 
     def test_get_all_data(self):
-        city_map = CityMap
+        city_map = Endpoint.get_widget("city-map", ())
         query_config = {}
         data = city_map.get_data(query_config)
         self.assertEqual(data, [
@@ -129,19 +127,13 @@ class MapGetDataTestCase(TestCase):
              'latitude': 35.0, 'longitude': 22.0}])
 
     def test_get_some_data(self):
-        city_map = CityMap
+        city_map = Endpoint.get_widget("city-map", ())
         query_config = 'citizens_number__gt=30&latitude__lt=34.0'
         data = city_map.get_data(query_config)
         self.assertEqual(data[0]['latitude'], 33.0)
 
     def test_get_no_data(self):
-        city_map = CityMap
+        city_map = Endpoint.get_widget("city-map", ())
         query_config = 'citizens_number__gt=30&latitude__lt=20.0'
         data = city_map.get_data(query_config)
         self.assertEqual(data, [])
-
-    @staticmethod
-    def test_map_no_descr():
-        """Make sure that the constructor works for maps without descriptions.
-        """
-        django_querybuilder.Widget("nonexistent", City)

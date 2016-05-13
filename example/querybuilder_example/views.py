@@ -1,10 +1,6 @@
-import sys
-
 from django.views.generic import TemplateView
 
-from django_querybuilder import QuerybuilderEndpoint
-from querybuilder_example.querybuilder import (BasicAuthorTable, CityFilterInstance,
-                                               BasicBookTable, CityMap)
+from querybuilder_example.querybuilder import (CityFilterInstance, Endpoint)
 
 
 class BookTableView(TemplateView):
@@ -12,9 +8,9 @@ class BookTableView(TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
-            'book_table': BasicBookTable,
-            'author_table': BasicAuthorTable,
-            "filterform": BasicBookTable.metawidget.filterform
+            'book_table': Endpoint.get_widget("book-table", ()),
+            'author_table': Endpoint.get_widget("author-table", ()),
+            "filterform": Endpoint.get_widget("book-table", ()).unbound_widget.filterform
         }
 
 
@@ -23,7 +19,7 @@ class CityMapView(TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
-            "map": CityMap
+            "map": Endpoint.get_widget("city-map", ())
         }
 
 
@@ -32,8 +28,8 @@ class CityMapFilterView(TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
-            'city_filterform': CityMap.metawidget.filterform,
-            'city_map': CityMap,
+            'city_filterform': Endpoint.get_widget("city-map", ()).unbound_widget.filterform,
+            'city_map': Endpoint.get_widget("city-map", ()),
         }
 
 
@@ -44,7 +40,3 @@ class CityFilterView(TemplateView):
         return {
             "filterform": CityFilterInstance
         }
-
-
-class Endpoint(QuerybuilderEndpoint):
-    querybuilder = sys.modules['querybuilder_example.querybuilder']

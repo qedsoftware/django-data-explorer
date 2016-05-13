@@ -32,7 +32,7 @@ TriggerMap = (function() {
 
 MapLinker = (function() {
     'use strict';
-    var MapLinker = function(formID, endpointName, api, widgetParams,
+    var MapLinker = function(formID, endpointName, api, params,
                              triggerClass) {
         if (formID) {
             this.form = $(formID).data('FilterForm');
@@ -45,19 +45,19 @@ MapLinker = (function() {
             this.form.onSubmit(function(event) {
                 event.preventDefault();
                 var queryConfig = _this.form.serialize();
-                _this.retrieveData(queryConfig, widgetParams, triggerClass.triggerMap);
+                _this.retrieveData(queryConfig, params, triggerClass.triggerMap);
             });
         }
         else {
             _this.retrieveData({containerID: triggerClass.getContainer()},
-                               widgetParams, triggerClass.triggerMap);
+                                params, triggerClass.triggerMap);
         }
     };
 
     MapLinker.prototype = {
-        retrieveData: function(queryConfig, widgetParams, callback) {
+        retrieveData: function(queryConfig, params, callback) {
             return this.api.retrieveData(this.triggerClass.getContainer(),
-                                         queryConfig, widgetParams, callback);
+                                         queryConfig, params, callback);
         }
     };
 
@@ -73,8 +73,8 @@ Map = (function() {
         this.layer_data = null;
         this.formID = mapData.filter ? '#' + mapData.filter : null;
         this.widgetId = mapData.name;
-        this.endpoint = '/' + mapData.endpoint + '/';
-        this.widgetParams = mapData.widgetParams;
+        this.endpoint = mapData.endpoint;
+        this.params = mapData.params;
         var _this = this;
         new FilterForm(this.formID);
 
@@ -111,7 +111,7 @@ Map.prototype = {
         var _this = this;
         this.triggerClass = new TriggerMap(_this.widgetId);
         this.map_class = new MapLinker(_this.formID, _this.endpoint, new QuerybuilderAPI(_this.endpoint),
-                                       _this.widgetParams, _this.triggerClass);
+                                       _this.params, _this.triggerClass);
         var osmURL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
         var osmAttrib = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
         var osm = new L.TileLayer(osmURL, {attribution: osmAttrib});
@@ -139,7 +139,7 @@ Map.prototype = {
 
         L.control.layers(baseLayers, overlays).addTo(this.map);
         this.map_class.retrieveData({containerID: this.triggerClass.getContainer()},
-                                    _this.widgetParams, this.triggerClass.triggerMap);
+                                    _this.params, this.triggerClass.triggerMap);
     },
 
     addMarker: function(obj, _this) {
