@@ -4,8 +4,6 @@ __pycache__
 /node_modules
 /bower_components
 npm-debug.log
-/django_querybuilder/static/django_querybuilder/libs
-/django_querybuilder/static/django_querybuilder/css
 /js_tests/coverage
 /reports
 /example/src

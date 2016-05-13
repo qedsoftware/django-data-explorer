@@ -1,0 +1,107 @@
+@charset "UTF-8";
+ul.ff-tabs-list {
+  font-family: "Open Sans", Calibri, Arial, sans-serif;
+  color: #999;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  -webkit-flex-flow: row wrap;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-bottom: solid 1px #ddd; }
+  ul.ff-tabs-list li {
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin: 0;
+    text-align: center;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
+  ul.ff-tabs-list a {
+    color: inherit;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0.2em;
+    text-decoration: none; }
+    ul.ff-tabs-list a:focus {
+      outline: none; }
+  ul.ff-tabs-list .ui-tabs-active {
+    color: #337ab7;
+    background-color: #e1edfa;
+    border-radius: 0.5em 0.5em 0 0; }
+
+.ff-tab-pane {
+  font-family: "Open Sans", Calibri, Arial, sans-serif;
+  margin: 0 0.5em; }
+
+.ff-group {
+  width: 150px; }
+  .ff-group label {
+    font-size: x-small;
+    margin: 0;
+    font-weight: 900;
+    color: #666; }
+  .ff-group input {
+    outline: none;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 4px; }
+    .ff-group input:focus {
+      -webkit-box-shadow: 0 0 5px #51cbee;
+              box-shadow: 0 0 5px #51cbee; }
+    .ff-group input[type='text'], .ff-group input[type='email'], .ff-group input[type='number'], .ff-group input[type='password'], .ff-group input[type='date'], .ff-group input[type='search'], .ff-group input[type='time'], .ff-group input[type='datetime'] {
+      padding: 0.2em 0.5em;
+      width: 150px; }
+    .ff-group input[type='radio'], .ff-group input[type='checkbox'] {
+      font-size: 1.2em;
+      -webkit-appearance: none;
+         -moz-appearance: none;
+              appearance: none;
+      margin-left: 0.5em;
+      width: 1.2em;
+      height: 1.2em;
+      content: '';
+      background: #fff;
+      position: relative; }
+      .ff-group input[type='radio']:checked:after, .ff-group input[type='checkbox']:checked:after {
+        position: absolute;
+        left: 0.2em;
+        content: '✔';
+        color: black; }
+    .ff-group input[type='radio'] {
+      border-radius: 0.5em; }
+
+filter-form form .ff-tab-pane {
+  padding: 0 !important; }
+
+.ff-submit {
+  background-color: #6CC3A0;
+  font-size: small !important;
+  border: none;
+  color: white;
+  padding: 0.5em 1em;
+  border-radius: 0.3em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block; }
+  .ff-submit:hover {
+    background-color: #49b388;
+    cursor: pointer; }
+
+.ff-footer {
+  font-family: "Open Sans", Calibri, Arial, sans-serif;
+  margin: 0.5em; }

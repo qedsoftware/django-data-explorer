@@ -29,6 +29,17 @@ For development run
 
 that way build will happen automatically each time you change any related files.
 
+Django static files - important note
+------------------------------------
+Contents of the folders listed below are generated automatically.
+
+    /django_querybuilder/static/django_querybuilder/libs
+    /django_querybuilder/static/django_querybuilder/css
+
+**Do not modify them manually.**
+
+They are included to enable the package to work immediately after installing it via pip.
+
 Running tests
 =============
 
