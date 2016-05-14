@@ -71,3 +71,6 @@ class MetaMap(MetaWidget):
             self.template_name, {'map_data': json.dumps(map_data),
                                  'name': self.name})
         return text
+
+    def is_accessible(self, params, request):
+        return True

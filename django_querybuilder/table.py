@@ -109,6 +109,9 @@ class MetaTable(MetaWidget):
         self.filterform = filterform
         self.template_name = 'django_querybuilder/table_widget.html'
 
+    def is_accessible(self, params, request):
+        return True
+
     def get_datatable(self, queryset=()):
         class ModelQuerysetDatatable(QuerysetDatatable):
             class Meta(object):

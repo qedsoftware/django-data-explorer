@@ -1,5 +1,6 @@
 import json
 
+from django.core.urlresolvers import reverse
 from django.test import RequestFactory, TestCase
 
 from . import querybuilder
@@ -29,3 +30,14 @@ class EndpointTest(TestCase):
         response = self.view(request)
         content = json.loads(response.content.decode())
         self.assertEqual(content['status'], 'WIDGET_NOT_FOUND')
+
+    def test_endpoint_forbidden(self):
+        class ForbiddenTable(querybuilder.MetaTable):
+            def is_accessible(self, params, request):
+                return False
+
+        querybuilder.Endpoint.register(ForbiddenTable("forbidden", None))
+
+        response = self.client.post(reverse("example-endpoint"),
+                                    data={"widget_id": "forbidden"})
+        self.assertEqual(response.status_code, 403)

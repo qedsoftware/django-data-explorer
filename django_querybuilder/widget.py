@@ -4,6 +4,9 @@ class MetaWidget(object):
         self.name = name
         self.model = model
 
+    def is_accessible(self, params, request):
+        raise NotImplementedError
+
     def render(self, endpoint, params):
         raise NotImplementedError
 

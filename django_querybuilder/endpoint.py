@@ -22,6 +22,9 @@ class BoundWidget(object):
     def get_data(self, client_params):
         return self.unbound_widget.get_data(self.endpoint, self.params, client_params)
 
+    def is_accessible(self, request):
+        return self.unbound_widget.is_accessible(self.params, request)
+
 
 class BaseEndpoint(View):
     """JSON view that enables the widgets access to database.
@@ -48,10 +51,13 @@ class BaseEndpoint(View):
         widget_id = request.POST.get('widget_id')
         widget = self.get_widget(widget_id, widget_params)
         if widget is not None:
-            data = widget.get_data(request.POST.get('query_config'))
-            return JsonResponse({'status': 'OK', 'data': data})
+            if not widget.is_accessible(request):
+                return JsonResponse({'status': "FORBIDDEN"}, status=403)
+            else:
+                data = widget.get_data(request.POST.get('query_config'))
+                return JsonResponse({'status': 'OK', 'data': data})
         else:
-            return JsonResponse({'status': 'WIDGET_NOT_FOUND'})
+            return JsonResponse({'status': 'WIDGET_NOT_FOUND'}, status=404)
 
     @classmethod
     def get_widget(cls, name, params):
