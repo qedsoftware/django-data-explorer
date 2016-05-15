@@ -4,6 +4,8 @@
  * @param formID {string} - ID of the FilterForm, optional
  * @param endpointName {string} - name of the widget used for routing requests
  * @param api {QuerybuilderAPI} - data source
+ * @param widget_params {string} - manually defined data that will be passed
+    to the API together with the request
  */
 
 Table = (function(){

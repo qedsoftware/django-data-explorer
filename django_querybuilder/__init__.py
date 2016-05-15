@@ -2,9 +2,23 @@
 
 This package facilitates creating AJAX driven tables and maps with filtering.
 
-Basic usage is to subclass QuerybuilderEndpoint in urls.py, override its
-querybuilder field to the Python module, where you store your widgets,
-define your widgets there (Tables and Maps) and render them in template.
+You can see example usage in directory examples.
+
+Basic usage is to create dedicated file querybuilder.py in your app directory,
+subclass QuerybuilderEndpoint (and set field name) and add it to urls.py under
+the same name.
+
+Then you can add widgets to the view. Simply create objects of class MetaMap
+and MetaTable and register them in the endpoint (endpoint's method register).
+
+Afterwards, you can use the widgets with endpoint.get_widget(widget_name,
+params) and render it in the view.
+
+For most basic usage params will be an empty dictionary, but whatever you put
+there, it will be passed to widget's get_data function.
+
+Params can be used to pass additional parameters to get_data function, which
+you can override to subselect the dataset.
 """
 
 

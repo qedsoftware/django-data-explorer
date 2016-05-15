@@ -53,10 +53,18 @@ def _wrap_filter_in_group(line):
 
 @python_2_unicode_compatible
 class FilterForm(six.with_metaclass(FilterFormMetaclass, BaseFilterForm)):
-    """Renders filters. Wrapper for django-filter. See django-filter
-    documentation for usage.
+    """Declare filters.
+
+    FilterForm can be used to store filters, render them as HTML and apply
+    to queryset given data provided by the HTML form.
+
+    Wrapper for django-filter. See django-filter documentation for detailed
+    usage.
     """
     def filter_queryset(self, filter_data=None, queryset=None):
+        """Return filtered queryset given original queryset and form data
+        represented as Django QueryDict.
+        """
         if filter_data is None or filter_data == {}:
             filter_data = self.initial
         kwargs = {}
@@ -72,10 +80,15 @@ class FilterForm(six.with_metaclass(FilterFormMetaclass, BaseFilterForm)):
         return result
 
     def filter_queryset_query_string(self, query_string, queryset):
+        """Apply filters to the queryset given form data represented as
+        urlencoded string. This is the way how it is sent by the browser in POST
+        request.
+        """
         querydict = QueryDict(query_string)
         return self.filter_queryset(querydict, queryset)
 
     def __str__(self):
+        """Render filters as HTML."""
         row_html = '%(label)s %(field)s'
         form_str = self.form._html_output(
             normal_row=_wrap_filter_in_group(row_html),

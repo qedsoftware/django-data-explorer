@@ -1,11 +1,4 @@
-/** AJAX map widget.
- * @constructor
- * @description Reads from some global variables? Well, this has to be
- *    refactored anyway.
- */
-var MapScript = (function() {
-
-TriggerMap = (function() {
+var TriggerMap = (function() {
     'use strict';
     var container;
 
@@ -30,7 +23,7 @@ TriggerMap = (function() {
     return TriggerMap;
 })();
 
-MapLinker = (function() {
+var MapLinker = (function() {
     'use strict';
     var MapLinker = function(formID, endpointName, api, params,
                              triggerClass) {
@@ -64,7 +57,17 @@ MapLinker = (function() {
     return MapLinker;
 })();
 
-Map = (function() {
+/** AJAX map widget.
+ * @constructor
+ * @param {string} mapData - JSON string representing map parameters
+ * @param {string} mapData.name - widget name used as container ID and
+    endpoint parameter
+ * @param {string} mapData.endpoint - URL of the API endpoint
+ * @param {string} mapData.params - manually defined string that can be passed
+    to the endpoint
+ * @param {string} mapData.filter - optional filter ID
+ */
+var Map = (function() {
     'use strict';
     var Map = function(mapData) {
         mapData = JSON.parse(mapData);
@@ -153,6 +156,3 @@ Map.prototype = {
         _this.arrayMarkers.push(marker);
     }
 };
-
-    return MapScript;
-})();

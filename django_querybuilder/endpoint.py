@@ -27,14 +27,21 @@ class BoundWidget(object):
 
 
 class BaseEndpoint(View):
-    """JSON view that enables the widgets access to database.
+    """JSON view that provides the JavaScript widgets with the access to the
+    data.
 
-    Add it to urls.py, as a standard view: QuerybuilderEndpoint().as_view().
+    You can subclass it in your dedicated querybuilder Python file and set
+    field name, so that it matches the name of the view (it will be reversed
+    using Django resolvers afterwards).
 
-    Parameter name should match view name.
+    Add it to urls.py, as a standard view: YourEndpoint.as_view().
 
-    POST requests should be of form: {"widget_id": ..., "query_config": ...}
-    and returns output of widget.get_data(client_params).
+    Add all widgets that you want to support using method register.
+
+    Use dedicated JavaScript QuerybuilderAPI class to make queries.
+    POST requests should be of form: {"widget_id": ..., "query_config": ...,
+    "params": ...} and return output of widget_class.get_data(endpoint, params,
+    client_params).
     """
 
     name = None
