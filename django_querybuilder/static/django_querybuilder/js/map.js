@@ -1,22 +1,20 @@
 var TriggerMap = (function() {
     'use strict';
-    var container;
-
     var TriggerMap = function(containerID) {
-        container = containerID ? containerID : 'filter';
+        this.container = containerID ? containerID : 'filter';
     };
 
     TriggerMap.prototype = {
         setContainer: function(value) {
-            container = value;
+            this.container = value;
         },
 
         getContainer: function() {
-            return container;
+            return this.container;
         },
 
         triggerMap: function(filteredData) {
-            $('#' + container).trigger("update:Map", [filteredData]);
+            $('#' + this.container).trigger("update:Map", [filteredData]);
         }
     };
 
@@ -38,12 +36,13 @@ var MapLinker = (function() {
             this.form.onSubmit(function(event) {
                 event.preventDefault();
                 var queryConfig = _this.form.serialize();
-                _this.retrieveData(queryConfig, params, triggerClass.triggerMap);
+                _this.retrieveData(queryConfig, params,
+                                   triggerClass.triggerMap.bind(triggerClass));
             });
         }
         else {
             _this.retrieveData({containerID: triggerClass.getContainer()},
-                                params, triggerClass.triggerMap);
+                                params, triggerClass.triggerMap.bind(triggerClass));
         }
     };
 
@@ -141,8 +140,8 @@ Map.prototype = {
         };
 
         L.control.layers(baseLayers, overlays).addTo(this.map);
-        this.map_class.retrieveData({containerID: this.triggerClass.getContainer()},
-                                    _this.params, this.triggerClass.triggerMap);
+        this.map_class.retrieveData({containerID: this.triggerClass.getContainer()}, _this.params,
+                                    this.triggerClass.triggerMap.bind(this.triggerClass));
     },
 
     addMarker: function(obj, _this) {
