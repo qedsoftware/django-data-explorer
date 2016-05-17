@@ -1,3 +1,5 @@
+import string
+
 from django.http import QueryDict
 from django.template.loader import render_to_string
 from django.utils import six
@@ -45,10 +47,31 @@ class BaseFilterForm(BaseFilterSet):
         self.initial = initial or {}
         self.filter_name = filter_name
         BaseFilterSet.__init__(self, data, queryset, prefix, strict)
+        for l in list(self.form.fields):
+            new_label = parse_to_label(l)
+            self.form.fields[l].label = new_label
 
 
 def _wrap_filter_in_group(line):
     return '<div class="ff-group">' + line + '</div>'
+
+def parse_to_label(value):
+    lookup_types = {
+        '__iexact': ' (case insensitive)',
+        '__lt': ' less than',
+        '__gt': ' greater than',
+        '__gte': ' greater than or equal to',
+        '__lte': ' less than or equal to',
+        '__startswith': ' starts with',
+        '__endswith': ' ends with',
+        '__contains': ' contains',
+        '__not_contains': ' does not contain'
+    }
+    for k in lookup_types:
+        value = value.replace(k, lookup_types[k])
+    value = value.replace('__', ' ')
+    value = value.replace('_', ' ')
+    return string.capwords(value)
 
 
 @python_2_unicode_compatible

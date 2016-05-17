@@ -22,6 +22,10 @@ class BookFilter(FilterForm):
 
 class CityFilter(FilterForm):
 
+    def __init__(self, filter_name):
+        FilterForm.__init__(self, filter_name)
+        self.form.fields['name'].label = "City name is:"
+
     class Meta(object):
         model = City
         fields = {

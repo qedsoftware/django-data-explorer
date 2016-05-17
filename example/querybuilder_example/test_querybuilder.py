@@ -101,6 +101,19 @@ class FilterFormTestCase(TestCase):
         parsed = filter_queryset_mock.call_args[0][0]
         self.assertEqual(parsed, {"a": ["b"], "c": ["d"]})
 
+    def test_filter_label_string(self):
+        filterform = BookFilter('filter-name')
+        self.assertEqual(filterform.form.fields['pages__lt'].label,
+                         'Pages Less Than')
+        self.assertEqual(filterform.form.fields['pages__gt'].label,
+                         'Pages Greater Than')
+        self.assertEqual(filterform.form.fields['publication_date'].label,
+                         'Publication Date')
+        self.assertEqual(filterform.form.fields['publication_date__year__gt'].label,
+                         'Publication Date Year Greater Than')
+        self.assertEqual(filterform.form.fields['publication_date__year'].label,
+                         'Publication Date Year')
+
 
 class MapGetDataTestCase(TestCase):
     def setUp(self):
