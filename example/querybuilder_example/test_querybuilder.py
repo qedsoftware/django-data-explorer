@@ -7,6 +7,8 @@ from django.utils.encoding import smart_text
 from .models import Author, Book, City
 from .querybuilder import Endpoint, BookFilter
 
+import django_querybuilder.filterform
+
 
 class TableFiltersTestCase(TestCase):
     def setUp(self):
@@ -34,7 +36,6 @@ class TableFiltersTestCase(TestCase):
             Book.objects.create(title="Book", author=self.fakeauthor)
         records = Endpoint.get_widget("book-table", ()).get_data("")
         self.assertEqual(len(records), PAGE_DEFAULT + 3)
-
 
 
 class TableStrRepresentation(TestCase):
@@ -101,18 +102,37 @@ class FilterFormTestCase(TestCase):
         parsed = filter_queryset_mock.call_args[0][0]
         self.assertEqual(parsed, {"a": ["b"], "c": ["d"]})
 
+
+class FilterFormParseToLabelTests(TestCase):
     def test_filter_label_string(self):
         filterform = BookFilter('filter-name')
         self.assertEqual(filterform.form.fields['pages__lt'].label,
-                         'Pages Less Than')
+                         'Pages less than')
         self.assertEqual(filterform.form.fields['pages__gt'].label,
-                         'Pages Greater Than')
+                         'Pages greater than')
         self.assertEqual(filterform.form.fields['publication_date'].label,
-                         'Publication Date')
+                         'Publication date')
         self.assertEqual(filterform.form.fields['publication_date__year__gt'].label,
-                         'Publication Date Year Greater Than')
+                         'Publication date year greater than')
         self.assertEqual(filterform.form.fields['publication_date__year'].label,
-                         'Publication Date Year')
+                         'Publication date year')
+
+    def test_parse_to_label(self):
+        label = django_querybuilder.filterform.parse_to_label("lat__gte")
+        self.assertEqual(label, "Lat greater than or equal to")
+
+    def test_parse_to_label_empty(self):
+        """Tests if the function doesn't crash on empty label."""
+        label = django_querybuilder.filterform.parse_to_label("")
+        self.assertEqual(label, "")
+
+    def test_parse_to_label_underscore(self):
+        label = django_querybuilder.filterform.parse_to_label("a_b")
+        self.assertEqual(label, "A b")
+
+    def test_parse_to_label_trailing_underscore(self):
+        label = django_querybuilder.filterform.parse_to_label("a___b")
+        self.assertEqual(label, "A b")
 
 
 class MapGetDataTestCase(TestCase):

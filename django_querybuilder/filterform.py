@@ -1,5 +1,3 @@
-import string
-
 from django.http import QueryDict
 from django.template.loader import render_to_string
 from django.utils import six
@@ -55,23 +53,32 @@ class BaseFilterForm(BaseFilterSet):
 def _wrap_filter_in_group(line):
     return '<div class="ff-group">' + line + '</div>'
 
+
 def parse_to_label(value):
+    parts = value.split("__")
+    if len(parts) > 1:
+        parts[-1] = parse_suffix(parts[-1])
+    parts = [
+        ' '.join(p for p in part.split('_') if p)
+        for part in parts
+    ]
+    value = ' '.join(part for part in parts if part)
+    return value.capitalize()
+
+
+def parse_suffix(word):
     lookup_types = {
-        '__iexact': ' (case insensitive)',
-        '__lt': ' less than',
-        '__gt': ' greater than',
-        '__gte': ' greater than or equal to',
-        '__lte': ' less than or equal to',
-        '__startswith': ' starts with',
-        '__endswith': ' ends with',
-        '__contains': ' contains',
-        '__not_contains': ' does not contain'
+        'iexact': '(case insensitive)',
+        'lt': 'less than',
+        'gt': 'greater than',
+        'gte': 'greater than or equal to',
+        'lte': 'less than or equal to',
+        'startswith': 'starts with',
+        'endswith': 'ends with',
+        'contains': 'contains',
+        'not_contains': 'does not contain'
     }
-    for k in lookup_types:
-        value = value.replace(k, lookup_types[k])
-    value = value.replace('__', ' ')
-    value = value.replace('_', ' ')
-    return string.capwords(value)
+    return lookup_types.get(word, word)
 
 
 @python_2_unicode_compatible
