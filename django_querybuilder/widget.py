@@ -1,14 +1,18 @@
-class MetaWidget(object):
+from django.utils.six import python_2_unicode_compatible
 
-    def __init__(self, name, model):
-        self.name = name
-        self.model = model
 
-    def is_accessible(self, params, request):
+@python_2_unicode_compatible
+class Widget(object):
+
+    def __init__(self, endpoint, params):
+        self.endpoint = endpoint
+        self.params = params
+
+    def __str__(self):
         raise NotImplementedError
 
-    def render(self, endpoint, params):
+    def get_data(self, client_params):
         raise NotImplementedError
 
-    def get_data(self, endpoint, params, client_params):
+    def is_accessible(self, request):
         raise NotImplementedError

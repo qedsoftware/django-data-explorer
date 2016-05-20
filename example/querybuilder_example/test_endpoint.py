@@ -32,11 +32,13 @@ class EndpointTest(TestCase):
         self.assertEqual(content['status'], 'WIDGET_NOT_FOUND')
 
     def test_endpoint_forbidden(self):
-        class ForbiddenTable(querybuilder.MetaTable):
-            def is_accessible(self, params, request):
+        class ForbiddenTable(querybuilder.Table):
+            name = "forbidden"
+
+            def is_accessible(self, request):
                 return False
 
-        querybuilder.Endpoint.register(ForbiddenTable("forbidden", None))
+        querybuilder.Endpoint.register(ForbiddenTable)
 
         response = self.client.post(reverse("example-endpoint"),
                                     data={"widget_id": "forbidden"})

@@ -4,26 +4,8 @@ from django.core.urlresolvers import reverse
 from django.http import JsonResponse
 from django.utils import six
 from django.utils.decorators import method_decorator
-from django.utils.encoding import python_2_unicode_compatible
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
-
-
-@python_2_unicode_compatible
-class BoundWidget(object):
-    def __init__(self, endpoint, unbound_widget, params):
-        self.endpoint = endpoint
-        self.unbound_widget = unbound_widget
-        self.params = params
-
-    def __str__(self):
-        return self.unbound_widget.render(self.endpoint, self.params)
-
-    def get_data(self, client_params):
-        return self.unbound_widget.get_data(self.endpoint, self.params, client_params)
-
-    def is_accessible(self, request):
-        return self.unbound_widget.is_accessible(self.params, request)
 
 
 class BaseEndpoint(View):
@@ -71,7 +53,7 @@ class BaseEndpoint(View):
         meta_widget = cls.items.get(name)
         if meta_widget is None:
             return None
-        return BoundWidget(cls, meta_widget, params)
+        return meta_widget(cls, params)
 
     @classmethod
     def get_meta_widget_by_id(cls, widget_id):

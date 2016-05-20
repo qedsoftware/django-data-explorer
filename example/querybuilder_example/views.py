@@ -10,7 +10,7 @@ class BookTableView(TemplateView):
         return {
             'book_table': Endpoint.get_widget("book-table", ()),
             'author_table': Endpoint.get_widget("author-table", ()),
-            "filterform": Endpoint.get_widget("book-table", ()).unbound_widget.filterform
+            "filterform": Endpoint.get_widget("book-table", ()).filterform
         }
 
 
@@ -28,7 +28,7 @@ class CityMapFilterView(TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
-            'city_filterform': Endpoint.get_widget("city-map", ()).unbound_widget.filterform,
+            'city_filterform': Endpoint.get_widget("city-map", ()).filterform,
             'city_map': Endpoint.get_widget("city-map", ()),
         }
 

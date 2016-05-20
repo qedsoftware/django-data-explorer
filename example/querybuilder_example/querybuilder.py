@@ -1,7 +1,7 @@
 import datetime
 from dateutil import relativedelta
 
-from django_querybuilder import FilterForm, MetaMap, MetaTable, QuerybuilderEndpoint
+from django_querybuilder import FilterForm, Map, Table, QuerybuilderEndpoint
 
 from .models import Author, Book, City
 
@@ -34,12 +34,6 @@ class CityFilter(FilterForm):
             'citizens_number': ['gt'],
         }
 
-
-def city_description_function(model):
-    return "City %s with latitude %d and longitude %d" % (str(model), model.latitude,
-                                                          model.longitude)
-
-
 CityFilterInstance = CityFilter("city-filter")
 
 
@@ -48,16 +42,33 @@ def get_age(model):
     return delta.years
 
 
-Endpoint.register(
-    MetaMap(name="city-map", model=City, filterform=CityFilterInstance,
-            description_func=city_description_function))
+@Endpoint.register
+class CityMap(Map):
+    name = "city-map"
+    model = City
+    filterform = CityFilterInstance
 
-Endpoint.register(MetaTable("author-table", Author,
-                            columns=['name', 'birth_date', ("Age", get_age)]))
+    @staticmethod
+    def description(model):
+        return "City %s with latitude %d and longitude %d" % (
+            str(model), model.latitude, model.longitude)
 
-Endpoint.register(MetaTable(
-    "book-table", Book, columns=[
+
+@Endpoint.register
+class AuthorTable(Table):
+    name = "author-table"
+    model = Author
+    columns = ['name', 'birth_date', ("Age", get_age)]
+
+
+@Endpoint.register
+class BookTable(Table):
+    name = "book-table"
+    model = Book
+    columns = [
         ("Author name", 'author__name'),
         'title',
         'pages',
-        'publication_date'], filterform=BookFilter("book-filter")))
+        'publication_date'
+    ]
+    filterform = BookFilter("book-filter")
