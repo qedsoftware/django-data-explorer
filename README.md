@@ -1,15 +1,35 @@
-Dependencies
-============
+Django Querybuilder facilitates visualizing data using AJAX tables and maps
+ with filters in Django applications.
 
-Python
-------
+Running examples
+================
 
-Install Python requirements with pip.
+You can see example Django project using Django Querybuilder in directory
+`example`. Go to the directory and execute:
 
     pip install -r requirements.txt
 
-Frontend
---------
+And then:
+
+    ./manage.py runserver
+
+
+Using in your application
+=========================
+
+Add those lines to you project requirements or use them as PIP arguments.
+
+    -e git+git://github.com/qedsoftware/django-querybuilder#egg=django-querybuilder
+    -e git+git://github.com/annaproch/django-datatable-view#egg=django-datatable-view   # for querybuilder
+
+Afterwards, you can use our package the same way as in the example. You can
+ also consult docstrings.
+
+For developers
+==============
+
+Frontend requirements
+---------------------
 
 To get frontend dependencies, you need to have `Node.js` installed.
 
@@ -40,6 +60,18 @@ Contents of the folders listed below are generated automatically.
 
 They are included to enable the package to work immediately after installing it via pip.
 
+Documentation
+-------------
+
+In Python, see docstrings for documentation. You can also browse them using
+`help` method and using:
+
+    python -m pydoc django_querybuilder
+
+Generate JavaScript docs into directory `js_docs`:
+
+    npm run js-docs
+
 Running tests
 =============
 
@@ -56,18 +88,6 @@ Frontend
 All tests
 --------
     ./jenkins.py
-
-Docs
-====
-
-Generate JavaScript docs into directory `js_docs`:
-
-    npm run js-docs
-
-In Python, see docstrings for documentation. You can also browse them using
-`help` method and using:
-
-    python -m pydoc django_querybuilder
 
 Test coverage
 =============
