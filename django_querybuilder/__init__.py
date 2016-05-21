@@ -1,12 +1,8 @@
 """Querybuilder Django package.
 
-This package facilitates creating AJAX driven tables and maps with filtering.
-
-You can see example usage in directory examples.
-
-Basic usage is to create dedicated file querybuilder.py in your app directory,
-subclass QuerybuilderEndpoint (and set field name) and add it to urls.py under
-the same name.
+Recommended usage is to create dedicated file querybuilder.py in your app
+directory, subclass QuerybuilderEndpoint (and set field name) and add it to
+urls.py under the same name.
 
 Then you can add widgets to the view. Simply create objects of class MetaMap
 and MetaTable and register them in the endpoint (endpoint's method register).

@@ -40,3 +40,7 @@ class CityFilterView(TemplateView):
         return {
             "filterform": CityFilterInstance
         }
+
+
+class ExampleList(TemplateView):
+    template_name = "querybuilder_example/example_list.html"
