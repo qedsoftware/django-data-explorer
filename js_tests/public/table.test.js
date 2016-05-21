@@ -18,7 +18,7 @@ test('Update after form submission.', function(assert) {
         QuerybuilderAPI.prototype = {
             retrieveData: function(endpointName, query_config, widget_params, callback) {
                 assert.ok(true);
-                callback({data: []});
+                callback({data: {aaData:[], iTotalRecords:0, iTotalDisplayRecords:0}});
             }
         };
         return QuerybuilderAPI;
@@ -40,7 +40,7 @@ test('Initialize without FilterForm', function(assert) {
         };
         QuerybuilderAPI.prototype = {
             retrieveData: function(endpointName, query_config, widget_params, callback) {
-                callback({data: 'test'});
+                callback({data: {aaData:[], iTotalRecords:0, iTotalDisplayRecords:0}});
             }
         };
         return QuerybuilderAPI;

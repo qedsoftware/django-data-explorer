@@ -7,15 +7,14 @@ from django.utils.encoding import smart_text, python_2_unicode_compatible
 from django.utils.html import mark_safe
 
 from datatableview.datatables import LegacyDatatable
-from datatableview.exceptions import SkipRecord
 
 from .widget import Widget
 
 
 class QuerysetDatatable(LegacyDatatable):
-    def __init__(self, object_list=(), url='', *args, **kwargs):
+    def __init__(self, object_list=(), url='', query_config=None, *args, **kwargs):
         super(QuerysetDatatable, self).__init__(
-            object_list, url, *args, **kwargs)
+            object_list, url, query_config=query_config, *args, **kwargs)
         self.allowed_options = [
             'search', 'start_offset', 'page_length', 'ordering', 'filters']
 
@@ -62,23 +61,6 @@ class QuerysetDatatable(LegacyDatatable):
 
         return queryset
 
-    def get_records_list(self):
-        return self._records
-
-    def get_all_records(self):
-        if not hasattr(self, '_records'):
-            self.populate_records()
-
-        page_data = []
-        for obj in self._records:
-            try:
-                record_data = self.get_record_data(obj)
-            except SkipRecord:
-                pass
-            else:
-                page_data.append(record_data)
-        return page_data
-
     def get_column_value(self, obj, column, **kwargs):
         for source in column.sources:
             if hasattr(source, "__call__"):
@@ -87,13 +69,16 @@ class QuerysetDatatable(LegacyDatatable):
         return column.value(obj, **kwargs)
 
 
-def parse_data(records):
-    data = []
-    for record in records:
-        for attr in ['pk', '_extra_data']:
-            record.pop(attr)
-        data.append(dict(record))
-    return data
+def parse_response(datatable):
+    return {
+        'sEcho': datatable.query_config.get('sEcho', None),
+        'iTotalRecords': datatable.total_initial_record_count,
+        'iTotalDisplayRecords': datatable.unpaged_record_count,
+        'aaData': [dict(record, **{
+            'DT_RowId': record.pop('pk'),
+            'DT_RowData': record.pop('_extra_data'),
+        }) for record in datatable.get_records()],
+    }
 
 
 @python_2_unicode_compatible
@@ -108,25 +93,34 @@ class Table(Widget):
     def is_accessible(self, request):
         return True
 
-    def get_datatable(self, queryset=()):
+    def get_datatable(self, queryset=(), client_params=None):
         class ModelQuerysetDatatable(QuerysetDatatable):
             class Meta(object):
                 model = self.model
                 columns = self.columns
                 structure_template = "django_querybuilder/datatable_template.html"
-        datatable = ModelQuerysetDatatable(queryset, self.endpoint.get_url())
+        datatable = ModelQuerysetDatatable(queryset, self.endpoint.get_url(),
+                                           query_config=client_params)
         return datatable
 
     def get_queryset(self, dummy):
         return self.model.objects.all()
 
     def get_data(self, client_params):
+        try:
+            client_params = json.loads(client_params)
+        except ValueError:
+            return None
+        filter_params = client_params.get('filter_query', {})
         queryset = self.get_queryset(self.params)
         if self.filterform is not None:
             queryset = self.filterform.filter_queryset_query_string(
-                client_params, queryset)
-        datatable = self.get_datatable(queryset)
-        return parse_data(datatable.get_all_records())
+                filter_params, queryset)
+
+        datatables_params = client_params.get('datatables_params', {})
+        datatable = self.get_datatable(queryset, datatables_params)
+        datatable.get_records()
+        return parse_response(datatable)
 
     def __str__(self):
         table_data = {

@@ -3,7 +3,8 @@
 var datatableview = {
     auto_initialize: false,
     defaults: {
-        "bPaginate": true
+        "bPaginate": true,
+        "bServerSide": true,
     },
 
     getCookie: function(name) {
@@ -78,15 +79,28 @@ var datatableview = {
                 sorting_options[i] = sorting_options[i].slice(1);
             }
 
+            var sEcho_count = 0;
             options = $.extend({}, datatableview.defaults, opts, {
                 "aaSorting": sorting_options,
                 "aoColumns": column_options,
                 "ajax": function (data, callback, settings) {
                     var table = $(opts.tableID).data('Table');
-                    var query_config = $(opts.tableID).data('Table:query_config');
+                    var client_params = $(opts.tableID).data('Table:client_params');
+                    var table_params = {
+                        filter_query: client_params,
+                        datatables_params: {
+                            iDisplayStart: data.start,
+                            iDisplayLength: data.length,
+                            sEcho: sEcho_count++
+                        },
+                    };
+                    $.extend(table_params.datatables_params, get_ordering_params(data.order));
                     var widget_params = $(opts.tableID).data('Table:widget_params');
-                    table.retrieveData(query_config, widget_params, function(response) {
-                        callback({data: response.data});
+                    var table_params_string = JSON.stringify(table_params);
+                    table.retrieveData(table_params_string, widget_params, function(response) {
+                        callback({data: response.data.aaData,
+                                  recordsTotal: response.data.iTotalRecords,
+                                  recordsFiltered: response.data.iTotalDisplayRecords});
                     });
                 },
                 "iDisplayLength": datatable.attr('data-page-length'),
@@ -150,3 +164,16 @@ $(function(){
         datatableview.initialize($('.datatable'));
     }
 });
+
+function get_ordering_params(order_data) {
+    if (order_data.length > 1)
+        console.warn("Multiple columns ordering not supported");
+    if (order_data.length > 0) {
+        return {
+            iSortingCols: order_data.length,
+            iSortCol_0: order_data[0].column,
+            sSortDir_0: order_data[0].dir,
+        };
+    }
+    else return { iSortingCols: 0 };
+}
