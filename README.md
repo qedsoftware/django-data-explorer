@@ -1,6 +1,8 @@
 Django Querybuilder facilitates visualizing data using AJAX tables and maps
  with filters in Django applications.
 
+You can see the examples at [http://djangoqb.qed.ai/](http://djangoqb.qed.ai/).
+
 Running examples
 ================
 
