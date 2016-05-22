@@ -3,7 +3,6 @@ colorama==0.3.7
 Django==1.9.4
 django-filter==0.13.0
 django-jenkins==0.18.1
-django-leaflet==0.18.1
 flake8==2.5.4
 lazy-object-proxy==1.2.1
 mccabe==0.4.0
