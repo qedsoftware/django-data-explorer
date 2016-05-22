@@ -4,40 +4,58 @@
  * @param formID {string} - ID of the FilterForm, optional
  * @param endpointName {string} - name of the widget used for routing requests
  * @param api {QuerybuilderAPI} - data source
- * @param widget_params {string} - manually defined data that will be passed
+ * @param widgetParams {string} - manually defined data that will be passed
     to the API together with the request
  */
 
 Table = (function(){
     'use strict';
 
-    var Table = function(containerID, formID, endpointName, api, widget_params) {
+    var Table = function(containerID, formID, endpointName, api, widgetParams) {
         this.containerID = containerID;
         this.endpointName = endpointName;
         this.api = api;
-        this.widget_params = widget_params;
+        this.widgetParams = widgetParams;
 
         var _this = this;
 
         $(function () {
+            linkWithFilterForm(formID);
+            storeTableInDOM();
+            initializeTableView();
+        });
+
+        function linkWithFilterForm(formID) {
             if (!!formID) {
-                _this.form = $(formID).data('FilterForm');
-                _this.form.onSubmit(function(event) {
-                    event.preventDefault();
-                    var parameters = _this.form.serialize();
-                    $(containerID).data('Table:query_config', parameters);
-                    $(containerID).data('Table:widget_params', _this.widget_params);
-                    _this.tableview._fnAjaxUpdate();
-                });
+                _this.form = getFilterForm(formID);
+                _this.form.onSubmit(getData);
             }
+        }
+
+        function getFilterForm(formID) {
+            return $(formID).data('FilterForm');
+        }
+
+        function getData(event) {
+            event.preventDefault();
+            var parameters = _this.form.serialize();
+            $(containerID).data('Table:query_config', parameters);
+            $(containerID).data('Table:widget_params', _this.widgetParams);
+            _this.tableview._fnAjaxUpdate();
+        }
+
+        function storeTableInDOM() {
             $(containerID).data('Table', _this);
-            $(containerID).data('Table:widget_params', _this.widget_params);
+            $(containerID).data('Table:widget_params', _this.widgetParams);
+        }
+
+        function initializeTableView() {
             _this.tableview = datatableview.initialize($(containerID + '_t'), {
                 tableID: containerID,
                 endpointName: endpointName,
                 initComplete: initSubmit
             });
-        });
+        }
 
         function initSubmit() {
             if (!!formID && _this.tableview) {
