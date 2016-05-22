@@ -43,10 +43,21 @@ def get_age(model):
 
 
 @Endpoint.register
-class CityMap(Map):
+class CityFilterMap(Map):
     name = "city-map"
     model = City
     filterform = CityFilterInstance
+
+    @staticmethod
+    def description(model):
+        return "City %s with latitude %d and longitude %d" % (
+            str(model), model.latitude, model.longitude)
+
+
+@Endpoint.register
+class CityMap(Map):
+    name = "city-map-nf"
+    model = City
 
     @staticmethod
     def description(model):

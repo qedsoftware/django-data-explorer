@@ -13,6 +13,7 @@ var tableHTMLMap =
     '<div id="map-example">' +
     '</div>';
 
+var mapOnlyData = '{"name": "map-example", "endpoint": "", "filter": ""}';
 var mapData = '{"name": "map-example", "endpoint": "", "filter": "filter"}';
 
 function ajaxResponse(response, success) {
@@ -25,82 +26,23 @@ function ajaxResponse(response, success) {
   };
 }
 
-test('Update Map after form submission.', function(assert) {
-    FakeQuerybuilderAPI = (function(){
-        var QuerybuilderAPI = function(url) {
-        };
-        QuerybuilderAPI.prototype = {
-            retrieveData: function(endpointName, queryConfig, widgetParams, callback) {
-                assert.ok(true);
-                callback({data: []});
-            }
-        };
-        return QuerybuilderAPI;
-    })();
-    assert.expect(2);
+test('Construct map without filter', function(assert) {
 
-    var triggerClass = new TriggerMap("map-example");
-    var form = new FilterForm("#filter");
-    var api = new FakeQuerybuilderAPI("/endpoint/");
-    var widgetParams;
-    new MapLinker("#filter", "fake", api, widgetParams, triggerClass);
-    $("#map-example").on("update:Map", function(event) {
-        assert.ok(true);
-    });
-    $("#filter").trigger("submit");
+    var m = new Map(mapOnlyData);
+    assert.equal(m.mapWidgetId,'map-example');
+
 });
 
-test('TriggerMap default constructor', function(assert) {
-    var triggerClass = new TriggerMap();
-    assert.equal('filter', triggerClass.getContainer());
-});
+test('Construct map and filter', function(assert) {
 
-test('TriggerMap constructor', function(assert) {
-    var triggerClass = new TriggerMap('fake');
-    assert.equal('fake', triggerClass.getContainer());
-});
-
-test('TriggerMap setter', function(assert) {
-    var triggerClass = new TriggerMap();
-    triggerClass.setContainer('fake');
-    assert.equal('fake', triggerClass.getContainer());
-});
-
-test('Retrieve data without filter.', function(assert) {
-    FakeQuerybuilderAPI = (function(){
-        var QuerybuilderAPI = function(url) {
-        };
-        QuerybuilderAPI.prototype = {
-            retrieveData: function(endpointName, queryConfig, widgetParams, callback) {
-                assert.ok(true);
-                callback({data: []});
-            }
-        };
-        return QuerybuilderAPI;
-    })();
-    assert.expect(2);
-
-    var triggerClass = new TriggerMap("map-example");
-    var filtername;
-    var api = new FakeQuerybuilderAPI("/endpoint/");
-    var widgetParams;
-    $("#map-example").on("update:Map", function(event) {
-        assert.ok(true);
-    });
-    new MapLinker(filtername, "fake", api, widgetParams, triggerClass);
-});
-
-test('Check if data passed.', function(assert) {
-
-    var form = new FilterForm("#filter");
     var m = new Map(mapData);
-    assert.equal(m.widgetId,'map-example');
+    assert.equal(m.mapWidgetId,'map-example');
+    $('#filter').trigger('submit');
 
 });
 
 test('Check if array marker is added and deleted.', function(assert) {
 
-    var form = new FilterForm("#filter");
     var m = new Map(mapData);
     m.addMarker({latitude: 20.0, longitude: 30.0, description: "fake"}, m);
     assert.equal(m.arrayMarkers.length, 1);
@@ -116,7 +58,6 @@ test('Check if array marker is added and deleted.', function(assert) {
 
 test('Check if array marker is added and replaced.', function(assert) {
 
-    var form = new FilterForm("#filter");
     var m = new Map(mapData);
     m.addMarker({latitude: 20.0, longitude: 30.0, description: "fake"}, m);
     assert.equal(m.arrayMarkers.length, 1);
