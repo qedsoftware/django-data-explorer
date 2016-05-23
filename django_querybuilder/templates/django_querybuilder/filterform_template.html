@@ -2,9 +2,6 @@
     var form = new FilterForm('#{{ name }}', ['#tab']);
 </script>
 <filter-form id="{{ name }}_ff">
-    <ul class="ff-tabs-list">
-        <li><a href="#tab">Filters</a></li>
-    </ul>
     <form id="{{ name }}">
         <div id="tab" class="ff-tab-pane">
             {{ form_str }}
