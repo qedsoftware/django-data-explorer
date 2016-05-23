@@ -65,12 +65,8 @@ var Map = (function() {
         }
     };
 
-    return Map;
-})();
-
-Map.prototype = function() {
-    var MapLinker = function(formID, endpointName, api, params,
-                             triggerMap, mapWidgetId) {
+    var MapLinker = function(formID, endpointName, api, params, triggerMap, 
+                             mapWidgetId) {
         this.endpointName = endpointName;
         this.mapWidgetId = mapWidgetId;
         this.api = api;
@@ -140,9 +136,8 @@ Map.prototype = function() {
         return map;
     }
 
-    return {
+    Map.prototype = {
         init: function() {
-            'use strict';
             this.triggerMap = triggerMapFactory(this.mapWidgetId);
             this.map_class = new MapLinker(this.formID, this.endpoint,
                                            new QuerybuilderAPI(this.endpoint),
@@ -156,14 +151,15 @@ Map.prototype = function() {
         },
 
         addMarker: function(obj, _this) {
-            'use strict';
             var marker = L.marker({"lat": obj.latitude, "lng": obj.longitude});
             var popupText = obj.description;
-    
+
             marker.bindPopup(popupText);
             marker.addTo(_this.layerData);
             _this.arrayMarkers.push(marker);
         }
     };
-}();
+
+    return Map;
+})();
 
