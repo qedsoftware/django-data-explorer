@@ -92,6 +92,16 @@ filter-form form .ff-tab-pane {
   padding: 0 !important;
 }
 
+filter-form {
+  &.ui-tabs {
+    padding: 0;
+  }
+
+  &.ui-widget-content {
+    border: none;
+  }
+}
+
 .ff-submit {
   background-color: $button-green;
   font-size: small !important;

@@ -88,6 +88,12 @@ ul.ff-tabs-list {
 filter-form form .ff-tab-pane {
   padding: 0 !important; }
 
+filter-form.ui-tabs {
+  padding: 0; }
+
+filter-form.ui-widget-content {
+  border: none; }
+
 .ff-submit {
   background-color: #6CC3A0;
   font-size: small !important;
