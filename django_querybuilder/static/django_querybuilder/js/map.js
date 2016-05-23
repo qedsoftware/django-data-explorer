@@ -1,61 +1,3 @@
-var TriggerMap = (function() {
-    'use strict';
-    var TriggerMap = function(containerID) {
-        this.container = containerID ? containerID : 'filter';
-    };
-
-    TriggerMap.prototype = {
-        setContainer: function(value) {
-            this.container = value;
-        },
-
-        getContainer: function() {
-            return this.container;
-        },
-
-        triggerMap: function(filteredData) {
-            $('#' + this.container).trigger("update:Map", [filteredData]);
-        }
-    };
-
-    return TriggerMap;
-})();
-
-var MapLinker = (function() {
-    'use strict';
-    var MapLinker = function(formID, endpointName, api, params,
-                             triggerClass) {
-        if (formID) {
-            this.form = $(formID).data('FilterForm');
-        }
-        this.triggerClass = triggerClass;
-        this.endpointName = endpointName;
-        this.api = api;
-        var _this = this;
-        if (this.form) {
-            this.form.onSubmit(function(event) {
-                event.preventDefault();
-                var queryConfig = _this.form.serialize();
-                _this.retrieveData(queryConfig, params,
-                                   triggerClass.triggerMap.bind(triggerClass));
-            });
-        }
-        else {
-            _this.retrieveData({containerID: triggerClass.getContainer()},
-                                params, triggerClass.triggerMap.bind(triggerClass));
-        }
-    };
-
-    MapLinker.prototype = {
-        retrieveData: function(queryConfig, params, callback) {
-            return this.api.retrieveData(this.triggerClass.getContainer(),
-                                         queryConfig, params, callback);
-        }
-    };
-
-    return MapLinker;
-})();
-
 /** AJAX map widget.
  * @constructor
  * @param {string} mapData - JSON string representing map parameters
@@ -72,86 +14,156 @@ var Map = (function() {
         mapData = JSON.parse(mapData);
         this.arrayMarkers = [];
         this.map = null;
-        this.layer_data = null;
+        this.layerData = null;
         this.formID = mapData.filter ? '#' + mapData.filter : null;
-        this.widgetId = mapData.name;
+        this.mapWidgetId = mapData.name;
         this.endpoint = mapData.endpoint;
         this.params = mapData.params;
         var _this = this;
         new FilterForm(this.formID);
 
-        $('#' + this.widgetId).on("update:Map", function(event, filterData) {
-            for (var i = 0; i < _this.arrayMarkers.length; i++) {
-                _this.map.removeLayer(_this.arrayMarkers[i]);
-                _this.layer_data.removeLayer(_this.arrayMarkers[i]);
-            }
-            _this.arrayMarkers = [];
-            if (filterData) {
-                for (i = 0; i < filterData.data.length; i++) {
-                    var obj = filterData.data[i];
-                    _this.addMarker(obj, _this);
-                }
-            }
+        $(function () {
+            setUpdateMapEventHandling('#' + _this.mapWidgetId);
+            _this.init();
+        });
 
+        function setUpdateMapEventHandling(widgetId) {
+            $(widgetId).on('update:Map', updateMap);
+        }
+
+        function updateMap(event, filterData) {
+            removeAllLayers();
+            addMarkers(filterData);
+            zoomLeafletViewport();
+        }
+
+        function zoomLeafletViewport() {
             if (_this.arrayMarkers.length > 0) {
                 var group = L.featureGroup(_this.arrayMarkers);
                 _this.map.fitBounds(group.getBounds());
             }
-        });
+        }
 
-        $(function () {
-            _this.init();
-        });
+        function addMarkers(filterData) {
+            if (filterData) {
+                $.each(filterData.data, addSingleMarker);
+            }
+        }
+
+        function addSingleMarker(_, marker) {
+            _this.addMarker(marker, _this);
+        }
+
+        function removeAllLayers() {
+            $.each(_this.array_markers, removeLayer);
+            _this.arrayMarkers = [];
+        }
+
+        function removeLayer(layer) {
+            _this.map.removeLayer(layer);
+            _this.layerData.removeLayer(layer);
+        }
     };
 
     return Map;
 })();
 
-Map.prototype = {
-    init: function() {
-        'use strict';
+Map.prototype = function() {
+    var MapLinker = function(formID, endpointName, api, params,
+                             triggerMap, mapWidgetId) {
+        this.endpointName = endpointName;
+        this.mapWidgetId = mapWidgetId;
+        this.api = api;
         var _this = this;
-        this.triggerClass = new TriggerMap(_this.widgetId);
-        this.map_class = new MapLinker(_this.formID, _this.endpoint, new QuerybuilderAPI(_this.endpoint),
-                                       _this.params, _this.triggerClass);
-        var osmURL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
-        var osmAttrib = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
-        var osm = new L.TileLayer(osmURL, {attribution: osmAttrib});
+        getData(formID);
 
-        this.layer_data = new L.LayerGroup();
-        this.arrayMarkers = [];
+        function getData(formID) {
+            if (formID) {
+                _this.form = $(formID).data('FilterForm');
+                _this.form.onSubmit(getFilteredData);
+            } else {
+                getDefaultData();
+            }
+        }
 
-        this.map = L.map(this.widgetId, {
+        function getDefaultData() {
+            var queryConfig = {containerID: mapWidgetId};
+            _this.retrieveData(queryConfig, params, triggerMap);
+        }
+
+        function getFilteredData(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            var queryConfig = _this.form.serialize();
+            _this.retrieveData(queryConfig, params, triggerMap);
+        }
+    };
+
+    MapLinker.prototype = {
+        retrieveData: function(queryConfig, params, callback) {
+            return this.api.retrieveData(this.mapWidgetId,
+                                         queryConfig, params, callback);
+        }
+    };
+
+    function triggerMapFactory (containerID) {
+        var container = containerID ? containerID : 'filter';
+        return function (filteredData) {
+            $('#' + container).trigger("update:Map", [filteredData]);
+        };
+    }
+
+    function getLeafletConfig(osm, layerData) {
+        return {
             center: [0.01, 51.405],
             zoom: 13,
             fullscreenControl: true,
             fullscreenOptions: {
                 position: 'topleft'
             },
-            layers: [osm, this.layer_data]
-        });
-
-        var baseLayers = {
-            "OpenStreetMap": osm
+            layers: [osm, layerData]
         };
-
-        var overlays = {
-            "Data Layer": this.layer_data
-        };
-
-        L.control.layers(baseLayers, overlays).addTo(this.map);
-        this.map_class.retrieveData({containerID: this.triggerClass.getContainer()}, _this.params,
-                                    this.triggerClass.triggerMap.bind(this.triggerClass));
-    },
-
-    addMarker: function(obj, _this) {
-        'use strict';
-        var marker = L.marker({"lat": obj.latitude, "lng": obj.longitude});
-        var popupText = obj.description;
-
-        marker.bindPopup(popupText);
-
-        marker.addTo(_this.layer_data);
-        _this.arrayMarkers.push(marker);
     }
-};
+
+    function getOsmTileLayer() {
+        var osmURL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+        var osmAttrib = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
+        return new L.TileLayer(osmURL, {attribution: osmAttrib});
+    }
+
+    function getLeafletMap(widgetId, layerData) {
+        var osm = getOsmTileLayer();
+        var map = L.map(widgetId, getLeafletConfig(osm, layerData));
+        var baseLayers = { "OpenStreetMap": osm };
+        var overlays = { "Data Layer": layerData };
+        L.control.layers(baseLayers, overlays).addTo(map);
+        return map;
+    }
+
+    return {
+        init: function() {
+            'use strict';
+            this.triggerMap = triggerMapFactory(this.mapWidgetId);
+            this.map_class = new MapLinker(this.formID, this.endpoint,
+                                           new QuerybuilderAPI(this.endpoint),
+                                           this.params, this.triggerMap,
+                                           this.mapWidgetId);
+            this.layerData = new L.LayerGroup();
+            this.arrayMarkers = [];
+            this.map = getLeafletMap(this.mapWidgetId, this.layerData);
+            this.map_class.retrieveData({containerID: this.mapWidgetId},
+                                        this.params, this.triggerMap);
+        },
+
+        addMarker: function(obj, _this) {
+            'use strict';
+            var marker = L.marker({"lat": obj.latitude, "lng": obj.longitude});
+            var popupText = obj.description;
+    
+            marker.bindPopup(popupText);
+            marker.addTo(_this.layerData);
+            _this.arrayMarkers.push(marker);
+        }
+    };
+}();
+

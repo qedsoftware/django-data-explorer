@@ -14,16 +14,16 @@ class BookTableView(TemplateView):
         }
 
 
-class CityMapView(TemplateView):
+class CityMapNoFilterView(TemplateView):
     template_name = "querybuilder_example/city_map_view.html"
 
     def get_context_data(self, **kwargs):
         return {
-            "map": Endpoint.get_widget("city-map", ())
+            "map": Endpoint.get_widget("city-map-nf", ())
         }
 
 
-class CityMapFilterView(TemplateView):
+class CityMapView(TemplateView):
     template_name = "querybuilder_example/city_map_filter_view.html"
 
     def get_context_data(self, **kwargs):
