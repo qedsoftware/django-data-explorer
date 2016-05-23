@@ -6,19 +6,18 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
-version = '0.0.1'
+version = '0.0.2'
 
 setup(
     name='django-querybuilder',
     version=version,
-    description=('TBC'),
+    description='AJAX tables and maps made simple',
     long_description=README,
     author='Quantitative Engineering Design Inc.',
-    author_email='TBC',
-    url='TBC',
+    author_email='michal@qed.ai',
+    url='http://github.com/qedsoftware/django-querybuilder',
     packages=find_packages(exclude=['tests', 'example']),
     classifiers=[
-        'Development Status :: 3 - Alpha Development Status',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
