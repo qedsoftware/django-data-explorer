@@ -1,3 +1,4 @@
+from django import forms
 from django.http import QueryDict
 from django.template.loader import render_to_string
 from django.utils import six
@@ -45,9 +46,19 @@ class BaseFilterForm(BaseFilterSet):
         self.initial = initial or {}
         self.filter_name = filter_name
         BaseFilterSet.__init__(self, data, queryset, prefix, strict)
-        for l in list(self.form.fields):
-            new_label = parse_to_label(l)
-            self.form.fields[l].label = new_label
+        for key, field in self.form.fields.items():
+            new_label = parse_to_label(key)
+            field.label = new_label
+            add_datetime_type(field)
+
+
+def add_datetime_type(field):
+    if isinstance(field, forms.DateTimeField):
+        field.widget.input_type = 'datetime-local'
+    elif isinstance(field, forms.DateField):
+        field.widget.input_type = 'date'
+    elif isinstance(field, forms.TimeField):
+        field.widget.input_type = 'time'
 
 
 def _wrap_filter_in_group(line):

@@ -1,3 +1,4 @@
+<img src='https://raw.github.com/kombai/freewall/master/i/freewall.png'>
 # Freewall
 
 _Freewall is a cross-browser and responsive jQuery plugin to help you create many types of grid layouts: flexible layouts, images layouts, nested grid layouts, metro style layouts, pinterest like layouts ... with nice CSS3 animation effects and call back events. Freewall is all-in-one solution for creating dynamic grid layouts for desktop, mobile, and tablet..._
@@ -16,7 +17,7 @@ _Freewall is a cross-browser and responsive jQuery plugin to help you create man
 ##### [Pinterest-like](http://vnjs.net/www/project/freewall/example/pinterest-layout.html)
 <br>
 <img src='https://raw.github.com/kombai/freewall/master/i/metro.png'>
-##### [Window 8 style](http://vnjs.net/www/project/freewall/example/metro-style.html)
+##### [Window style](http://vnjs.net/www/project/freewall/example/metro-style.html)
 
 ## Features
 * [Draggable support](http://vnjs.net/www/project/freewall/example/draggable.html)
@@ -31,12 +32,12 @@ _Freewall is a cross-browser and responsive jQuery plugin to help you create man
 * [Fit container](http://vnjs.net/www/project/freewall/example/fit-zone.html)
 * [Vertical grid/layout](http://vnjs.net/www/project/freewall/)
 * [Horizontal grid/layout](http://vnjs.net/www/project/freewall/example/fit-height.html)
-* [Window 8 metro style](http://vnjs.net/www/project/freewall/example/metro-style.html)
+* [Window style](http://vnjs.net/www/project/freewall/example/metro-style.html)
 * [Pinterest like grid/layout](http://vnjs.net/www/project/freewall/example/pinterest-layout.html)
 
 ## Supports
 Freewall supports almost browser
-* Chrome 
+* Chrome
 * Opera
 * Safari
 * IE 8.0+

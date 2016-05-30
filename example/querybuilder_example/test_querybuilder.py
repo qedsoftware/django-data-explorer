@@ -88,7 +88,6 @@ class FilterFormTestCase(TestCase):
     def test_filter_exact(self):
         filterform = BookFilter('filter-name')
         filter_data = {
-            'publication_date': '2008-06-24',
             'publication_date__year': 2008,
         }
         filtered = filterform.filter_queryset(filter_data, Book.objects.all())
@@ -110,8 +109,10 @@ class FilterFormParseToLabelTests(TestCase):
                          'Pages less than')
         self.assertEqual(filterform.form.fields['pages__gt'].label,
                          'Pages greater than')
-        self.assertEqual(filterform.form.fields['publication_date'].label,
-                         'Publication date')
+        self.assertEqual(filterform.form.fields['publication_date__gte'].label,
+                         'Publication date greater than or equal to')
+        self.assertEqual(filterform.form.fields['publication_date__lte'].label,
+                         'Publication date less than or equal to')
         self.assertEqual(filterform.form.fields['publication_date__year__gt'].label,
                          'Publication date year greater than')
         self.assertEqual(filterform.form.fields['publication_date__year'].label,

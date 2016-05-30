@@ -7,6 +7,17 @@
 FilterForm = (function(){
     'use strict';
 
+    var TIME_PICKER_SETTINGS = {
+        showButtonPanel: true,
+        controlType: 'select',
+        oneLine: true,
+        dateFormat: "yy-mm-dd"
+    };
+    var DATE_PICKER_SETTINGS = {
+        showButtonPanel: true,
+        dateFormat: "yy-mm-dd"
+    };
+
     var FilterForm = function(containerID, tabs) {
 
         this.containerID = containerID;
@@ -18,6 +29,7 @@ FilterForm = (function(){
 
             deserializeForms();
             setSerializationOnChangeEvent();
+            addCustomPickers();
             saveReferenceInDOM(that);
 
             if (tabs && tabs instanceof Array) {
@@ -79,6 +91,42 @@ FilterForm = (function(){
 
             function saveReferenceInDOM(that) {
                 $(containerID).data('FilterForm', that);
+            }
+
+            function addCustomPickers() {
+                addCustomDatePicker();
+                addCustiomTimeDateTimePicker();
+                addCustomTimePicker();
+            }
+
+            function addCustomDatePicker() {
+                var dateFields = getInputFieldsOfType('date');
+                dateFields.datepicker(DATE_PICKER_SETTINGS);
+                convertInputToTextType(dateFields);
+            }
+
+            function addCustiomTimeDateTimePicker() {
+                var dateTimeFields = getInputFieldsOfType('datetime-local');
+                dateTimeFields.datetimepicker(TIME_PICKER_SETTINGS);
+                convertInputToTextType(dateTimeFields);
+            }
+
+            function addCustomTimePicker() {
+                var timeFields = getInputFieldsOfType('time');
+                timeFields.timepicker(TIME_PICKER_SETTINGS);
+                convertInputToTextType(timeFields);
+            }
+
+            function getInputFieldsOfType(inputType) {
+                return $("filter-form").find(getInputTypeSelector(inputType));
+            }
+
+            function getInputTypeSelector(inputType) {
+                return "input[type='"+ inputType + "']";
+            }
+
+            function convertInputToTextType($field) {
+                $field.attr('type','text');
             }
         });
 

@@ -16,7 +16,7 @@ class BookFilter(FilterForm):
         model = Book
         fields = {
             'pages': ['lt', 'gt'],
-            'publication_date': ['exact', 'year__gt', 'year'],
+            'publication_date': ['gte', 'lte', 'year__gt', 'year'],
         }
 
 
