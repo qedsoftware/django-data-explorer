@@ -11,14 +11,14 @@ QuerybuilderAPI = (function(){
     };
 
     QuerybuilderAPI.prototype = {
-        retrieveData: function(endpointName, query_config, widget_params, callback) {
+        retrieveData: function(endpointName, client_params, widget_params, callback) {
             $.ajax({
                 url: this.url,
                 type: "POST",
                 data: {
                     widget_id: endpointName,
                     widget_params: widget_params,
-                    query_config: query_config
+                    client_params: client_params,
                 },
                 success: function(data) {
                     callback(data);

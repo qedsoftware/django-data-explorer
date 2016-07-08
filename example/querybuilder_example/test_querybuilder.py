@@ -1,19 +1,34 @@
 import datetime
-
+import json
 import mock
 from django.test import TestCase
 from django.utils.encoding import smart_text
 
 from .models import Author, Book, City
-from .querybuilder import Endpoint, BookFilter
+from .querybuilder import Endpoint, BookFilter, get_age
 
 import django_querybuilder.filterform
 
 
+def _get_date(date_str):
+    return datetime.datetime.strptime(date_str, "%Y-%m-%d")
+
+
+def _client_params_ordering(order_column, order_dir):
+    return json.dumps({
+        'datatables_params': {"iDisplayStart": 0,
+                              "iDisplayLength": 10,
+                              "sEcho": 1,
+                              "iSortingCols": 1,
+                              "iSortCol_0": order_column,
+                              "sSortDir_0": order_dir}
+    })
+
+
 class TableFiltersTestCase(TestCase):
     def setUp(self):
-        self.fakeauthor = Author.objects.create(name="FakeAuthor")
-        self.fakeauthor2 = Author.objects.create(name="FakeAuthor2")
+        self.fakeauthor = Author.objects.create(name="FakeAuthor", birth_date="2015-01-01")
+        self.fakeauthor2 = Author.objects.create(name="FakeAuthor2", birth_date="2014-01-01")
         self.testbook1 = Book.objects.create(
             title="TestBook1", pages=20, author=self.fakeauthor)
         self.testbook2 = Book.objects.create(
@@ -23,19 +38,34 @@ class TableFiltersTestCase(TestCase):
         self.objects_list = [self.testbook1, self.testbook2, self.nontestbook]
 
     def test_no_filters(self):
-        records = Endpoint.get_widget("book-table", ()).get_data("")
+        records = Endpoint.get_widget("book-table", ()).get_data("{}")['aaData']
         self.assertEqual(len(records), 3)
 
     def test_single_text_filter(self):
-        records = Endpoint.get_widget("book-table", ()).get_data("pages__gt=19")
+        client_params = '{"filter_query":"pages__gt=19"}'
+        records = Endpoint.get_widget("book-table", ()).get_data(client_params)['aaData']
         self.assertEqual(len(records), 1)
 
-    def test_many_records(self):
-        PAGE_DEFAULT = 25
-        for _ in range(PAGE_DEFAULT):
+    def test_second_page(self):
+        PAGE_SIZE = 10
+        for _ in range(PAGE_SIZE):
             Book.objects.create(title="Book", author=self.fakeauthor)
-        records = Endpoint.get_widget("book-table", ()).get_data("")
-        self.assertEqual(len(records), PAGE_DEFAULT + 3)
+        client_params = json.dumps({
+            'datatables_params': {"iDisplayStart": PAGE_SIZE,
+                                  "iDisplayLength": PAGE_SIZE,
+                                  "sEcho": 1}})
+        records = Endpoint.get_widget("book-table", ()).get_data(client_params)['aaData']
+        self.assertEqual(len(records), 3)
+
+    def test_sort_by_lambda_column(self):
+        column = Endpoint.get_widget("author-table", ()).columns.index(('Age', get_age))
+        client_params = _client_params_ordering(column, "desc")
+        records = Endpoint.get_widget("author-table", ()).get_data(client_params)['aaData']
+        self.assertLess(_get_date(records[0]['1']), _get_date(records[1]['1']))
+
+        client_params = _client_params_ordering(column, "asc")
+        records = Endpoint.get_widget("author-table", ()).get_data(client_params)['aaData']
+        self.assertGreater(_get_date(records[0]['1']), _get_date(records[1]['1']))
 
 
 class TableStrRepresentation(TestCase):
@@ -147,8 +177,8 @@ class MapGetDataTestCase(TestCase):
 
     def test_get_all_data(self):
         city_map = Endpoint.get_widget("city-map", ())
-        query_config = {}
-        data = city_map.get_data(query_config)
+        client_params = {}
+        data = city_map.get_data(client_params)
         self.assertEqual(data, [
             {'description': "City City_1 with latitude 30 " +
                             "and longitude 20",
@@ -162,12 +192,12 @@ class MapGetDataTestCase(TestCase):
 
     def test_get_some_data(self):
         city_map = Endpoint.get_widget("city-map", ())
-        query_config = 'citizens_number__gt=30&latitude__lt=34.0'
-        data = city_map.get_data(query_config)
+        client_params = 'citizens_number__gt=30&latitude__lt=34.0'
+        data = city_map.get_data(client_params)
         self.assertEqual(data[0]['latitude'], 33.0)
 
     def test_get_no_data(self):
         city_map = Endpoint.get_widget("city-map", ())
-        query_config = 'citizens_number__gt=30&latitude__lt=20.0'
-        data = city_map.get_data(query_config)
+        client_params = 'citizens_number__gt=30&latitude__lt=20.0'
+        data = city_map.get_data(client_params)
         self.assertEqual(data, [])

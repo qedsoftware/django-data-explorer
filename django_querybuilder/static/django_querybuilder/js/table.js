@@ -39,7 +39,7 @@ Table = (function(){
         function getData(event) {
             event.preventDefault();
             var parameters = _this.form.serialize();
-            $(containerID).data('Table:query_config', parameters);
+            $(containerID).data('Table:client_params', parameters);
             $(containerID).data('Table:widget_params', _this.widgetParams);
             _this.tableview._fnAjaxUpdate();
         }
@@ -65,8 +65,8 @@ Table = (function(){
     };
 
     Table.prototype = {
-        retrieveData: function(query_config, widget_params, callback) {
-            this.api.retrieveData(this.endpointName, query_config, widget_params, callback);
+        retrieveData: function(client_params, widget_params, callback) {
+            this.api.retrieveData(this.endpointName, client_params, widget_params, callback);
         }
     };
 

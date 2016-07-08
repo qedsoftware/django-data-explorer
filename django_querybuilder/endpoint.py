@@ -21,7 +21,7 @@ class BaseEndpoint(View):
     Add all widgets that you want to support using method register.
 
     Use dedicated JavaScript QuerybuilderAPI class to make queries.
-    POST requests should be of form: {"widget_id": ..., "query_config": ...,
+    POST requests should be of form: {"widget_id": ..., "client_params": ...,
     "params": ...} and return output of widget_class.get_data(endpoint, params,
     client_params).
     """
@@ -34,16 +34,21 @@ class BaseEndpoint(View):
         return super(BaseEndpoint, self).dispatch(*args, **kwargs)  # pylint: disable=no-member
 
     def post(self, request):
-        widget_params = request.POST.get('widget_params')
-        if widget_params:
-            widget_params = json.loads(widget_params)
-        widget_id = request.POST.get('widget_id')
+        widget_id = request.POST.get('widget_id', None)
+        try:
+            widget_params = json.loads(request.POST.get('widget_params', '{}'))
+        except ValueError:
+            return JsonResponse({'status': 'INVALID_WIDGET_PARAMS'}, status=400)
+
         widget = self.get_widget(widget_id, widget_params)
         if widget is not None:
             if not widget.is_accessible(request):
                 return JsonResponse({'status': "FORBIDDEN"}, status=403)
             else:
-                data = widget.get_data(request.POST.get('query_config'))
+                client_params = request.POST.get('client_params', '{}')
+                data = widget.get_data(client_params)
+                if data is None:
+                    return JsonResponse({'status': 'INVALID_CLIENT_PARAMS'}, status=400)
                 return JsonResponse({'status': 'OK', 'data': data})
         else:
             return JsonResponse({'status': 'WIDGET_NOT_FOUND'}, status=404)
