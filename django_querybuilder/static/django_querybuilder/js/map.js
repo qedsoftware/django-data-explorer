@@ -55,17 +55,17 @@ var Map = (function() {
         }
 
         function removeAllLayers() {
-            $.each(_this.array_markers, removeLayer);
+            $.each(_this.arrayMarkers, removeLayer);
             _this.arrayMarkers = [];
         }
 
-        function removeLayer(layer) {
+        function removeLayer(num, layer) {
             _this.map.removeLayer(layer);
             _this.layerData.removeLayer(layer);
         }
     };
 
-    var MapLinker = function(formID, endpointName, api, params, triggerMap, 
+    var MapLinker = function(formID, endpointName, api, params, triggerMap,
                              mapWidgetId) {
         this.endpointName = endpointName;
         this.mapWidgetId = mapWidgetId;
