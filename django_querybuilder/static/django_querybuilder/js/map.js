@@ -1,3 +1,9 @@
+var $ = require('jquery');
+var FilterForm = require('./filterui');
+var QuerybuilderAPI = require('./querybuilderapi');
+var L = require('leaflet');
+
+
 /** AJAX map widget.
  * @constructor
  * @param {string} mapData - JSON string representing map parameters
@@ -22,10 +28,8 @@ var Map = (function() {
         var _this = this;
         new FilterForm(this.formID);
 
-        $(function () {
-            setUpdateMapEventHandling('#' + _this.mapWidgetId);
-            _this.init();
-        });
+        setUpdateMapEventHandling('#' + _this.mapWidgetId);
+        _this.init();
 
         function setUpdateMapEventHandling(widgetId) {
             $(widgetId).on('update:Map', updateMap);
@@ -163,3 +167,4 @@ var Map = (function() {
     return Map;
 })();
 
+module.exports = Map;

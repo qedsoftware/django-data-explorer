@@ -1,3 +1,7 @@
+var $ = require('jquery');
+var Cookie = require('js-cookie');
+require('datatables');
+
 /* Modified version of datatableviw.js from datatable. */
 
 var datatableview = {
@@ -8,19 +12,7 @@ var datatableview = {
     },
 
     getCookie: function(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
+        return Cookie.get(name);
     },
 
     initialize: function($$, opts) {
@@ -46,7 +38,7 @@ var datatableview = {
 
             datatable.find('thead th').each(function(){
                 var header = $(this);
-                var options = {};
+                datatableview.options = {};
                 for (var i = 0; i < header[0].attributes.length; i++) {
                     var attr = header[0].attributes[i];
                     if (attr.specified && /^data-/.test(attr.name)) {
@@ -67,10 +59,10 @@ var datatableview = {
                             continue;
                         }
 
-                        options[name] = value;
+                        datatableview.options[name] = value;
                     }
                 }
-                column_options.push(options);
+                column_options.push(datatableview.options);
             });
 
             // Arrange the sorting column requests and strip the priority information
@@ -80,7 +72,7 @@ var datatableview = {
             }
 
             var sEcho_count = 0;
-            options = $.extend({}, datatableview.defaults, opts, {
+            datatableview.options = $.extend({}, datatableview.defaults, opts, {
                 "aaSorting": sorting_options,
                 "aoColumns": column_options,
                 "ajax": function (data, callback, settings) {
@@ -110,34 +102,17 @@ var datatableview = {
                     if (iMax != iTotal) {
                         infoString += oSettings.oLanguage.sInfoFiltered.replace('_MAX_',iMax);
                     }
-                    // /******************************************************************
-                    //  * ##########       ###       ######         ###
-                    //  * ##########     ###  ##     ###   ##     ###  ##
-                    //  *    ###        ###   ###    ###   ##    ###   ###
-                    //  *    ###        ###   ###    ###   ##    ###   ###
-                    //  *    ###        ###   ###    ###   ##    ###   ###
-                    //  *    ###         ######      ######       ######
-                    //  * ===============================================================
-                    //  * The string at the bottom of the table showing entries being
-                    //  * looked at is always updated, but not always rendered in all
-                    //  * browsers *cough cough* Chrome, Safari.
-                    //  * This makes it so that results string always updates.
-                    //  *****************************************************************/
-                    // var n = oSettings.aanFeatures.i;
-                    // for (var i = 0, iLen = n.length; i < j; i++) {
-                    //     $(n[i]).empty();
-                    // }
                     return infoString;
                 },
-                "bFilter": false,
+                "bFilter": false
             });
             try {
-                options = confirm_datatable_options(options, datatable);
+                datatableview.options = confirm_datatable_options(datatableview.options, datatable);
             } catch (e) {
 
             }
 
-            var initialized_datatable = datatable.dataTable(options);
+            var initialized_datatable = datatable.dataTable(datatableview.options);
             initialized_datatables.push(initialized_datatable[0]);
 
             try {
@@ -159,12 +134,6 @@ var datatableview = {
     }
 };
 
-$(function(){
-    if (datatableview.auto_initialize) {
-        datatableview.initialize($('.datatable'));
-    }
-});
-
 function get_ordering_params(order_data) {
     if (order_data.length > 1)
         console.warn("Multiple columns ordering not supported");
@@ -177,3 +146,5 @@ function get_ordering_params(order_data) {
     }
     else return { iSortingCols: 0 };
 }
+
+module.exports = datatableview;

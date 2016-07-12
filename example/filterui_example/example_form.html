@@ -1,23 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="../../django_querybuilder/static/django_querybuilder/js/filterui.js"></script>
-    <script src="../../django_querybuilder/static/django_querybuilder/js/table.js"></script>
+    <script src="../../django_querybuilder/static/django_querybuilder/dist/querybuilder.bundle.js"></script>
     <script src="../../django_querybuilder/static/django_querybuilder/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../../django_querybuilder/static/django_querybuilder/libs/jquery-deserialize/dist/jquery.deserialize.min.js"></script>
-    <script src="../../django_querybuilder/static/django_querybuilder/libs/freewall/freewall.js"></script>
-    <script src="../../django_querybuilder/static/django_querybuilder/libs/jquery-ui/jquery-ui.min.js"></script>
-    <script src="../../django_querybuilder/static/django_querybuilder/libs/jquery-ui/ui/tabs.js"></script>
-    <script src="../../django_querybuilder/static/django_querybuilder/libs/jquery-ui/ui/datepicker.js"></script>
-    <script src="../../django_querybuilder/static/django_querybuilder/libs/jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.js"></script>
     <link rel="stylesheet" type="text/css" href="../../django_querybuilder/static/django_querybuilder/css/filter-form.css" />
     <meta charset="UTF-8">
     <title>FilterUI example page</title>
 </head>
 <body style="margin: 1em">
     <script>
-        var form = new FilterForm('#filter', ['#tab_1', "#tab_2"]);
         $(function () {
+            var form = new FilterForm('#filter', ['#tab_1', "#tab_2"]);
             $("#filter").on("submit", function(event) {
                 event.preventDefault();
                 console.log(form.serialize());

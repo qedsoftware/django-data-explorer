@@ -1,9 +1,11 @@
+var $ = require('jquery');
+
 /** Class that retrieves JSON responses from Querybuilder.
  * @constructor
  * @param {string} url - URL of JSON API view
  */
 
-QuerybuilderAPI = (function(){
+var QuerybuilderAPI = (function(){
     'use strict';
 
     var QuerybuilderAPI = function(url) {
@@ -32,3 +34,5 @@ QuerybuilderAPI = (function(){
 
     return QuerybuilderAPI;
 })();
+
+module.exports = QuerybuilderAPI;

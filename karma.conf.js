@@ -1,3 +1,17 @@
+var webpack = require('webpack');
+var webpackConfig = require('./webpack.config.js');
+var path = require('path');
+
+webpackConfig.entry = {};
+
+webpackConfig.module.preLoaders =  [
+  {
+    test: /\.js$/,
+    include: path.join(__dirname, 'django_querybuilder/static/django_querybuilder/js'),
+    loader: 'istanbul-instrumenter'
+  }
+];
+
 module.exports = function(config) {
   config.set({
 
@@ -26,8 +40,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'django_querybuilder/static/django_querybuilder/js/*.js/',
-      'js_tests/public/*.js'
+      'js_tests/test_index.js'
     ],
 
 
@@ -42,11 +55,12 @@ module.exports = function(config) {
       // source files, that you wanna generate coverage for
       // do not include tests or libraries
       // (these files will be instrumented by Istanbul)
-      'django_querybuilder/static/django_querybuilder/js/filterui.js': ['coverage'],
-      'django_querybuilder/static/django_querybuilder/js/table.js': ['coverage'],
-      'django_querybuilder/static/django_querybuilder/js/map.js': ['coverage'],
-      'django_querybuilder/static/django_querybuilder/js/querybuilderapi.js': ['coverage']
+      'django_querybuilder/static/django_querybuilder/js/*.js': ['webpack', 'coverage'],
+      'js_tests/*.js': ['webpack']
     },
+
+
+	webpack: webpackConfig,
 
 
     // test results reporter to use

@@ -1,4 +1,8 @@
-module('application.Table');
+var QUnit = require('qunitjs');
+var FilterForm = require('../../django_querybuilder/static/django_querybuilder/js/filterui');
+var Table = require('../../django_querybuilder/static/django_querybuilder/js/table');
+
+QUnit.module('application.Table');
 
 var tableHTML =
     '<filter-form>' +
@@ -11,8 +15,8 @@ var tableHTML =
     '<table id="table_t">' +
     '</table>';
 
-test('Update after form submission.', function(assert) {
-    FakeQuerybuilderAPI = (function(){
+QUnit.test('Update after form submission.', function(assert) {
+    var FakeQuerybuilderAPI = (function(){
         var QuerybuilderAPI = function(url) {
         };
         QuerybuilderAPI.prototype = {
@@ -34,8 +38,8 @@ test('Update after form submission.', function(assert) {
     $("#filter").trigger("submit");
 });
 
-test('Initialize without FilterForm', function(assert) {
-    FakeQuerybuilderAPI = (function(){
+QUnit.test('Initialize without FilterForm', function(assert) {
+    var FakeQuerybuilderAPI = (function(){
         var QuerybuilderAPI = function(url) {
         };
         QuerybuilderAPI.prototype = {

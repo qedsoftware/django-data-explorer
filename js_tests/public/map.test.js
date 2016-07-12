@@ -1,4 +1,10 @@
-module('application.Map', {
+var $ = require('jquery');
+var QUnit = require('qunitjs');
+var Map = require('../../django_querybuilder/static/django_querybuilder/js/map');
+L.Icon.Default.imagePath = '../../django_querybuilder/static/django_querybuilder/libs/leaflet/dist/images';
+
+
+QUnit.module('application.Map', {
     beforeEach: function() {
         $('#qunit-fixture').append(tableHTMLMap);
     }
@@ -26,14 +32,14 @@ function ajaxResponse(response, success) {
   };
 }
 
-test('Construct map without filter', function(assert) {
+QUnit.test('Construct map without filter', function(assert) {
 
     var m = new Map(mapOnlyData);
     assert.equal(m.mapWidgetId,'map-example');
 
 });
 
-test('Construct map and filter', function(assert) {
+QUnit.test('Construct map and filter', function(assert) {
 
     var m = new Map(mapData);
     assert.equal(m.mapWidgetId,'map-example');
@@ -41,7 +47,7 @@ test('Construct map and filter', function(assert) {
 
 });
 
-test('Check if array marker is added and deleted.', function(assert) {
+QUnit.test('Check if array marker is added and deleted.', function(assert) {
 
     var m = new Map(mapData);
     m.addMarker({latitude: 20.0, longitude: 30.0, description: "fake"}, m);
@@ -56,7 +62,7 @@ test('Check if array marker is added and deleted.', function(assert) {
 
 });
 
-test('Check if array marker is added and replaced.', function(assert) {
+QUnit.test('Check if array marker is added and replaced.', function(assert) {
 
     var m = new Map(mapData);
     m.addMarker({latitude: 20.0, longitude: 30.0, description: "fake"}, m);

@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url(../libs/jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.css);
+@import url(../libs/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.css);
 ul.ff-tabs-list {
   font-family: "Open Sans", Calibri, Arial, sans-serif;
   color: #999;

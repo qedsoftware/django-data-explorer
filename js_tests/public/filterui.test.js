@@ -1,4 +1,7 @@
-module('application.filterUI', {
+var QUnit = require('qunitjs');
+var FilterForm = require('../../django_querybuilder/static/django_querybuilder/js/filterui');
+
+QUnit.module('application.filterUI', {
     beforeEach: function() {
         $('#qunit-fixture').append(firstFormHTML);
     },

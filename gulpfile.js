@@ -8,21 +8,31 @@ var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var child_exec = require('child_process').exec;
 var jshint = require('gulp-jshint');
+var webpack = require('webpack-stream');
+var webpack_config = require('./webpack.config.js');
 
 var config = {
     paths: {
         libs: './django_querybuilder/static/django_querybuilder/libs/',
         static: {
-            folders: ['django_querybuilder/static/django_querybuilder'],
+            folder: 'django_querybuilder/static/django_querybuilder',
             sass: '/sass/**/*.scss',
             css: '/css',
+            dist: '/dist',
             js: '/js/**/*.js'
         },
         js_tests: 'js_tests/public/*.js',
         sass: function() {
-            return config.paths.static.folders.map(function(folder) {
-                return folder + config.paths.static.sass;
-            });
+            return config.paths.static.folder + config.paths.static.sass;
+        },
+        js: function() {
+            return config.paths.static.folder + config.paths.static.js;
+        },
+        dist: function() {
+            return config.paths.static.folder + config.paths.static.dist;
+        },
+        css: function() {
+            return config.paths.static.folder + config.paths.static.css;
         }
     },
     supported_browsers: [
@@ -48,28 +58,32 @@ gulp.task('bower', function() {
  * Move dependencies
  */
 gulp.task('dependencies', ['bower'] , function() {
-    return gulp.src('bower_components/**/*').pipe(gulp.dest(config.paths.libs));
+    gulp.src('node_modules/leaflet/dist/**/*').pipe(gulp.dest(config.paths.libs + '/leaflet/dist'));
+    gulp.src('node_modules/datatables/**/*').pipe(gulp.dest(config.paths.libs + '/datatables'));
+    gulp.src('node_modules/jquery-ui-timepicker-addon/dist/*.css').pipe(gulp.dest(config.paths.libs + '/jquery-ui-timepicker-addon/dist'));
+    gulp.src('bower_components/**/*').pipe(gulp.dest(config.paths.libs));
 });
 
-/**
- * Build
- */
-gulp.task('build', function() {
-    var tasks = config.paths.static.folders.map(function(folder) {
-        return gulp.src(folder + config.paths.static.sass)
-            .pipe(sass().on('error', sass.logError))
-            .pipe(postcss([autoprefixer({browsers: config.supported_browsers})]))
-            .pipe(gulp.dest(folder + config.paths.static.css));
-    });
-
-    return tasks;
+gulp.task('build:sass', function () {
+    return gulp.src(config.paths.static.folder + config.paths.static.sass)
+        .pipe(sass().on('error', sass.logError))
+        .pipe(postcss([autoprefixer({browsers: config.supported_browsers})]))
+        .pipe(gulp.dest(config.paths.css()));
 });
+
+gulp.task('build:js', function() {
+    return gulp.src(config.paths.js())
+        .pipe(webpack(webpack_config))
+        .pipe(gulp.dest(config.paths.dist()));
+});
+
+gulp.task('build', ['build:sass', 'build:js']);
 
 /**
  * Run build on file change
  */
 gulp.task('watch', function() {
-    gulp.watch(config.paths.sass(), ['build']);
+    gulp.watch([config.paths.sass(), config.paths.js()], ['build']);
 });
 
 /**
@@ -87,12 +101,13 @@ gulp.task('unit_tests', function(done) {
  * Run linter once and exit, tests will fail if there's a warning
  */
 gulp.task('lint', function() {
-    var tasks = config.paths.static.folders.map(function(folder) {
-        return gulp.src(folder + config.paths.static.js)
+    var tasks = [];
+    tasks.push(
+        gulp.src(config.paths.static.folder + config.paths.static.js)
             .pipe(jshint())
             .pipe(jshint.reporter('jshint-stylish'))
             .pipe(jshint.reporter('fail'))
-    });
+    );
     tasks.push(
         gulp.src(config.paths.js_tests)
             .pipe(jshint())
@@ -103,6 +118,8 @@ gulp.task('lint', function() {
 });
 
 gulp.task('test', ['unit_tests', 'lint']);
+
+gulp.task('build', ['build:sass', 'build:js']);
 
 /**
  * The default task (called when you run `gulp` from cli)

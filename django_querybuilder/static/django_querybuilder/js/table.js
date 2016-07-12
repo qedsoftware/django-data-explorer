@@ -1,3 +1,10 @@
+var $ = require('jquery');
+var datatableview = require('./datatableview');
+
+if (datatableview.auto_initialize) {
+    datatableview.initialize($('.datatable'));
+}
+
 /** Class representing an AJAX datatable.
  * @constructor
  * @param containerID {string} - DOM element ID assigned to the widget
@@ -8,7 +15,7 @@
     to the API together with the request
  */
 
-Table = (function(){
+var Table = (function(){
     'use strict';
 
     var Table = function(containerID, formID, endpointName, api, widgetParams) {
@@ -19,11 +26,9 @@ Table = (function(){
 
         var _this = this;
 
-        $(function () {
-            linkWithFilterForm(formID);
-            storeTableInDOM();
-            initializeTableView();
-        });
+        linkWithFilterForm(formID);
+        storeTableInDOM();
+        initializeTableView();
 
         function linkWithFilterForm(formID) {
             if (!!formID) {
@@ -72,3 +77,5 @@ Table = (function(){
 
     return Table;
 })();
+
+module.exports = Table;

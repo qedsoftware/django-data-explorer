@@ -1,5 +1,7 @@
 <script>
-    var form = new FilterForm('#{{ name }}', ['#tab']);
+    $( function() {
+        var form = new FilterForm('#{{ name }}', ['#tab']);
+    });
 </script>
 <filter-form id="{{ name }}_ff">
     <form id="{{ name }}">

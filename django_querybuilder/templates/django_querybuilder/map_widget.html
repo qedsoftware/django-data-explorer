@@ -1,8 +1,13 @@
+{% load static %}
+
 <div id="{{ name }}">
 
 <script type="text/javascript">
-    var mapData = "{{ map_data | escapejs }}";
-    var leaflet_map = new Map(mapData);
+    $( function () {
+        var mapData = "{{ map_data | escapejs }}";
+        var leaflet_map = new Map(mapData);
+        L.Icon.Default.imagePath = '{% static "django_querybuilder/libs/leaflet/dist/images" %}';
+    });
 </script>
 
 </div>
