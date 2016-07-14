@@ -21,7 +21,7 @@ Using in your application
 
 Add those lines to you project requirements or use them as PIP arguments.
 
-    -e git+git://github.com/qedsoftware/django-querybuilder#egg=django-querybuilder
+    django-querybuilder
     -e git+git://github.com/annaproch/django-datatable-view#egg=django-datatable-view   # for querybuilder
 
 Afterwards, you can use our package the same way as in the example. You can
@@ -55,10 +55,11 @@ Django static files - important note
 ------------------------------------
 Contents of the folders listed below are generated automatically.
 
-    /django_querybuilder/static/django_querybuilder/libs
+    /django_querybuilder/static/django_querybuilder/dist
     /django_querybuilder/static/django_querybuilder/css
+    /django_querybuilder/static/django_querybuilder/libs
 
-**Do not modify them manually.**
+Modifying them manually does not make much sense, as they will be overridden.
 
 They are included to enable the package to work immediately after installing it via pip.
 
