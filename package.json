@@ -1,13 +1,25 @@
 {
   "name": "django-querybuilder",
   "private": true,
+  "version": "0.0.3",
+  "main": "dist/querybuilder.js",
+  "author": "Quantitative Engineering Design Inc.",
+  "license": "BSD License",
   "scripts": {
     "test": "gulp test",
-    "deps": "gulp dependencies",
+    "deps": "gulp bower",
     "build": "gulp build",
     "start": "gulp",
     "js-docs": "jsdoc django_querybuilder/static/django_querybuilder/js/* -d js_docs"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qedsoftware/django-querybuilder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/qedsoftware/django-querybuilder/issues"
+  },
+  "homepage": "https://djangoqb.qed.ai",
   "devDependencies": {
     "autoprefixer": "^6.3.3",
     "babel-core": "^6.10.4",
@@ -16,11 +28,14 @@
     "babel-preset-es2015": "^6.9.0",
     "bower": "^1.7.7",
     "bower-webpack-plugin": "^0.1.9",
+    "expose-loader": "^0.7.1",
     "gulp": "^3.9.1",
     "gulp-bower": "0.0.13",
+    "gulp-css-url-adjuster": "^0.2.3",
+    "gulp-cssimport": "^3.1.0",
     "gulp-jshint": "^2.0.1",
-    "gulp-postcss": "^6.1.0",
-    "gulp-sass": "^2.2.0",
+    "gulp-postcss": "^6.1.1",
+    "gulp-sass": "^2.3.2",
     "istanbul-instrumenter-loader": "^0.2.0",
     "jshint": "^2.9.2",
     "jshint-stylish": "^2.2.0",
@@ -44,6 +59,6 @@
     "jquery-ui-timepicker-addon": "^1.5.5",
     "js-cookie": "^2.1.2",
     "jsdoc": "^3.4.0",
-    "leaflet": "^0.7.7"
+    "leaflet": "^1.0.0-rc.1"
   }
 }

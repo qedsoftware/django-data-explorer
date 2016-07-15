@@ -7,7 +7,7 @@ webpackConfig.entry = {};
 webpackConfig.module.preLoaders =  [
   {
     test: /\.js$/,
-    include: path.join(__dirname, 'django_querybuilder/static/django_querybuilder/js'),
+    include: path.join(__dirname, 'src/js'),
     loader: 'istanbul-instrumenter'
   }
 ];
@@ -34,7 +34,7 @@ module.exports = function(config) {
     // https://github.com/lbragaglia/karma-wiredep
     wiredep: {
       dependencies: true,
-      devDependencies: false
+      devDependencies: true
     },
 
 
@@ -55,7 +55,7 @@ module.exports = function(config) {
       // source files, that you wanna generate coverage for
       // do not include tests or libraries
       // (these files will be instrumented by Istanbul)
-      'django_querybuilder/static/django_querybuilder/js/*.js': ['webpack', 'coverage'],
+      'src/js/*.js': ['webpack', 'coverage'],
       'js_tests/*.js': ['webpack']
     },
 

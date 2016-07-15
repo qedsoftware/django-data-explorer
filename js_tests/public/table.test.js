@@ -1,6 +1,6 @@
 var QUnit = require('qunitjs');
-var FilterForm = require('../../django_querybuilder/static/django_querybuilder/js/filterui');
-var Table = require('../../django_querybuilder/static/django_querybuilder/js/table');
+var FilterForm = require('../../src/js/filterui');
+var Table = require('../../src/js/table');
 
 QUnit.module('application.Table');
 

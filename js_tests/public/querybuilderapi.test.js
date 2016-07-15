@@ -1,6 +1,6 @@
 var $ = require('jquery');
 var QUnit = require('qunitjs');
-var QuerybuilderAPI = require('../../django_querybuilder/static/django_querybuilder/js/querybuilderapi');
+var QuerybuilderAPI = require('../../src/js/querybuilderapi');
 
 QUnit.module('application.QuerybuilderAPI');
 

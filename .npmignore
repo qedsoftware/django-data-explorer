@@ -1,0 +1,6 @@
+jenkins.py
+MANIFEST.in
+pylintrc
+README.md
+setup.py
+django_querybuilder/
