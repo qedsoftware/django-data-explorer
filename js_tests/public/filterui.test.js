@@ -1,5 +1,5 @@
 var QUnit = require('qunitjs');
-var FilterForm = require('../../django_querybuilder/static/django_querybuilder/js/filterui');
+var FilterForm = require('../../src/js/filterui');
 
 QUnit.module('application.filterUI', {
     beforeEach: function() {

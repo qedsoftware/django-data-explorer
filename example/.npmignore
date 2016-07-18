@@ -1,0 +1,7 @@
+example/
+querybuilder_example/
+reports/
+src/
+db.sqlite3
+manage.py
+requirements.txt

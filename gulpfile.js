@@ -6,8 +6,9 @@ var bower = require('gulp-bower');
 var sass = require('gulp-sass');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
-var child_exec = require('child_process').exec;
+var cssimport = require("gulp-cssimport");
 var jshint = require('gulp-jshint');
+var url_adjuster = require('gulp-css-url-adjuster');
 var webpack = require('webpack-stream');
 var webpack_config = require('./webpack.config.js');
 
@@ -15,24 +16,31 @@ var config = {
     paths: {
         libs: './django_querybuilder/static/django_querybuilder/libs/',
         static: {
-            folder: 'django_querybuilder/static/django_querybuilder',
+            src_folder: 'src',
+            dist_folder: 'dist',
             sass: '/sass/**/*.scss',
             css: '/css',
-            dist: '/dist',
-            js: '/js/**/*.js'
+            js: '/js/**/*.js',
+            images: '/images/*.*'
         },
         js_tests: 'js_tests/public/*.js',
         sass: function() {
-            return config.paths.static.folder + config.paths.static.sass;
+            return config.paths.static.src_folder + config.paths.static.sass;
         },
         js: function() {
-            return config.paths.static.folder + config.paths.static.js;
+            return config.paths.static.src_folder + config.paths.static.js;
         },
         dist: function() {
-            return config.paths.static.folder + config.paths.static.dist;
+            return config.paths.static.dist_folder;
         },
         css: function() {
-            return config.paths.static.folder + config.paths.static.css;
+            return config.paths.static.dist_folder;
+        },
+        django: function() {
+            return './django_querybuilder/static/django_querybuilder/dist/';
+        },
+        images: function() {
+            return config.paths.static.src_folder + config.paths.static.images;
         }
     },
     supported_browsers: [
@@ -47,26 +55,23 @@ var config = {
     ]
 };
 
-/**
- * Install Bower dependencies
- */
 gulp.task('bower', function() {
     return bower();
 });
 
-/**
- * Move dependencies
- */
-gulp.task('dependencies', ['bower'] , function() {
-    gulp.src('node_modules/leaflet/dist/**/*').pipe(gulp.dest(config.paths.libs + '/leaflet/dist'));
-    gulp.src('node_modules/datatables/**/*').pipe(gulp.dest(config.paths.libs + '/datatables'));
-    gulp.src('node_modules/jquery-ui-timepicker-addon/dist/*.css').pipe(gulp.dest(config.paths.libs + '/jquery-ui-timepicker-addon/dist'));
-    gulp.src('bower_components/**/*').pipe(gulp.dest(config.paths.libs));
+gulp.task('images', function() {
+    gulp.src('node_modules/leaflet/dist/images/*.*').pipe(gulp.dest(config.paths.dist() + '/images'));
+    gulp.src('node_modules/datatables/media/images/*.png').pipe(gulp.dest(config.paths.dist() + '/images'));
+    gulp.src(config.paths.images()).pipe(gulp.dest(config.paths.dist() + '/images'));
 });
 
 gulp.task('build:sass', function () {
-    return gulp.src(config.paths.static.folder + config.paths.static.sass)
+    return gulp.src(config.paths.sass())
         .pipe(sass().on('error', sass.logError))
+        .pipe(cssimport({}))
+        .pipe(url_adjuster({
+            replace: ['../', '']
+        }))
         .pipe(postcss([autoprefixer({browsers: config.supported_browsers})]))
         .pipe(gulp.dest(config.paths.css()));
 });
@@ -76,8 +81,6 @@ gulp.task('build:js', function() {
         .pipe(webpack(webpack_config))
         .pipe(gulp.dest(config.paths.dist()));
 });
-
-gulp.task('build', ['build:sass', 'build:js']);
 
 /**
  * Run build on file change
@@ -103,7 +106,7 @@ gulp.task('unit_tests', function(done) {
 gulp.task('lint', function() {
     var tasks = [];
     tasks.push(
-        gulp.src(config.paths.static.folder + config.paths.static.js)
+        gulp.src(config.paths.js())
             .pipe(jshint())
             .pipe(jshint.reporter('jshint-stylish'))
             .pipe(jshint.reporter('fail'))
@@ -117,9 +120,14 @@ gulp.task('lint', function() {
     return tasks;
 });
 
-gulp.task('test', ['unit_tests', 'lint']);
+gulp.task('copy_dist', ['build:js', 'build:sass', 'images'], function() {
+    return gulp.src(config.paths.dist() + '/**/*.*')
+        .pipe(gulp.dest(config.paths.django()));
+});
 
-gulp.task('build', ['build:sass', 'build:js']);
+gulp.task('test', ['lint', 'unit_tests']);
+
+gulp.task('build', ['lint', 'copy_dist']);
 
 /**
  * The default task (called when you run `gulp` from cli)

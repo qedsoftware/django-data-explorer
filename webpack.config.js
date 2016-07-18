@@ -2,11 +2,11 @@ const webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
-    entry: ['babel-polyfill', './django_querybuilder/static/django_querybuilder/js/app.js'],
+    entry: ['babel-polyfill', './src/js/app.js'],
     output: {
-        path: require('path').resolve('./django_querybuilder/static/dist'),
+        path: require('path').resolve('./src/dist'),
         library: 'django_querybuilder',
-        filename: 'querybuilder.bundle.js'
+        filename: 'querybuilder.js'
     },
     plugins: [
         new webpack.ProvidePlugin({
@@ -29,7 +29,7 @@ module.exports = {
     ],
     // devtool: 'source-map',
     resolve: {
-        modulesDirectories: ["web_modules", "node_modules", "bower_components"],
+        modulesDirectories: ["node_modules", "bower_components"],
         alias: {
             // bind version of jquery-ui
             "jquery-ui": path.join(__dirname, "node_modules/jquery-ui/jquery-ui.js"),
@@ -37,7 +37,6 @@ module.exports = {
             // bind to modules;
             modules: path.join(__dirname, "node_modules")
         }
-
     },
     module: {
         loaders: [
@@ -51,6 +50,10 @@ module.exports = {
                 query: {
                     "presets": ["es2015"]
                 }
+            },
+            {
+                test: require.resolve("jquery"),
+                loader: "expose?$!expose?jQuery"
             }
         ]
     }

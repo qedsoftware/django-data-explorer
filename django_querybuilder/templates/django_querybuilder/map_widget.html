@@ -6,7 +6,7 @@
     $( function () {
         var mapData = "{{ map_data | escapejs }}";
         var leaflet_map = new Map(mapData);
-        L.Icon.Default.imagePath = '{% static "django_querybuilder/libs/leaflet/dist/images" %}';
+        L.Icon.Default.imagePath = '{% static "django_querybuilder/dist/images" %}';
     });
 </script>
 
