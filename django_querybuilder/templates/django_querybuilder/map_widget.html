@@ -3,9 +3,11 @@
 <div id="{{ name }}">
 
 <script type="text/javascript">
-    $( function () {
-        var mapData = "{{ map_data | escapejs }}";
-        var leaflet_map = new Map(mapData);
+    $(function () {
+        var mapData = JSON.parse("{{ map_data | escapejs }}");
+        var api = new QuerybuilderAPI(mapData.endpoint);
+        var leaflet_map = new Map(
+            mapData.name, mapData.filter, api, mapData.params);
         L.Icon.Default.imagePath = '{% static "django_querybuilder/dist/images" %}';
     });
 </script>

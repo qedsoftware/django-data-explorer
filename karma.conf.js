@@ -113,7 +113,7 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['PhantomJS'],
-    browserNoActivityTimeout: 60000,
+    browserNoActivityTimeout: 2400,
 
 
     // Continuous Integration mode

@@ -6,25 +6,23 @@ var L = require('leaflet');
 
 /** AJAX map widget.
  * @constructor
- * @param {string} mapData - JSON string representing map parameters
- * @param {string} mapData.name - widget name used as container ID and
+ * @param {string} name - widget name used as container ID and
     endpoint parameter
- * @param {string} mapData.endpoint - URL of the API endpoint
- * @param {string} mapData.params - manually defined string that can be passed
+ * @param {string} formID - optional filter ID
+ * @param {QuerybuilderAPI} api - the endpoint
+ * @param {string} params - manually defined string that can be passed
     to the endpoint
- * @param {string} mapData.filter - optional filter ID
  */
 var Map = (function() {
     'use strict';
-    var Map = function(mapData) {
-        mapData = JSON.parse(mapData);
+    var Map = function(name, formID, api, params) {
         this.arrayMarkers = [];
         this.map = null;
         this.layerData = null;
-        this.formID = mapData.filter ? '#' + mapData.filter : null;
-        this.mapWidgetId = mapData.name;
-        this.endpoint = mapData.endpoint;
-        this.params = mapData.params;
+        this.formID = formID ? '#' + formID : null;
+        this.mapWidgetId = name;
+        this.api = api;
+        this.params = params;
         var _this = this;
         new FilterForm(this.formID);
 
@@ -69,9 +67,8 @@ var Map = (function() {
         }
     };
 
-    var MapLinker = function(formID, endpointName, api, params, triggerMap,
+    var MapLinker = function(formID, api, params, triggerMap,
                              mapWidgetId) {
-        this.endpointName = endpointName;
         this.mapWidgetId = mapWidgetId;
         this.api = api;
         var _this = this;
@@ -143,8 +140,8 @@ var Map = (function() {
     Map.prototype = {
         init: function() {
             this.triggerMap = triggerMapFactory(this.mapWidgetId);
-            this.map_class = new MapLinker(this.formID, this.endpoint,
-                                           new QuerybuilderAPI(this.endpoint),
+            this.map_class = new MapLinker(this.formID,
+                                           this.api,
                                            this.params, this.triggerMap,
                                            this.mapWidgetId);
             this.layerData = new L.LayerGroup();
