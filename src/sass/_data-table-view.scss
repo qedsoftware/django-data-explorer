@@ -2,10 +2,8 @@
 @import "../../node_modules/datatables/media/css/jquery.dataTables.css";
 
 @mixin dataTables_base_input {
-  font-family: $font-stack;
   width: auto;
   padding: 0.2em;
-  font-size: 1em;
   border: 1px solid $label-grey;
   border-radius: 0;
   height: 2em;
@@ -14,12 +12,10 @@
 
 .dataTables_base_helpers {
   margin: 0.5em auto;
-  font-family: $font-stack;
   font-size: small;
   label {
     margin: 0;
     font-weight: 900;
-    color: $label-grey;
   }
 }
 
@@ -54,16 +50,4 @@
 
 .dataTables_paginate {
   @extend .dataTables_base_helpers;
-}
-
-.dataTable {
-  font-family: $font-stack;
-  font-size: smaller;
-  thead {
-    background-color: #F9F8F5;
-    color: $label-grey;
-  }
-  a {
-    color: $link-green;
-  }
 }

@@ -4,7 +4,6 @@
 $column-width: 150px;
 
 ul.ff-tabs-list {
-  font-family: $font-stack;
   color: #999;
   position: relative;
   display: flex;
@@ -43,7 +42,6 @@ ul.ff-tabs-list {
 }
 
 .ff-tab-pane {
-  font-family: $font-stack;
   margin: 0 0.5em;
 }
 
@@ -124,7 +122,6 @@ filter-form {
 }
 
 .ff-footer {
-  font-family: $font-stack;
   margin: 0.5em;
 }
 
@@ -132,7 +129,6 @@ filter-form {
   width: 250px;
   height: auto;
   background: white;
-  font-family: $font-stack;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
   a {
     text-decoration: none;
@@ -201,7 +197,6 @@ filter-form {
     padding-right: 25px;
   }
   .ui-timepicker-div .ui_tpicker_time .ui_tpicker_time_input {
-    font-family: $font-stack;
     outline: none;
     display: inline-block;
     border: 1px solid $label-grey;

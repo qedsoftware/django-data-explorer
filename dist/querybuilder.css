@@ -1293,7 +1293,6 @@ table.dataTable td {
 }
 
 ul.ff-tabs-list {
-  font-family: "Open Sans", Calibri, Arial, sans-serif;
   color: #999;
   position: relative;
   display: -webkit-box;
@@ -1347,7 +1346,6 @@ ul.ff-tabs-list .ui-tabs-active {
 }
 
 .ff-tab-pane {
-  font-family: "Open Sans", Calibri, Arial, sans-serif;
   margin: 0 0.5em;
 }
 
@@ -1452,7 +1450,6 @@ filter-form.ui-widget-content {
 }
 
 .ff-footer {
-  font-family: "Open Sans", Calibri, Arial, sans-serif;
   margin: 0.5em;
 }
 
@@ -1460,7 +1457,6 @@ filter-form.ui-widget-content {
   width: 250px;
   height: auto;
   background: white;
-  font-family: "Open Sans", Calibri, Arial, sans-serif;
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
           box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
 }
@@ -1554,7 +1550,6 @@ filter-form.ui-widget-content {
 }
 
 .ui-datepicker .ui-timepicker-div .ui_tpicker_time .ui_tpicker_time_input {
-  font-family: "Open Sans", Calibri, Arial, sans-serif;
   outline: none;
   display: inline-block;
   border: 1px solid #666;
@@ -1587,7 +1582,6 @@ filter-form.ui-widget-content {
 .dataTables_info,
 .dataTables_paginate {
   margin: 0.5em auto;
-  font-family: "Open Sans", Calibri, Arial, sans-serif;
   font-size: small;
 }
 
@@ -1598,7 +1592,6 @@ filter-form.ui-widget-content {
 .dataTables_paginate label {
   margin: 0;
   font-weight: 900;
-  color: #666;
 }
 
 .dataTables_wrapper {
@@ -1606,10 +1599,8 @@ filter-form.ui-widget-content {
 }
 
 .dataTables_length select {
-  font-family: "Open Sans", Calibri, Arial, sans-serif;
   width: auto;
   padding: 0.2em;
-  font-size: 1em;
   border: 1px solid #666;
   border-radius: 0;
   height: 2em;
@@ -1623,10 +1614,8 @@ filter-form.ui-widget-content {
 }
 
 .dataTables_filter input {
-  font-family: "Open Sans", Calibri, Arial, sans-serif;
   width: auto;
   padding: 0.2em;
-  font-size: 1em;
   border: 1px solid #666;
   border-radius: 0;
   height: 2em;
@@ -1638,18 +1627,4 @@ filter-form.ui-widget-content {
 .dataTables_filter a {
   text-decoration: none;
   color: #666;
-}
-
-.dataTable {
-  font-family: "Open Sans", Calibri, Arial, sans-serif;
-  font-size: smaller;
-}
-
-.dataTable thead {
-  background-color: #F9F8F5;
-  color: #666;
-}
-
-.dataTable a {
-  color: #4ea582;
 }
