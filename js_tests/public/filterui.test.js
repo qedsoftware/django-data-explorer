@@ -1,5 +1,5 @@
 var QUnit = require('qunitjs');
-var FilterForm = require('../../src/js/filterui');
+var FilterForm = require('../../frontend_src/js/filterui');
 
 QUnit.module('application.filterUI', {
     beforeEach: function() {

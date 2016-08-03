@@ -1,6 +1,6 @@
 var QUnit = require('qunitjs');
-var FilterForm = require('../../src/js/filterui');
-var Table = require('../../src/js/table');
+var FilterForm = require('../../frontend_src/js/filterui');
+var Table = require('../../frontend_src/js/table');
 
 QUnit.module('application.Table');
 

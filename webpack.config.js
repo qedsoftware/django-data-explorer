@@ -2,9 +2,9 @@ const webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
-    entry: ['babel-polyfill', './src/js/app.js'],
+    entry: ['babel-polyfill', './frontend_src/js/app.js'],
     output: {
-        path: require('path').resolve('./src/dist'),
+        path: require('path').resolve('./frontend_src/dist'),
         library: 'django_querybuilder',
         filename: 'querybuilder.js'
     },

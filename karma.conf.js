@@ -7,7 +7,7 @@ webpackConfig.entry = {};
 webpackConfig.module.preLoaders =  [
   {
     test: /\.js$/,
-    include: path.join(__dirname, 'src/js'),
+    include: path.join(__dirname, 'frontend_src/js'),
     loader: 'istanbul-instrumenter'
   }
 ];
@@ -55,7 +55,7 @@ module.exports = function(config) {
       // source files, that you wanna generate coverage for
       // do not include tests or libraries
       // (these files will be instrumented by Istanbul)
-      'src/js/*.js': ['webpack', 'coverage'],
+      'frontend_src/js/*.js': ['webpack', 'coverage'],
       'js_tests/*.js': ['webpack']
     },
 

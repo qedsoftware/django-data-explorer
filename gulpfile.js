@@ -16,8 +16,8 @@ var config = {
     paths: {
         libs: './django_querybuilder/static/django_querybuilder/libs/',
         static: {
-            src_folder: 'src',
-            dist_folder: 'dist',
+            src_folder: 'frontend_src',
+            dist_folder: 'frontend_dist',
             sass: '/sass/**/*.scss',
             css: '/css',
             js: '/js/**/*.js',

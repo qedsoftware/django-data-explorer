@@ -1,6 +1,6 @@
 var $ = require('jquery');
 var QUnit = require('qunitjs');
-var Map = require('../../src/js/map');
+var Map = require('../../frontend_src/js/map');
 L.Icon.Default.imagePath = '../../django_querybuilder/static/django_querybuilder/libs/leaflet/dist/images';
 
 

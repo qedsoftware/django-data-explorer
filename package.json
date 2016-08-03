@@ -2,7 +2,7 @@
   "name": "django-querybuilder",
   "private": true,
   "version": "0.0.3",
-  "main": "dist/querybuilder.js",
+  "main": "frontend_dist/querybuilder.js",
   "author": "Quantitative Engineering Design Inc.",
   "license": "BSD License",
   "scripts": {
