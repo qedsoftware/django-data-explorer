@@ -14,7 +14,7 @@ setup(
     description='AJAX tables and maps made simple',
     long_description=README,
     author='Quantitative Engineering Design Inc.',
-    author_email='michal@qed.ai',
+    author_email='djangoqb@qed.ai',
     url='http://github.com/qedsoftware/django-querybuilder',
     packages=find_packages(exclude=['tests', 'example']),
     classifiers=[
