@@ -10,3 +10,4 @@ npm-debug.log
 /build
 /django_querybuilder.egg-info/
 /js_docs
+/dist
