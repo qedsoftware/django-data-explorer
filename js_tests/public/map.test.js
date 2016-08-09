@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var QUnit = require('qunitjs');
 var Map = require('../../frontend_src/js/map');
+var L = require('leaflet');
 L.Icon.Default.imagePath = '../../django_querybuilder/static/django_querybuilder/libs/leaflet/dist/images';
 
 
@@ -18,9 +19,6 @@ var tableHTMLMap =
     '</filter-form>' +
     '<div id="map-example">' +
     '</div>';
-
-var mapOnlyData = {"name": "map-example", "endpoint": "", "filter": ""};
-var mapData = {"name": "map-example", "endpoint": "", "filter": "filter"};
 
 var apiMock = {};
 apiMock.retrieveData = function() {};

@@ -6,8 +6,6 @@ var $ = require('jquery');
  */
 
 var QuerybuilderAPI = (function(){
-    'use strict';
-
     var QuerybuilderAPI = function(url) {
         this.url = url;
     };
