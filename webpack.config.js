@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-var path = require('path');
+const path = require('path');
 
 module.exports = {
     entry: ['babel-polyfill', './frontend_src/js/app.js'],
@@ -27,7 +27,7 @@ module.exports = {
             }
         })
     ],
-    // devtool: 'source-map',
+    devtool: 'source-map',
     resolve: {
         modulesDirectories: ["node_modules", "bower_components"],
         alias: {
@@ -43,7 +43,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: [
-                    path.join(__dirname, './django_querybuilder/static/django_querybuilder/js'),
+                    path.join(__dirname, './frontend_src/js'),
                     path.join(__dirname, 'js_tests/')
                 ],
                 loader: 'babel',

@@ -1,152 +1,147 @@
-var $ = require('jquery');
-require('jquery-ui');
-require('jquery-deserialize');
-require('jquery-ui-timepicker-addon');
-var freewall = require('freewall').Freewall;
+import $ from 'jquery';
+import 'jquery-ui';
+import 'jquery-deserialize';
+import 'jquery-ui-timepicker-addon';
+import { freewall as Freewall } from 'freewall';
+
+const TIME_PICKER_SETTINGS = {
+    showButtonPanel: true,
+    controlType: 'select',
+    oneLine: true,
+    dateFormat: "yy-mm-dd"
+};
+
+const DATE_PICKER_SETTINGS = {
+    showButtonPanel: true,
+    dateFormat: "yy-mm-dd"
+};
 
 /** Set of filters.
  * @constructor
  * @param {string} containerID - DOM element ID of the widget
  * @param {string[]} [tabs] -
-    list of selectors pointing to divs corresponding to each tab
+ list of selectors pointing to divs corresponding to each tab
  */
-var FilterForm = (function(){
-    var TIME_PICKER_SETTINGS = {
-        showButtonPanel: true,
-        controlType: 'select',
-        oneLine: true,
-        dateFormat: "yy-mm-dd"
-    };
-    var DATE_PICKER_SETTINGS = {
-        showButtonPanel: true,
-        dateFormat: "yy-mm-dd"
-    };
+class FilterForm {
 
-    var FilterForm = function(containerID, tabs) {
-
+    constructor(containerID, tabs) {
         this.containerID = containerID;
-
-        var that = this;
-        var walls = [];
-
-        deserializeForms();
-        setSerializationOnChangeEvent();
-        addCustomPickers();
-        saveReferenceInDOM(that);
-
+        this.tabs = tabs;
+        this.walls = [];
         if (tabs && tabs instanceof Array) {
-            setFreewall();
-            setTabs();
+            this._setFreewall();
+            this._setTabs();
         }
+        this._deserializeForms();
+        this._setSerializationOnChangeEvent();
+        this._addCustomPickers();
+        this._saveReferenceInDOM();
+    }
 
-        function getHashString() {
-            return window.location.hash.substring(1);
+    serialize() {
+        return $(this.containerID).serialize();
+    }
+
+    onSubmit(callback) {
+        $(this.containerID).on("submit", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            callback(event);
+        });
+    }
+
+    _getHashString() {
+        return window.location.hash.substring(1);
+    }
+
+    _deserializeForms() {
+        var data = this._getHashString();
+        $('filter-form').find('form').deserialize(data);
+    }
+
+    _serializeForms() {
+        var nonEmptyInputFields = $("filter-form input").filter(function () {
+            return !!this.value;
+        });
+        var newHash = nonEmptyInputFields.serialize();
+        window.location.hash = newHash;
+    }
+
+    _setSerializationOnChangeEvent() {
+        $(this.containerID).on("change", () => {
+            this._serializeForms();
+        });
+    }
+
+    _setTabs() {
+        $(this.containerID + '_ff').tabs({
+            create: this._rearrangeAllColumns,
+            activate: this._rearrangeAllColumns
+        });
+    }
+
+    _rearrangeAllColumns() {
+        for (var i in this.walls) {
+            this.walls[i].fitWidth();
         }
+    }
 
-        function deserializeForms() {
-            var data = getHashString();
-            $('filter-form').find('form').deserialize(data);
-        }
-
-        function serializeForms() {
-            var nonEmptyInputFields = $("filter-form input").filter(function () {
-                return !!this.value;
+    _setFreewall() {
+        for (var idx in this.tabs) {
+            var wall = new Freewall(this.tabs[idx]);
+            this.walls.push(wall);
+            wall.reset({
+                selector: '.ff-group',
+                animate: true,
+                cellW: 170,
+                cellH: 'auto',
+                gutterY: 0,
+                onResize: this._rearrangeAllColumns
             });
-            var newHash = nonEmptyInputFields.serialize();
-            window.location.hash = newHash;
+            this._rearrangeAllColumns();
         }
+    }
 
-        function setSerializationOnChangeEvent() {
-            $(containerID).on("change", function (event) {
-                serializeForms();
-            });
-        }
+    _saveReferenceInDOM() {
+        $(this.containerID).data('FilterForm', this);
+    }
 
-        function setTabs() {
-            $(containerID + '_ff').tabs({
-                create: rearrangeAllColumns,
-                activate: rearrangeAllColumns
-            });
-        }
+    _addCustomPickers() {
+        this._addCustomDatePicker();
+        this._addCustiomTimeDateTimePicker();
+        this._addCustomTimePicker();
+    }
 
-        function rearrangeAllColumns() {
-            for (var i in walls) {
-                walls[i].fitWidth();
-            }
-        }
+    _addCustomDatePicker() {
+        var dateFields = this._getInputFieldsOfType('date');
+        dateFields.datepicker(DATE_PICKER_SETTINGS);
+        this._convertInputToTextType(dateFields);
+    }
 
-        function setFreewall() {
-            for (var idx in tabs) {
-                var wall = new freewall(tabs[idx]);
-                walls.push(wall);
-                wall.reset({
-                    selector: '.ff-group',
-                    animate: true,
-                    cellW: 170,
-                    cellH: 'auto',
-                    gutterY: 0,
-                    onResize: rearrangeAllColumns
-                });
-                rearrangeAllColumns();
-            }
-        }
+    _addCustiomTimeDateTimePicker() {
+        var dateTimeFields = this._getInputFieldsOfType('datetime-local');
+        dateTimeFields.datetimepicker(TIME_PICKER_SETTINGS);
+        this._convertInputToTextType(dateTimeFields);
+    }
 
-        function saveReferenceInDOM(that) {
-            $(containerID).data('FilterForm', that);
-        }
+    _addCustomTimePicker() {
+        var timeFields = this._getInputFieldsOfType('time');
+        timeFields.timepicker(TIME_PICKER_SETTINGS);
+        this._convertInputToTextType(timeFields);
+    }
 
-        function addCustomPickers() {
-            addCustomDatePicker();
-            addCustiomTimeDateTimePicker();
-            addCustomTimePicker();
-        }
+    _getInputFieldsOfType(inputType) {
+        return $("filter-form").find(this._getInputTypeSelector(inputType));
+    }
 
-        function addCustomDatePicker() {
-            var dateFields = getInputFieldsOfType('date');
-            dateFields.datepicker(DATE_PICKER_SETTINGS);
-            convertInputToTextType(dateFields);
-        }
+    _getInputTypeSelector(inputType) {
+        return "input[type='" + inputType + "']";
+    }
 
-        function addCustiomTimeDateTimePicker() {
-            var dateTimeFields = getInputFieldsOfType('datetime-local');
-            dateTimeFields.datetimepicker(TIME_PICKER_SETTINGS);
-            convertInputToTextType(dateTimeFields);
-        }
+    _convertInputToTextType($field) {
+        $field.attr('type', 'text');
+    }
 
-        function addCustomTimePicker() {
-            var timeFields = getInputFieldsOfType('time');
-            timeFields.timepicker(TIME_PICKER_SETTINGS);
-            convertInputToTextType(timeFields);
-        }
+}
 
-        function getInputFieldsOfType(inputType) {
-            return $("filter-form").find(getInputTypeSelector(inputType));
-        }
-
-        function getInputTypeSelector(inputType) {
-            return "input[type='"+ inputType + "']";
-        }
-
-        function convertInputToTextType($field) {
-            $field.attr('type','text');
-        }
-
-    };
-
-    FilterForm.prototype = {
-        serialize: function() {
-             return $(this.containerID).serialize();
-        },
-        onSubmit: function(callback) {
-            $(this.containerID).on("submit", function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-                callback(event);
-            });
-        }
-    };
-
-    return FilterForm;
-})();
-
-module.exports = FilterForm;
+export default FilterForm;

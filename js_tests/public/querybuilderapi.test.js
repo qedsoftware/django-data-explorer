@@ -1,5 +1,5 @@
-var QUnit = require('qunitjs');
-var QuerybuilderAPI = require('../../frontend_src/js/querybuilderapi');
+import QUnit from'qunitjs';
+import QuerybuilderAPI from '../../frontend_src/js/querybuilderapi';
 
 QUnit.module('application.QuerybuilderAPI');
 

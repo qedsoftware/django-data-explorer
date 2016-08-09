@@ -1,21 +1,18 @@
-var $ = require('jquery');
-var Cookie = require('js-cookie');
-require('datatables');
+import $ from 'jquery';
+import Cookie from 'js-cookie';
+import 'datatables';
 
 /* Modified version of datatableviw.js from datatable. */
-
-var datatableview = {
+const datatableview = {
     auto_initialize: false,
     defaults: {
         "bPaginate": true,
-        "bServerSide": true,
+        "bServerSide": true
     },
 
-    getCookie: function(name) {
-        return Cookie.get(name);
-    },
+    getCookie: (name) => Cookie.get(name),
 
-    initialize: function($$, opts) {
+    initialize: ($$, opts) => {
         var options_name_map = {
             'config-sortable': 'bSortable',
             'config-sorting': 'aaSorting',
@@ -69,7 +66,7 @@ var datatableview = {
             datatableview.options = $.extend({}, datatableview.defaults, opts, {
                 "aaSorting": sorting_options,
                 "aoColumns": column_options,
-                "ajax": function (data, callback, settings) {
+                "ajax": (data, callback, settings) => { // eslint-disable-line no-unused-vars
                     var table = $(opts.tableID).data('Table');
                     var client_params = $(opts.tableID).data('Table:client_params');
                     var table_params = {
@@ -90,7 +87,7 @@ var datatableview = {
                     });
                 },
                 "iDisplayLength": datatable.attr('data-page-length'),
-                "fnInfoCallback": function(oSettings, iStart, iEnd, iMax, iTotal, sPre){
+                "fnInfoCallback": (oSettings, iStart, iEnd, iMax, iTotal, sPre) => { // eslint-disable-line no-unused-vars
                     $("#" + datatable.attr('data-result-counter-id')).html(parseInt(iTotal).toLocaleString());
                     var infoString = oSettings.oLanguage.sInfo.replace('_START_',iStart).replace('_END_',iEnd).replace('_TOTAL_',iTotal);
                     if (iMax != iTotal) {
@@ -107,7 +104,7 @@ var datatableview = {
             try {
                 initialized_datatable.fnSetFilteringDelay();
             } catch (e) {
-                console.info("datatable plugin fnSetFilteringDelay not available");
+                console.info("datatable plugin fnSetFilteringDelay not available"); // eslint-disable-line no-console
             }
 
             var search_input = initialized_datatable.closest('.dataTables_wrapper').find('.dataTables_filter input');
@@ -125,7 +122,7 @@ var datatableview = {
 
 function get_ordering_params(order_data) {
     if (order_data.length > 1)
-        console.warn("Multiple columns ordering not supported");
+        console.warn("Multiple columns ordering not supported"); // eslint-disable-line no-console
     if (order_data.length > 0) {
         return {
             iSortingCols: order_data.length,
@@ -136,4 +133,4 @@ function get_ordering_params(order_data) {
     else return { iSortingCols: 0 };
 }
 
-module.exports = datatableview;
+export default datatableview;

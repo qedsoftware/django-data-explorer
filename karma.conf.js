@@ -4,11 +4,19 @@ var path = require('path');
 
 webpackConfig.entry = {};
 
-webpackConfig.module.preLoaders =  [
+webpackConfig.isparta = {
+  embedSource: true,
+  noAutoWrap: true,
+  babel: {
+    presets: ['es2015']
+  }
+};
+
+webpackConfig.module.preLoaders = [
   {
     test: /\.js$/,
-    include: path.join(__dirname, 'frontend_src/js'),
-    loader: 'istanbul-instrumenter'
+    include: path.resolve('frontend_src/js/'),
+    loader: 'isparta'
   }
 ];
 

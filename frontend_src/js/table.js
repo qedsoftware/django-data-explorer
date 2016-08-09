@@ -1,5 +1,5 @@
-var $ = require('jquery');
-var datatableview = require('./datatableview');
+import $ from 'jquery';
+import datatableview from './datatableview';
 
 if (datatableview.auto_initialize) {
     datatableview.initialize($('.datatable'));
@@ -12,68 +12,62 @@ if (datatableview.auto_initialize) {
  * @param endpointName {string} - name of the widget used for routing requests
  * @param api {QuerybuilderAPI} - data source
  * @param widgetParams {string} - manually defined data that will be passed
-    to the API together with the request
+ to the API together with the request
  */
-
-var Table = (function(){
-    var Table = function(containerID, formID, endpointName, api, widgetParams) {
+class Table {
+    constructor(containerID, formID, endpointName, api, widgetParams) {
         this.containerID = containerID;
         this.endpointName = endpointName;
         this.api = api;
         this.widgetParams = widgetParams;
+        this.form = null;
+        this._linkWithFilterForm(formID);
+        this._storeTableInDOM();
+        this._initializeTableView();
+    }
 
-        var _this = this;
+    retrieveData(client_params, widget_params, callback) {
+        this.api.retrieveData(this.endpointName, client_params, widget_params, callback);
+    }
 
-        linkWithFilterForm(formID);
-        storeTableInDOM();
-        initializeTableView();
-
-        function linkWithFilterForm(formID) {
-            if (formID) {
-                _this.form = getFilterForm(formID);
-                _this.form.onSubmit(getData);
-            }
+    _linkWithFilterForm(formID) {
+        if (formID) {
+            this.form = this._getFilterForm(formID);
+            this.form.onSubmit(this._getData.bind(this));
         }
+    }
 
-        function getFilterForm(formID) {
-            return $(formID).data('FilterForm');
+    _getFilterForm(formID) {
+        return $(formID).data('FilterForm');
+    }
+
+    _getData(event) {
+        event.preventDefault();
+        var parameters = this.form.serialize();
+        $(this.containerID).data('Table:client_params', parameters);
+        $(this.containerID).data('Table:widget_params', this.widgetParams);
+        this.tableview._fnAjaxUpdate();
+    }
+
+    _storeTableInDOM() {
+        $(this.containerID).data('Table', this);
+        $(this.containerID).data('Table:widget_params', this.widgetParams);
+    }
+
+    _initializeTableView() {
+        this.tableview = datatableview.initialize($(this.containerID + '_t'), {
+            tableID: this.containerID,
+            endpointName: this.endpointName,
+            initComplete: this._initSubmit
+        });
+    }
+
+    _initSubmit() {
+        if (this.formID && this.tableview) {
+            $(this.formID).trigger("submit");
         }
+    }
 
-        function getData(event) {
-            event.preventDefault();
-            var parameters = _this.form.serialize();
-            $(containerID).data('Table:client_params', parameters);
-            $(containerID).data('Table:widget_params', _this.widgetParams);
-            _this.tableview._fnAjaxUpdate();
-        }
+}
 
-        function storeTableInDOM() {
-            $(containerID).data('Table', _this);
-            $(containerID).data('Table:widget_params', _this.widgetParams);
-        }
-
-        function initializeTableView() {
-            _this.tableview = datatableview.initialize($(containerID + '_t'), {
-                tableID: containerID,
-                endpointName: endpointName,
-                initComplete: initSubmit
-            });
-        }
-
-        function initSubmit() {
-            if (!!formID && _this.tableview) {
-                $(formID).trigger("submit");
-            }
-        }
-    };
-
-    Table.prototype = {
-        retrieveData: function(client_params, widget_params, callback) {
-            this.api.retrieveData(this.endpointName, client_params, widget_params, callback);
-        }
-    };
-
-    return Table;
-})();
-
-module.exports = Table;
+export default Table;

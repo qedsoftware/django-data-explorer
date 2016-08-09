@@ -1,6 +1,11 @@
 require('jquery');
 
-window.FilterForm = require('./filterui');
-window.Map = require('./map');
-window.QuerybuilderAPI = require('./querybuilderapi');
-window.Table = require('./table');
+import FilterForm from './filterui';
+import Map from './map';
+import QuerybuilderAPI from './querybuilderapi';
+import Table from './table';
+
+window.FilterForm = FilterForm;
+window.Map = Map;
+window.QuerybuilderAPI = QuerybuilderAPI;
+window.Table = Table;

@@ -1,17 +1,10 @@
-var $ = require('jquery');
-var QUnit = require('qunitjs');
-var Map = require('../../frontend_src/js/map');
-var L = require('leaflet');
+import $ from 'jquery';
+import QUnit from 'qunitjs';
+import Map from '../../frontend_src/js/map';
+import L from 'leaflet';
 L.Icon.Default.imagePath = '../../django_querybuilder/static/django_querybuilder/libs/leaflet/dist/images';
 
-
-QUnit.module('application.Map', {
-    beforeEach: function() {
-        $('#qunit-fixture').append(tableHTMLMap);
-    }
-});
-
-var tableHTMLMap =
+const tableHTMLMap =
     '<filter-form>' +
         '<form id="filter">' +
             '<input type="submit">' +
@@ -20,27 +13,34 @@ var tableHTMLMap =
     '<div id="map-example">' +
     '</div>';
 
-var apiMock = {};
-apiMock.retrieveData = function() {};
+class ApiMock {
+    retrieveData() {}
+}
+
+QUnit.module('application.Map', {
+    beforeEach: () => {
+        $('#qunit-fixture').append(tableHTMLMap);
+    }
+});
 
 QUnit.test('Construct map without filter', function(assert) {
 
-    var m = new Map("map-example", "", apiMock, null);
-    assert.equal(m.mapWidgetId,'map-example');
+    var m = new Map("map-example", "", new ApiMock(), null);
+    assert.equal(m.mapWidgetId, 'map-example');
 
 });
 
 QUnit.test('Construct map and filter', function(assert) {
 
-    var m = new Map("map-example", "filter", apiMock, null);
-    assert.equal(m.mapWidgetId,'map-example');
+    var m = new Map("map-example", "filter", new ApiMock(), null);
+    assert.equal(m.mapWidgetId, 'map-example');
     $('#filter').trigger('submit');
 
 });
 
 QUnit.test('Check if array marker is added and deleted.', function(assert) {
 
-    var m = new Map("map-example", "filter", apiMock, null);
+    var m = new Map("map-example", "filter", new ApiMock(), null);
     m.addMarker({latitude: 20.0, longitude: 30.0, description: "fake"}, m);
     assert.equal(m.arrayMarkers.length, 1);
     assert.equal(m.arrayMarkers[0]._latlng.lat, 20);
@@ -54,7 +54,7 @@ QUnit.test('Check if array marker is added and deleted.', function(assert) {
 
 QUnit.test('Check if array marker is added and replaced.', function(assert) {
 
-    var m = new Map("map-example", "filter", apiMock, null);
+    var m = new Map("map-example", "filter", new ApiMock(), null);
     m.addMarker({latitude: 20.0, longitude: 30.0, description: "fake"}, m);
     assert.equal(m.arrayMarkers.length, 1);
     var filteredData = {data: [{latitude: 21.0, longitude: 31.0, description: "fake_2"}]};

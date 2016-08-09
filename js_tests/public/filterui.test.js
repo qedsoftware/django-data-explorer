@@ -1,17 +1,8 @@
-var QUnit = require('qunitjs');
-var FilterForm = require('../../frontend_src/js/filterui');
-var $ = require('jquery');
+import QUnit from 'qunitjs';
+import $ from 'jquery';
+import FilterForm from '../../frontend_src/js/filterui';
 
-QUnit.module('application.filterUI', {
-    beforeEach: function() {
-        $('#qunit-fixture').append(firstFormHTML);
-    },
-    afterEach: function() {
-        cleanHash();
-    }
-});
-
-var firstFormHTML =
+const firstFormHTML =
     '<filter-form id="filter_ff">' +
         '<form id="filter">' +
             '<ul class="ff-tabs-list">' +
@@ -28,7 +19,7 @@ var firstFormHTML =
         '</form>' +
     '</filter-form>';
 
-var secondFormHTML =
+const secondFormHTML =
     '<filter-form>' +
         '<form id="secondFilter">' +
             '<input type="text" name="textField">' +
@@ -36,10 +27,16 @@ var secondFormHTML =
         '</form>' +
     '</filter-form>';
 
-
 function cleanHash() {
     window.location.hash = '';
 }
+
+QUnit.module('application.filterUI', {
+    beforeEach: () => {
+        $('#qunit-fixture').append(firstFormHTML);
+    },
+    afterEach: cleanHash
+});
 
 QUnit.test('Serialize form with no input test', function(assert) {
     new FilterForm('#filter', ['#tab_1']);

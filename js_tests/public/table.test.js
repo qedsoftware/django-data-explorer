@@ -1,11 +1,11 @@
-var QUnit = require('qunitjs');
-var FilterForm = require('../../frontend_src/js/filterui');
-var Table = require('../../frontend_src/js/table');
-var $ = require('jquery');
+import QUnit from 'qunitjs';
+import $ from 'jquery';
+import FilterForm from '../../frontend_src/js/filterui';
+import Table from '../../frontend_src/js/table';
 
 QUnit.module('application.Table');
 
-var tableHTML =
+const tableHTML =
     '<filter-form>' +
         '<form id="filter">' +
             '<input type="submit">' +
@@ -16,19 +16,18 @@ var tableHTML =
     '<table id="table_t">' +
     '</table>';
 
-QUnit.test('Update after form submission.', function(assert) {
-    var FakeQuerybuilderAPI = (function(){
-        var QuerybuilderAPI = function(url) {
-        };
-        QuerybuilderAPI.prototype = {
-            retrieveData: function(endpointName, query_config, widget_params, callback) {
-                assert.ok(true);
-                callback({data: {aaData:[], iTotalRecords:0, iTotalDisplayRecords:0}});
-            }
-        };
-        return QuerybuilderAPI;
-    })();
 
+
+QUnit.test('Update after form submission.', function(assert) {
+    class FakeQuerybuilderAPI {
+        constructor(url) {
+            this.url = url
+        }
+        retrieveData(endpointName, query_config, widget_params, callback) {
+            assert.ok(true);
+            callback({data: {aaData:[], iTotalRecords:0, iTotalDisplayRecords:0}});
+        }
+    }
     assert.expect(2);
 
     $("#qunit-fixture").append(tableHTML);
@@ -40,17 +39,15 @@ QUnit.test('Update after form submission.', function(assert) {
 });
 
 QUnit.test('Initialize without FilterForm', function(assert) {
-    var FakeQuerybuilderAPI = (function(){
-        var QuerybuilderAPI = function(url) {
-        };
-        QuerybuilderAPI.prototype = {
-            retrieveData: function(endpointName, query_config, widget_params, callback) {
-                callback({data: {aaData:[], iTotalRecords:0, iTotalDisplayRecords:0}});
-            }
-        };
-        return QuerybuilderAPI;
-    })();
-
+    class FakeQuerybuilderAPI {
+        constructor(url) {
+            this.url = url
+        }
+        retrieveData(endpointName, query_config, widget_params, callback) {
+            assert.ok(true);
+            callback({data: {aaData:[], iTotalRecords:0, iTotalDisplayRecords:0}});
+        }
+    }
     $("#qunit-fixture").append(tableHTML);
 
     var api = new FakeQuerybuilderAPI("/endpoint/");
