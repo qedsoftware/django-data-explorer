@@ -16,8 +16,6 @@ if (datatableview.auto_initialize) {
  */
 
 var Table = (function(){
-    'use strict';
-
     var Table = function(containerID, formID, endpointName, api, widgetParams) {
         this.containerID = containerID;
         this.endpointName = endpointName;
@@ -31,7 +29,7 @@ var Table = (function(){
         initializeTableView();
 
         function linkWithFilterForm(formID) {
-            if (!!formID) {
+            if (formID) {
                 _this.form = getFilterForm(formID);
                 _this.form.onSubmit(getData);
             }

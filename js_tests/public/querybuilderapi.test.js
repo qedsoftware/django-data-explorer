@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var QUnit = require('qunitjs');
 var QuerybuilderAPI = require('../../frontend_src/js/querybuilderapi');
 

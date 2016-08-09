@@ -1,5 +1,6 @@
 var QUnit = require('qunitjs');
 var FilterForm = require('../../frontend_src/js/filterui');
+var $ = require('jquery');
 
 QUnit.module('application.filterUI', {
     beforeEach: function() {
@@ -40,13 +41,13 @@ function cleanHash() {
     window.location.hash = '';
 }
 
-test('Serialize form with no input test', function(assert) {
+QUnit.test('Serialize form with no input test', function(assert) {
     new FilterForm('#filter', ['#tab_1']);
     $('#filter').trigger("change");
     assert.equal(window.location.hash, '');
 });
 
-test('Serialize form with one field filled test', function(assert) {
+QUnit.test('Serialize form with one field filled test', function(assert) {
     new FilterForm('#filter');
     var formField = $('#filter input[name=textField]');
     formField.val('someText');
@@ -54,7 +55,7 @@ test('Serialize form with one field filled test', function(assert) {
     assert.equal(window.location.hash, '#textField=someText');
 });
 
-test('Serialize same form multiple times test', function(assert) {
+QUnit.test('Serialize same form multiple times test', function(assert) {
     new FilterForm('#filter');
     var formField = $('#filter input[name=textField]');
     formField.val('someText');
@@ -63,7 +64,7 @@ test('Serialize same form multiple times test', function(assert) {
     assert.equal(window.location.hash, '#textField=someText');
 });
 
-test('Serialize two non-empty forms test', function(assert) {
+QUnit.test('Serialize two non-empty forms test', function(assert) {
     $('#qunit-fixture').append(secondFormHTML);
     new FilterForm('#filter');
     new FilterForm('#secondFilter');
@@ -76,21 +77,21 @@ test('Serialize two non-empty forms test', function(assert) {
     assert.equal(window.location.hash, '#textField=someText&textField=someText');
 });
 
-test('Deserialize single form test', function(assert) {
+QUnit.test('Deserialize single form test', function(assert) {
     window.location.hash = '#filterID=filter&textField=someText';
     new FilterForm('#filter');
     var formField = $('#filter input[name=textField]');
     assert.equal(formField.val(), 'someText');
 });
 
-test('Deserialize one of two forms test', function(assert) {
+QUnit.test('Deserialize one of two forms test', function(assert) {
     window.location.hash = '#filterID=filter&textField=someText&filterID=filter2&textField=someText';
     new FilterForm('#filter');
     var formField = $('#filter input[name=textField]');
     assert.equal(formField.val(), 'someText');
 });
 
-test('Serialize returns form data test', function(assert) {
+QUnit.test('Serialize returns form data test', function(assert) {
     $('#qunit-fixture').on("submit", function(event) {
         event.preventDefault();
         assert.deepEqual(form.serialize(), 'textField=someText');
@@ -101,7 +102,7 @@ test('Serialize returns form data test', function(assert) {
     $('#filter').trigger('submit');
 });
 
-test('Submit event calls callback function test', function(assert) {
+QUnit.test('Submit event calls callback function test', function(assert) {
     var form = new FilterForm('#filter');
     form.onSubmit(function(event) {
         event.preventDefault();
@@ -110,7 +111,7 @@ test('Submit event calls callback function test', function(assert) {
     $('#filter').trigger('submit');
 });
 
-test('Reference is stored in the DOM test', function (assert) {
+QUnit.test('Reference is stored in the DOM test', function (assert) {
     var form = new FilterForm('#filter');
     var loadedForm = $('#filter').data('FilterForm');
     assert.equal(form, loadedForm);

@@ -11,8 +11,6 @@ var freewall = require('freewall').Freewall;
     list of selectors pointing to divs corresponding to each tab
  */
 var FilterForm = (function(){
-    'use strict';
-
     var TIME_PICKER_SETTINGS = {
         showButtonPanel: true,
         controlType: 'select',

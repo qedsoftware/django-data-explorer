@@ -16,12 +16,6 @@ var datatableview = {
     },
 
     initialize: function($$, opts) {
-        if (typeof window.console === "undefined" || typeof window.console.log === "undefined") {
-            console = {
-                log: function(){},
-                info: function(){}
-            };
-        }
         var options_name_map = {
             'config-sortable': 'bSortable',
             'config-sorting': 'aaSorting',
@@ -106,11 +100,6 @@ var datatableview = {
                 },
                 "bFilter": false
             });
-            try {
-                datatableview.options = confirm_datatable_options(datatableview.options, datatable);
-            } catch (e) {
-
-            }
 
             var initialized_datatable = datatable.dataTable(datatableview.options);
             initialized_datatables.push(initialized_datatable[0]);

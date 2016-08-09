@@ -1,6 +1,5 @@
 var $ = require('jquery');
 var FilterForm = require('./filterui');
-var QuerybuilderAPI = require('./querybuilderapi');
 var L = require('leaflet');
 
 
@@ -14,7 +13,6 @@ var L = require('leaflet');
     to the endpoint
  */
 var Map = (function() {
-    'use strict';
     var Map = function(name, formID, api, params) {
         this.arrayMarkers = [];
         this.map = null;

@@ -7,10 +7,10 @@ var sass = require('gulp-sass');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var cssimport = require("gulp-cssimport");
-var jshint = require('gulp-jshint');
 var url_adjuster = require('gulp-css-url-adjuster');
 var webpack = require('webpack-stream');
 var webpack_config = require('./webpack.config.js');
+var eslint = require('gulp-eslint');
 
 var config = {
     paths: {
@@ -107,15 +107,15 @@ gulp.task('lint', function() {
     var tasks = [];
     tasks.push(
         gulp.src(config.paths.js())
-            .pipe(jshint())
-            .pipe(jshint.reporter('jshint-stylish'))
-            .pipe(jshint.reporter('fail'))
+            .pipe(eslint())
+            .pipe(eslint.format())
+            .pipe(eslint.failAfterError())
     );
     tasks.push(
         gulp.src(config.paths.js_tests)
-            .pipe(jshint())
-            .pipe(jshint.reporter('jshint-stylish'))
-            .pipe(jshint.reporter('fail'))
+            .pipe(eslint())
+            .pipe(eslint.format())
+            .pipe(eslint.failAfterError())
     );
     return tasks;
 });

@@ -1,6 +1,7 @@
 var QUnit = require('qunitjs');
 var FilterForm = require('../../frontend_src/js/filterui');
 var Table = require('../../frontend_src/js/table');
+var $ = require('jquery');
 
 QUnit.module('application.Table');
 
@@ -32,7 +33,7 @@ QUnit.test('Update after form submission.', function(assert) {
 
     $("#qunit-fixture").append(tableHTML);
 
-    var form = new FilterForm("#filter");
+    new FilterForm("#filter");
     var api = new FakeQuerybuilderAPI("/endpoint/");
     new Table("#table", '#filter', "endpoint", api);
     $("#filter").trigger("submit");
