@@ -13,4 +13,4 @@ pylint==1.5.4
 pylint-django==0.7.1
 six==1.10.0
 wrapt==1.10.6
--e git+git://github.com/annaproch/django-datatable-view#egg=master
+-e git+git://github.com/qedsoftware/django-datatable-view#egg=django-datatable-view
