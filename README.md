@@ -22,7 +22,7 @@ Using in your application
 Add those lines to you project requirements or use them as PIP arguments.
 
     django-querybuilder
-    -e git+git://github.com/annaproch/django-datatable-view#egg=django-datatable-view   # for querybuilder
+    -e git+git://github.com/qedsoftware/django-datatable-view#egg=django-datatable-view   # for querybuilder
 
 Afterwards, you can use our package the same way as in the example. You can
  also consult docstrings.
