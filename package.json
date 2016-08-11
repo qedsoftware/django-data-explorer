@@ -10,7 +10,7 @@
     "deps": "gulp bower",
     "build": "gulp build",
     "start": "gulp",
-    "js-docs": "jsdoc django_querybuilder/static/django_querybuilder/js/* -d js_docs",
+    "js-docs": "jsdoc frontend_src/js/* -d js_docs",
     "lint": "gulp lint"
   },
   "repository": {
