@@ -1,13 +1,1 @@
-<div id="{{ widget_id }}">
-
-<script type="text/javascript">
-    $( function () {
-        var tableData = {{ table_data | safe }};
-        var api = new QuerybuilderAPI(tableData.endpointUrl);
-        var table = new Table(tableData.containerID, tableData.formID, tableData.endpointName,
-                              api, tableData.params);
-    });
-
-</script>
-
-</div>
+<div id="{{ widget_id }}" data-django-querybuilder-widget="table" data-django-querybuilder-table="{{ table_data }}"></div>

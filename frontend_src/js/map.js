@@ -1,6 +1,9 @@
 import $ from 'jquery';
-import FilterForm from './filterui';
 import L from 'leaflet';
+
+import FilterForm from './filterui';
+import QuerybuilderAPI from './querybuilderapi';
+import registerWidgetClass from './registerwidgetclass';
 
 /** AJAX map widget.
  * @constructor
@@ -85,6 +88,15 @@ class Map {
         this.layerData.removeLayer(layer);
     }
 
+    static register(element) {
+        var mapElement = $(element);
+        var mapData = mapElement.data("django-querybuilder-map");
+
+        L.Icon.Default.imagePath = mapData.imageUrl;
+
+        var api = new QuerybuilderAPI(mapData.endpoint);
+        return new Map(mapData.name, mapData.filter, api, mapData.params);
+    }
 }
 
 class MapLinker {
@@ -157,5 +169,7 @@ function getLeafletMap(widgetId, layerData) {
     L.control.layers(baseLayers, overlays).addTo(map);
     return map;
 }
+
+registerWidgetClass("map", Map);
 
 export default Map;

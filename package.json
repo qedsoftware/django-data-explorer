@@ -9,6 +9,7 @@
     "test": "gulp test",
     "deps": "gulp bower",
     "build": "gulp build",
+    "build:example": "cd ./example/filterui_example/ && webpack",
     "start": "gulp",
     "js-docs": "jsdoc frontend_src/js/* -d js_docs",
     "lint": "gulp lint"
@@ -32,7 +33,6 @@
     "bower-webpack-plugin": "^0.1.9",
     "eslint": "^3.2.2",
     "eslint-plugin-babel": "^3.3.0",
-    "expose-loader": "^0.7.1",
     "gulp": "^3.9.1",
     "gulp-bower": "0.0.13",
     "gulp-css-url-adjuster": "^0.2.3",

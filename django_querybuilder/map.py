@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.template.loader import render_to_string
 from django.utils.six import python_2_unicode_compatible
 
@@ -62,6 +63,7 @@ class Map(Widget):
             'endpoint': self.endpoint.get_url(),
             'params': json.dumps(self.params),
             'filter': self.filterform.filter_name if self.filterform is not None else "",
+            'imageUrl': static("django_querybuilder/dist/images")
         }
         text = render_to_string(
             self.template_name, {'map_data': json.dumps(map_data),

@@ -4,8 +4,9 @@ const path = require('path');
 module.exports = {
     entry: ['babel-polyfill', './frontend_src/js/app.js'],
     output: {
-        path: require('path').resolve('./frontend_src/dist'),
+        path: path.resolve('./frontend_src/dist'),
         library: 'django_querybuilder',
+        libraryTarget: 'umd',
         filename: 'querybuilder.js'
     },
     plugins: [
@@ -50,11 +51,10 @@ module.exports = {
                 query: {
                     "presets": ["es2015"]
                 }
-            },
-            {
-                test: require.resolve("jquery"),
-                loader: "expose?$!expose?jQuery"
             }
         ]
+    },
+    stats: {
+        colors: true
     }
 };

@@ -1,21 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="../../django_querybuilder/static/django_querybuilder/dist/querybuilder.js"></script>
+    <script defer src="example_form.build.js"></script>
     <link rel="stylesheet" type="text/css" href="../../django_querybuilder/static/django_querybuilder/dist/querybuilder.css" />
     <meta charset="UTF-8">
     <title>FilterUI example page</title>
 </head>
 <body style="margin: 1em">
-    <script>
-        $(function () {
-            var form = new FilterForm('#filter', ['#tab_1', "#tab_2"]);
-            $("#filter").on("submit", function(event) {
-                event.preventDefault();
-                console.log(form.serialize());
-            });
-        });
-    </script>
     <filter-form id="filter_ff">
         <ul class="ff-tabs-list">
             <li><a href="#tab_1">Tab 1</a></li>

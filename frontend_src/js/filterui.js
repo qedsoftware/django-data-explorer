@@ -4,6 +4,9 @@ import 'jquery-deserialize';
 import 'jquery-ui-timepicker-addon';
 import { freewall as Freewall } from 'freewall';
 
+import registerWidgetClass from './registerwidgetclass';
+
+
 const TIME_PICKER_SETTINGS = {
     showButtonPanel: true,
     controlType: 'select',
@@ -140,6 +143,11 @@ class FilterForm {
         $field.attr('type', 'text');
     }
 
+    static register(element) {
+        return new FilterForm('#' + element.id, ['#tab']);
+    }
 }
+
+registerWidgetClass("filter-form", FilterForm);
 
 export default FilterForm;

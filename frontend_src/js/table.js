@@ -1,5 +1,8 @@
 import $ from 'jquery';
+
 import datatableview from './datatableview';
+import QuerybuilderAPI from './querybuilderapi';
+import registerWidgetClass from './registerwidgetclass';
 
 if (datatableview.auto_initialize) {
     datatableview.initialize($('.datatable'));
@@ -72,6 +75,15 @@ class Table {
         }
     }
 
+    static register(element) {
+        var tableData = $(element).data("django-querybuilder-table");
+        var api = new QuerybuilderAPI(tableData.endpointUrl);
+        return new Table(tableData.containerID, tableData.formID, tableData.endpointName,
+            api, tableData.params);
+    }
+
 }
+
+registerWidgetClass("table", Table);
 
 export default Table;
