@@ -87,8 +87,8 @@ class FilterForm {
     }
 
     _setFreewall() {
-        for (var idx in this.tabs) {
-            var wall = new Freewall(this.tabs[idx]);
+        this.tabs.forEach((tab) => {
+            var wall = new Freewall(tab);
             this.walls.push(wall);
             wall.reset({
                 selector: '.ff-group',
@@ -96,10 +96,10 @@ class FilterForm {
                 cellW: 170,
                 cellH: 'auto',
                 gutterY: 0,
-                onResize: this._rearrangeAllColumns
+                onResize: this._rearrangeAllColumns.bind(this)
             });
             this._rearrangeAllColumns();
-        }
+        });
     }
 
     _saveReferenceInDOM() {

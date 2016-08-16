@@ -31,11 +31,7 @@
     "bower": "^1.7.7",
     "bower-webpack-plugin": "^0.1.9",
     "eslint": "^3.2.2",
-    "eslint-config-google": "^0.6.0",
-    "eslint-config-standard": "^5.3.5",
     "eslint-plugin-babel": "^3.3.0",
-    "eslint-plugin-promise": "^2.0.0",
-    "eslint-plugin-standard": "^2.0.0",
     "expose-loader": "^0.7.1",
     "gulp": "^3.9.1",
     "gulp-bower": "0.0.13",
@@ -68,6 +64,6 @@
     "jquery-ui-timepicker-addon": "^1.5.5",
     "js-cookie": "^2.1.2",
     "jsdoc": "^3.4.0",
-    "leaflet": "^1.0.0-rc.1"
+    "leaflet": "^1.0.0-rc.3"
   }
 }
