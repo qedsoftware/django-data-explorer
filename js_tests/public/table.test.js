@@ -41,7 +41,7 @@ QUnit.test('Update after form submission.', function(assert) {
 QUnit.test('Initialize without FilterForm', function(assert) {
     class FakeQuerybuilderAPI {
         constructor(url) {
-            this.url = url
+            this.url = url;
         }
         retrieveData(endpointName, query_config, widget_params, callback) {
             assert.ok(true);

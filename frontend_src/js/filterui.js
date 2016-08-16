@@ -75,15 +75,13 @@ class FilterForm {
 
     _setTabs() {
         $(this.containerID + '_ff').tabs({
-            create: this._rearrangeAllColumns,
-            activate: this._rearrangeAllColumns
+            create: this._rearrangeAllColumns.bind(this),
+            activate: this._rearrangeAllColumns.bind(this)
         });
     }
 
     _rearrangeAllColumns() {
-        for (var i in this.walls) {
-            this.walls[i].fitWidth();
-        }
+        this.walls.forEach((wall) => wall.fitWidth());
     }
 
     _setFreewall() {

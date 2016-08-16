@@ -68,17 +68,17 @@ const datatableview = {
                 "aoColumns": column_options,
                 "ajax": (data, callback, settings) => { // eslint-disable-line no-unused-vars
                     var table = $(opts.tableID).data('Table');
-                    var client_params = $(opts.tableID).data('Table:client_params');
+                    var client_params = table._getFilterParameters();
                     var table_params = {
                         filter_query: client_params,
                         datatables_params: {
                             iDisplayStart: data.start,
                             iDisplayLength: data.length,
                             sEcho: sEcho_count++
-                        },
+                        }
                     };
                     $.extend(table_params.datatables_params, get_ordering_params(data.order));
-                    var widget_params = $(opts.tableID).data('Table:widget_params');
+                    var widget_params = table.widgetParams;
                     var table_params_string = JSON.stringify(table_params);
                     table.retrieveData(table_params_string, widget_params, function(response) {
                         callback({data: response.data.aaData,
@@ -127,7 +127,7 @@ function get_ordering_params(order_data) {
         return {
             iSortingCols: order_data.length,
             iSortCol_0: order_data[0].column,
-            sSortDir_0: order_data[0].dir,
+            sSortDir_0: order_data[0].dir
         };
     }
     else return { iSortingCols: 0 };

@@ -20,7 +20,7 @@ class Table {
         this.endpointName = endpointName;
         this.api = api;
         this.widgetParams = widgetParams;
-        this.form = null;
+        this.formID = formID;
         this._linkWithFilterForm(formID);
         this._storeTableInDOM();
         this._initializeTableView();
@@ -33,7 +33,7 @@ class Table {
     _linkWithFilterForm(formID) {
         if (formID) {
             this.form = this._getFilterForm(formID);
-            this.form.onSubmit(this._getData.bind(this));
+            this.form.onSubmit(this._refreshData.bind(this));
         }
     }
 
@@ -41,24 +41,28 @@ class Table {
         return $(formID).data('FilterForm');
     }
 
-    _getData(event) {
+    _refreshData(event) {
         event.preventDefault();
-        var parameters = this.form.serialize();
-        $(this.containerID).data('Table:client_params', parameters);
-        $(this.containerID).data('Table:widget_params', this.widgetParams);
         this.tableview._fnAjaxUpdate();
+    }
+
+    _getFilterParameters() {
+        if (this.form) {
+            return this.form.serialize();
+        } else {
+            return '';
+        }
     }
 
     _storeTableInDOM() {
         $(this.containerID).data('Table', this);
-        $(this.containerID).data('Table:widget_params', this.widgetParams);
     }
 
     _initializeTableView() {
         this.tableview = datatableview.initialize($(this.containerID + '_t'), {
             tableID: this.containerID,
             endpointName: this.endpointName,
-            initComplete: this._initSubmit
+            initComplete: this._initSubmit.bind(this)
         });
     }
 
