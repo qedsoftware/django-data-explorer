@@ -1,6 +1,10 @@
 import $ from 'jquery';
 import Cookie from 'js-cookie';
-import 'datatables';
+import 'datatables.net-responsive';
+
+if (window.querybuilderDataTable !== undefined) {
+    $.fn.dataTable = window.querybuilderDataTable;
+}
 
 /* Modified version of datatableviw.js from datatable. */
 const datatableview = {
@@ -95,7 +99,9 @@ const datatableview = {
                     }
                     return infoString;
                 },
-                "bFilter": false
+                "bFilter": false,
+                "responsive": true,
+                "bAutoWidth": false
             });
 
             var initialized_datatable = datatable.dataTable(datatableview.options);

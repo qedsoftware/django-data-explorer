@@ -1,5 +1,6 @@
 @import "variables";
-@import "../../node_modules/datatables/media/css/jquery.dataTables.css";
+@import "node_modules/datatables.net-dt/css/jquery.dataTables";
+@import "node_modules/datatables.net-responsive-dt/css/responsive.dataTables";
 
 @mixin dataTables_base_input {
   width: auto;

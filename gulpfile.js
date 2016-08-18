@@ -6,7 +6,6 @@ var bower = require('gulp-bower');
 var sass = require('gulp-sass');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
-var cssimport = require("gulp-cssimport");
 var url_adjuster = require('gulp-css-url-adjuster');
 var webpack = require('webpack-stream');
 var webpack_config = require('./webpack.config.js');
@@ -68,7 +67,6 @@ gulp.task('images', function() {
 gulp.task('build:sass', function () {
     return gulp.src(config.paths.sass())
         .pipe(sass().on('error', sass.logError))
-        .pipe(cssimport({}))
         .pipe(url_adjuster({
             replace: ['../', '']
         }))
