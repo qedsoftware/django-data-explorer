@@ -77,6 +77,9 @@ class FilterForm {
     }
 
     _setTabs() {
+        if (this.tabs.length <= 1) {
+            return;
+        }
         $(this.containerID + '_ff').tabs({
             create: this._rearrangeAllColumns.bind(this),
             activate: this._rearrangeAllColumns.bind(this)
