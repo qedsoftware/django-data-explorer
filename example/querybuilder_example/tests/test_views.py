@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
-from .models import City
+from querybuilder_example.models import City
 
 
 class TestCityMapView(TestCase):

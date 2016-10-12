@@ -3,8 +3,8 @@ import json
 from django.core.urlresolvers import reverse
 from django.test import RequestFactory, TestCase
 
-from . import querybuilder
-from .models import Author
+from querybuilder_example import querybuilder
+from querybuilder_example.models import Author
 
 
 class EndpointTest(TestCase):

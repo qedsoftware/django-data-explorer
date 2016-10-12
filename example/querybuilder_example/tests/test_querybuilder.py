@@ -4,8 +4,8 @@ import mock
 from django.test import TestCase
 from django.utils.encoding import smart_text
 
-from .models import Author, Book, City
-from .querybuilder import Endpoint, BookFilter, get_age
+from querybuilder_example.models import Author, Book, City
+from querybuilder_example.querybuilder import Endpoint, BookFilter, get_age
 
 import django_querybuilder.filterform
 
