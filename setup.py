@@ -6,16 +6,16 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
-version = '0.0.4'
+version = '0.0.5'
 
 setup(
-    name='django-querybuilder',
+    name='django-data-explorer',
     version=version,
     description='AJAX tables and maps made simple',
     long_description=README,
     author='Quantitative Engineering Design Inc.',
     author_email='djangoqb@qed.ai',
-    url='http://github.com/qedsoftware/django-querybuilder',
+    url='http://github.com/qedsoftware/django-data-explorer',
     packages=find_packages(exclude=['tests', 'example']),
     classifiers=[
         'Environment :: Web Environment',

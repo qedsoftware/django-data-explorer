@@ -16,12 +16,12 @@ function registerWidgetClassBySelector(selector, widgetClass) {
 
 /** Register new class of widgets
  * On page load, widgetClass.register will be called on each element that has
- * "data-django-querybuilder-widget" set to attributeValue.
+ * "data-django-data-explorer-widget" set to attributeValue.
  * @param {string} attributeValue
  * @param widgetClass
  */
 function registerWidgetClass(attributeValue, widgetClass) {
-    let selector = `[data-django-querybuilder-widget=${attributeValue}]`;
+    let selector = `[data-django-data-explorer-widget=${attributeValue}]`;
     registerWidgetClassBySelector(selector, widgetClass);
 }
 

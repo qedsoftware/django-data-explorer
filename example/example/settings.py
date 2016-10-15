@@ -39,13 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_jenkins',
-    'querybuilder_example',
+    'data_explorer_example',
 
-    'django_querybuilder',
+    'django_data_explorer',
     'datatableview'
 ]
 
-PROJECT_APPS = ['django_querybuilder', 'querybuilder_example']
+PROJECT_APPS = ['django_data_explorer', 'data_explorer_example']
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',

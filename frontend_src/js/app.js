@@ -1,6 +1,6 @@
 import FilterForm from './filterui';
 import Map from './map';
-import QuerybuilderAPI from './querybuilderapi';
+import DataExplorerAPI from './dataexplorerapi';
 import Table from './table';
 
-export { FilterForm, Map, QuerybuilderAPI, Table };
+export { FilterForm, Map, DataExplorerAPI, Table };

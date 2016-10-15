@@ -31,8 +31,8 @@ def run_unittests():
     run_django_unittests()
     do_call([
         "pylint", "--load-plugins", "pylint_django",
-        "django_querybuilder",
-        "example/querybuilder_example"
+        "django_data_explorer",
+        "example/data_explorer_example"
     ])
     do_call(['which', 'npm'])
     do_call(['npm', 'install'])

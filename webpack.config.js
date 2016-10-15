@@ -5,9 +5,9 @@ module.exports = {
     entry: ['babel-polyfill', './frontend_src/js/app.js'],
     output: {
         path: path.resolve('./frontend_src/dist'),
-        library: 'django_querybuilder',
+        library: 'django_data_explorer',
         libraryTarget: 'umd',
-        filename: 'querybuilder.js'
+        filename: 'data-explorer.js'
     },
     plugins: [
         new webpack.ProvidePlugin({

@@ -13,7 +13,7 @@ var eslint = require('gulp-eslint');
 
 var config = {
     paths: {
-        libs: './django_querybuilder/static/django_querybuilder/libs/',
+        libs: './django_data_explorer/static/django_data_explorer/libs/',
         static: {
             src_folder: 'frontend_src',
             dist_folder: 'frontend_dist',
@@ -36,7 +36,7 @@ var config = {
             return config.paths.static.dist_folder;
         },
         django: function() {
-            return './django_querybuilder/static/django_querybuilder/dist/';
+            return './django_data_explorer/static/django_data_explorer/dist/';
         },
         images: function() {
             return config.paths.static.src_folder + config.paths.static.images;
@@ -60,7 +60,7 @@ gulp.task('bower', function() {
 
 gulp.task('images', function() {
     gulp.src('node_modules/leaflet/dist/images/*.*').pipe(gulp.dest(config.paths.dist() + '/images'));
-    gulp.src('node_modules/datatables/media/images/*.png').pipe(gulp.dest(config.paths.dist() + '/images'));
+    gulp.src('node_modules/datatables.net-dt/images/*.png').pipe(gulp.dest(config.paths.dist() + '/images'));
     gulp.src(config.paths.images()).pipe(gulp.dest(config.paths.dist() + '/images'));
 });
 

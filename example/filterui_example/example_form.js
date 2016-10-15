@@ -1,4 +1,4 @@
-import { FilterForm } from '../../frontend_dist/querybuilder.js';
+import { FilterForm } from '../../frontend_dist/data-explorer.js';
 import $ from 'jquery';
 
 $(() => {

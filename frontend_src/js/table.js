@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 import datatableview from './datatableview';
-import QuerybuilderAPI from './querybuilderapi';
+import DataExplorerAPI from './dataexplorerapi';
 import registerWidgetClass from './registerwidgetclass';
 
 if (datatableview.auto_initialize) {
@@ -13,7 +13,7 @@ if (datatableview.auto_initialize) {
  * @param containerID {string} - DOM element ID assigned to the widget
  * @param formID {string} - ID of the FilterForm, optional
  * @param endpointName {string} - name of the widget used for routing requests
- * @param api {QuerybuilderAPI} - data source
+ * @param api {DataExplorerAPI} - data source
  * @param widgetParams {string} - manually defined data that will be passed
  to the API together with the request
  */
@@ -76,8 +76,8 @@ class Table {
     }
 
     static register(element) {
-        var tableData = $(element).data("django-querybuilder-table");
-        var api = new QuerybuilderAPI(tableData.endpointUrl);
+        var tableData = $(element).data("django-data-explorer-table");
+        var api = new DataExplorerAPI(tableData.endpointUrl);
         return new Table(tableData.containerID, tableData.formID, tableData.endpointName,
             api, tableData.params);
     }

@@ -2,7 +2,7 @@ import $ from 'jquery';
 import QUnit from 'qunitjs';
 import Map from '../../frontend_src/js/map';
 import L from 'leaflet';
-L.Icon.Default.imagePath = '../../django_querybuilder/static/django_querybuilder/libs/leaflet/dist/images';
+L.Icon.Default.imagePath = '../../django_data_explorer/static/django_data_explorer/libs/leaflet/dist/images';
 
 const tableHTMLMap =
     '<filter-form>' +

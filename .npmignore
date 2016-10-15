@@ -3,4 +3,4 @@ MANIFEST.in
 pylintrc
 README.md
 setup.py
-django_querybuilder/
+django_data_explorer/

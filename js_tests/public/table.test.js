@@ -19,7 +19,7 @@ const tableHTML =
 
 
 QUnit.test('Update after form submission.', function(assert) {
-    class FakeQuerybuilderAPI {
+    class FakeDataExplorerAPI {
         constructor(url) {
             this.url = url
         }
@@ -33,13 +33,13 @@ QUnit.test('Update after form submission.', function(assert) {
     $("#qunit-fixture").append(tableHTML);
 
     new FilterForm("#filter");
-    var api = new FakeQuerybuilderAPI("/endpoint/");
+    var api = new FakeDataExplorerAPI("/endpoint/");
     new Table("#table", '#filter', "endpoint", api);
     $("#filter").trigger("submit");
 });
 
 QUnit.test('Initialize without FilterForm', function(assert) {
-    class FakeQuerybuilderAPI {
+    class FakeDataExplorerAPI {
         constructor(url) {
             this.url = url;
         }
@@ -50,7 +50,7 @@ QUnit.test('Initialize without FilterForm', function(assert) {
     }
     $("#qunit-fixture").append(tableHTML);
 
-    var api = new FakeQuerybuilderAPI("/endpoint/");
+    var api = new FakeDataExplorerAPI("/endpoint/");
     new Table("#table", '', "endpoint", api);
     assert.ok(true);
 });

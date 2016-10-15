@@ -1,8 +1,8 @@
 {
-  "name": "django-querybuilder",
+  "name": "django-data-explorer",
   "private": false,
-  "version": "0.0.4",
-  "main": "frontend_dist/querybuilder.js",
+  "version": "0.0.5",
+  "main": "frontend_dist/data-explorer.js",
   "author": "Quantitative Engineering Design Inc.",
   "license": "BSD License",
   "scripts": {
@@ -17,10 +17,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/qedsoftware/django-querybuilder.git"
+    "url": "https://github.com/qedsoftware/django-data-explorer.git"
   },
   "bugs": {
-    "url": "https://github.com/qedsoftware/django-querybuilder/issues"
+    "url": "https://github.com/qedsoftware/django-data-explorer/issues"
   },
   "homepage": "https://djangoqb.qed.ai",
   "devDependencies": {
@@ -65,6 +65,6 @@
     "jquery-ui-timepicker-addon": "^1.5.5",
     "js-cookie": "^2.1.2",
     "jsdoc": "^3.4.0",
-    "leaflet": "^1.0.0-rc.3"
+    "leaflet": "0.7.7"
   }
 }

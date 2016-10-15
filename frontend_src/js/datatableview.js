@@ -2,8 +2,8 @@ import $ from 'jquery';
 import Cookie from 'js-cookie';
 import 'datatables.net-responsive';
 
-if (window.querybuilderDataTable !== undefined) {
-    $.fn.dataTable = window.querybuilderDataTable;
+if (window.dataExplorerDataTable !== undefined) {
+    $.fn.dataTable = window.dataExplorerDataTable;
 }
 
 /* Modified version of datatableviw.js from datatable. */

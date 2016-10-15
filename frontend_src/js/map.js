@@ -2,7 +2,7 @@ import $ from 'jquery';
 import L from 'leaflet';
 
 import FilterForm from './filterui';
-import QuerybuilderAPI from './querybuilderapi';
+import DataExplorerAPI from './dataexplorerapi';
 import registerWidgetClass from './registerwidgetclass';
 
 /** AJAX map widget.
@@ -10,7 +10,7 @@ import registerWidgetClass from './registerwidgetclass';
  * @param {string} name - widget name used as container ID and
  endpoint parameter
  * @param {string} formID - optional filter ID
- * @param {QuerybuilderAPI} api - the endpoint
+ * @param {DataExplorerAPI} api - the endpoint
  * @param {string} params - manually defined string that can be passed
  to the endpoint
  */
@@ -90,11 +90,11 @@ class Map {
 
     static register(element) {
         var mapElement = $(element);
-        var mapData = mapElement.data("django-querybuilder-map");
+        var mapData = mapElement.data("django-data-explorer-map");
 
         L.Icon.Default.imagePath = mapData.imageUrl;
 
-        var api = new QuerybuilderAPI(mapData.endpoint);
+        var api = new DataExplorerAPI(mapData.endpoint);
         return new Map(mapData.name, mapData.filter, api, mapData.params);
     }
 }

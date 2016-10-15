@@ -8,6 +8,6 @@ npm-debug.log
 /reports
 /example/src
 /build
-/django_querybuilder.egg-info/
+/django_data_explorer.egg-info/
 /js_docs
 /dist
