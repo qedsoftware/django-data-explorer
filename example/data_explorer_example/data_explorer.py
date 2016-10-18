@@ -34,6 +34,7 @@ class CityFilter(FilterForm):
             'citizens_number': ['gt'],
         }
 
+
 CityFilterInstance = CityFilter("city-filter")
 
 

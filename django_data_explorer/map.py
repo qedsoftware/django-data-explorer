@@ -13,8 +13,9 @@ class Map(Widget):
 
     Can be used in pair with FilterForm.
 
-    By default, the model should have fields latitude and longitude. If it
-    doesn't, you should override methods description and coordinates.
+    Values are taken from model latitude and longitude fields.
+    If other fields define longitude and latitude,
+    override description and coordinates methods.
     """
 
     name = None
@@ -39,7 +40,8 @@ class Map(Widget):
                 data, queryset)
         return queryset
 
-    def get_queryset(self, dummy):
+    def get_queryset(self, params):  # pylint: disable=unused-argument
+        """Dummy queryset method returning all objects."""
         return self.model.objects.all()
 
     def get_data(self, client_params):

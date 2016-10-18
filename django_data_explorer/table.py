@@ -83,7 +83,16 @@ def parse_response(datatable):
 
 @python_2_unicode_compatible
 class Table(Widget):
-    """Datatable that reacts on FilterForm."""
+    """Datatable that reacts on FilterForm.
+
+    Subclasses should define following properties:
+    name, model and columns, which is the list of columns to dispaly
+
+    Example column list item
+    '<field_name>'
+    ('Verbose name', '<field_name>')
+    ('Verbose name', lambda model: model.attribute )
+    """
     name = None
     model = None
     columns = None
