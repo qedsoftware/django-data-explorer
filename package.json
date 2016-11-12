@@ -1,7 +1,7 @@
 {
   "name": "django-data-explorer",
   "private": false,
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "frontend_dist/data-explorer.js",
   "author": "Quantitative Engineering Design Inc.",
   "license": "BSD License",
