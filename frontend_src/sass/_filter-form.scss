@@ -52,6 +52,9 @@ ul.ff-tabs-list {
     font-weight: 900;
     color: $label-grey;
   }
+  select {
+    width: $column-width;
+  }
   input {
     outline: none;
     display: block;
