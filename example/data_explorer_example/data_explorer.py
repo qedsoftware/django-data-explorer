@@ -79,7 +79,8 @@ class BookTable(Table):
     model = Book
     columns = [
         ("Author name", 'author__name'),
-        'title',
+        # You can use lambda expressions in columns
+        ('Title', lambda book: book.title),
         'pages',
         'publication_date'
     ]

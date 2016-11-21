@@ -4,7 +4,7 @@ import json
 
 from django.template.loader import render_to_string
 from django.utils.encoding import smart_text, python_2_unicode_compatible
-from django.utils.html import mark_safe
+from django.utils.html import mark_safe, escape as escape_html
 
 from datatableview.datatables import LegacyDatatable
 
@@ -62,11 +62,14 @@ class QuerysetDatatable(LegacyDatatable):
         return queryset
 
     def get_column_value(self, obj, column, **kwargs):
+        source_value = self.get_source_value(obj, column)
+        return escape_html(source_value or column.value(obj, **kwargs)[0])
+
+    @staticmethod
+    def get_source_value(obj, column):
         for source in column.sources:
             if hasattr(source, "__call__"):
                 return source(obj)
-
-        return column.value(obj, **kwargs)
 
 def parse_response(datatable):
     return {
