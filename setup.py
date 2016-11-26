@@ -6,7 +6,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
-version = '0.0.6'
+version = '0.0.7'
 
 setup(
     name='django-data-explorer',
@@ -35,7 +35,7 @@ setup(
     zip_safe=False,
     install_requires=[
         "django>=1.8.0",
-        "django-filter>=0.10.0",
+        "django-filter>=0.10.0, <1.0.0a0",
         "django-jenkins"
     ]
 )
