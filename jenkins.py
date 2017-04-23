@@ -36,7 +36,6 @@ def run_unittests():
     ])
     do_call(['which', 'npm'])
     do_call(['npm', 'install'])
-    do_call(['npm', 'run', 'deps'])
     do_call(['npm', 'test'])
 
 

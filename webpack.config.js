@@ -16,9 +16,6 @@ module.exports = {
             "window.jQuery": "jquery",
             "window.$": "jquery"
         }),
-        new webpack.ResolverPlugin(
-            new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("./bower.json", ["main"])
-        ),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
@@ -30,7 +27,7 @@ module.exports = {
     ],
     devtool: 'source-map',
     resolve: {
-        modulesDirectories: ["node_modules", "bower_components"],
+        modulesDirectories: ["node_modules"],
         alias: {
             // bind version of jquery-ui
             "jquery-ui": path.join(__dirname, "node_modules/jquery-ui/jquery-ui.js"),

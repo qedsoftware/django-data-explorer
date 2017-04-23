@@ -117,6 +117,8 @@ ul.ff-tabs-list {
   margin: 0 auto;
   padding: 0;
   list-style: none;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
   -webkit-flex-flow: row wrap;
       -ms-flex-flow: row wrap;
           flex-flow: row wrap;
@@ -996,7 +998,9 @@ table.dataTable tfoot td {
 
 table.dataTable thead .sorting,
 table.dataTable thead .sorting_asc,
-table.dataTable thead .sorting_desc {
+table.dataTable thead .sorting_desc,
+table.dataTable thead .sorting_asc_disabled,
+table.dataTable thead .sorting_desc_disabled {
   cursor: pointer;
   *cursor: hand;
 }
@@ -1476,13 +1480,17 @@ table.dataTable td {
   -webkit-overflow-scrolling: touch;
 }
 
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th,
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td {
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > th,
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > td,
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > th,
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td {
   vertical-align: middle;
 }
 
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th > div.dataTables_sizing,
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td > div.dataTables_sizing {
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > th > div.dataTables_sizing,
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > td > div.dataTables_sizing,
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > th > div.dataTables_sizing,
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td > div.dataTables_sizing {
   height: 0;
   overflow: hidden;
   margin: 0 !important;
@@ -1493,8 +1501,8 @@ table.dataTable td {
   border-bottom: 1px solid #111111;
 }
 
-.dataTables_wrapper.no-footer div.dataTables_scrollHead table,
-.dataTables_wrapper.no-footer div.dataTables_scrollBody table {
+.dataTables_wrapper.no-footer div.dataTables_scrollHead > table,
+.dataTables_wrapper.no-footer div.dataTables_scrollBody > table {
   border-bottom: none;
 }
 
@@ -1643,23 +1651,23 @@ table.dataTable > tbody > tr.child:hover {
   background: transparent !important;
 }
 
-table.dataTable > tbody > tr.child ul {
+table.dataTable > tbody > tr.child ul.dtr-details {
   display: inline-block;
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-table.dataTable > tbody > tr.child ul li {
+table.dataTable > tbody > tr.child ul.dtr-details li {
   border-bottom: 1px solid #efefef;
   padding: 0.5em 0;
 }
 
-table.dataTable > tbody > tr.child ul li:first-child {
+table.dataTable > tbody > tr.child ul.dtr-details li:first-child {
   padding-top: 0;
 }
 
-table.dataTable > tbody > tr.child ul li:last-child {
+table.dataTable > tbody > tr.child ul.dtr-details li:last-child {
   border-bottom: none;
 }
 

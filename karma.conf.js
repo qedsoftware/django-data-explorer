@@ -29,22 +29,13 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['wiredep', 'qunit'],
+    frameworks: ['qunit'],
 
     client: {
       qunit: {
         testTimeout: 30000
       }
     },
-
-
-    // bower dependencies
-    // https://github.com/lbragaglia/karma-wiredep
-    wiredep: {
-      dependencies: true,
-      devDependencies: true
-    },
-
 
     // list of files / patterns to load in the browser
     files: [

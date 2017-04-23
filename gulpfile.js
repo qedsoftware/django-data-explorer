@@ -2,7 +2,6 @@
 
 var gulp = require('gulp');
 var Server = require('karma').Server;
-var bower = require('gulp-bower');
 var sass = require('gulp-sass');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
@@ -53,10 +52,6 @@ var config = {
         "Safari >= 6"
     ]
 };
-
-gulp.task('bower', function() {
-    return bower();
-});
 
 gulp.task('images', function() {
     gulp.src('node_modules/leaflet/dist/images/*.*').pipe(gulp.dest(config.paths.dist() + '/images'));
