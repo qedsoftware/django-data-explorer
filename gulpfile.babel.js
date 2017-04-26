@@ -1,16 +1,14 @@
-'use strict';
+const gulp = require('gulp');
+const Server = require('karma').Server;
+const sass = require('gulp-sass');
+const postcss = require('gulp-postcss');
+const autoprefixer = require('autoprefixer');
+const url_adjuster = require('gulp-css-url-adjuster');
+const webpack = require('webpack-stream');
+const webpack_config = require('./webpack.config.js');
+const eslint = require('gulp-eslint');
 
-var gulp = require('gulp');
-var Server = require('karma').Server;
-var sass = require('gulp-sass');
-var postcss = require('gulp-postcss');
-var autoprefixer = require('autoprefixer');
-var url_adjuster = require('gulp-css-url-adjuster');
-var webpack = require('webpack-stream');
-var webpack_config = require('./webpack.config.js');
-var eslint = require('gulp-eslint');
-
-var config = {
+const config = {
     paths: {
         libs: './django_data_explorer/static/django_data_explorer/libs/',
         static: {
@@ -22,24 +20,12 @@ var config = {
             images: '/images/*.*'
         },
         js_tests: 'js_tests/public/*.js',
-        sass: function() {
-            return config.paths.static.src_folder + config.paths.static.sass;
-        },
-        js: function() {
-            return config.paths.static.src_folder + config.paths.static.js;
-        },
-        dist: function() {
-            return config.paths.static.dist_folder;
-        },
-        css: function() {
-            return config.paths.static.dist_folder;
-        },
-        django: function() {
-            return './django_data_explorer/static/django_data_explorer/dist/';
-        },
-        images: function() {
-            return config.paths.static.src_folder + config.paths.static.images;
-        }
+        sass: () => config.paths.static.src_folder + config.paths.static.sass,
+        js: () => config.paths.static.src_folder + config.paths.static.js,
+        dist: () => config.paths.static.dist_folder,
+        css: () => config.paths.static.dist_folder,
+        django: () => './django_data_explorer/static/django_data_explorer/dist/',
+        images: () => config.paths.static.src_folder + config.paths.static.images,
     },
     supported_browsers: [
         "Android 2.3",
@@ -53,13 +39,13 @@ var config = {
     ]
 };
 
-gulp.task('images', function() {
+gulp.task('images', () => {
     gulp.src('node_modules/leaflet/dist/images/*.*').pipe(gulp.dest(config.paths.dist() + '/images'));
     gulp.src('node_modules/datatables.net-dt/images/*.png').pipe(gulp.dest(config.paths.dist() + '/images'));
     gulp.src(config.paths.images()).pipe(gulp.dest(config.paths.dist() + '/images'));
 });
 
-gulp.task('build:sass', function () {
+gulp.task('build:sass', () => {
     return gulp.src(config.paths.sass())
         .pipe(sass().on('error', sass.logError))
         .pipe(url_adjuster({
@@ -69,7 +55,7 @@ gulp.task('build:sass', function () {
         .pipe(gulp.dest(config.paths.css()));
 });
 
-gulp.task('build:js', function() {
+gulp.task('build:js', () => {
     return gulp.src(config.paths.js())
         .pipe(webpack(webpack_config))
         .pipe(gulp.dest(config.paths.dist()));
@@ -78,14 +64,14 @@ gulp.task('build:js', function() {
 /**
  * Run build on file change
  */
-gulp.task('watch', function() {
+gulp.task('watch', () => {
     gulp.watch([config.paths.sass(), config.paths.js()], ['build']);
 });
 
 /**
  * Run test once and exit
  */
-gulp.task('unit_tests', function(done) {
+gulp.task('unit_tests', (done) => {
     new Server({
         configFile: __dirname + '/karma.conf.js',
         singleRun: true,
@@ -96,8 +82,8 @@ gulp.task('unit_tests', function(done) {
 /**
  * Run linter once and exit, tests will fail if there's a warning
  */
-gulp.task('lint', function() {
-    var tasks = [];
+gulp.task('lint', () => {
+    const tasks = [];
     tasks.push(
         gulp.src(config.paths.js())
             .pipe(eslint())
@@ -113,7 +99,7 @@ gulp.task('lint', function() {
     return tasks;
 });
 
-gulp.task('copy_dist', ['build:js', 'build:sass', 'images'], function() {
+gulp.task('copy_dist', ['build:js', 'build:sass', 'images'], () => {
     return gulp.src(config.paths.dist() + '/**/*.*')
         .pipe(gulp.dest(config.paths.django()));
 });
