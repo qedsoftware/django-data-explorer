@@ -1,0 +1,223 @@
+@import "variables";
+@import "node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon";
+$column-width: 150px;
+
+ul.ff-tabs-list {
+  color: #999;
+  position: relative;
+  display: flex;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  flex-flow: row wrap;
+  justify-content: center;
+  border-bottom: solid 1px #ddd;
+  li {
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin: 0;
+    text-align: center;
+    flex: 1;
+  }
+  a {
+    color: inherit;
+    position: relative;
+      display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 0.2em;
+    text-decoration: none;
+    &:focus {
+      outline: none;
+    }
+  }
+  .ui-tabs-active {
+    color: darken($button-green, 30%);
+    background-color: lighten($button-green, 30%);
+    border-radius: 0.5em 0.5em 0 0;
+  }
+}
+
+.ff-tab-pane {
+  margin: 0 0.5em;
+}
+
+.ff-group {
+  width: $column-width;
+  label {
+    font-size: x-small;
+    margin: 0;
+    font-weight: 900;
+    color: $label-grey;
+  }
+  select {
+    width: $column-width;
+  }
+  input {
+    outline: none;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    &:focus {
+      box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    }
+    &[type='text'], &[type='email'], &[type='number'], &[type='password'],
+    &[type='date'], &[type='search'], &[type='time'], &[type='datetime-local'] {
+      padding: 0.2em 0.5em;
+      width: $column-width;
+    }
+    &[type='radio'], &[type='checkbox'] {
+      font-size: 1.2em;
+      appearance: none;
+      margin-left: 0.5em;
+      width: 1.2em;
+      height: 1.2em;
+      content: '';
+      background: #fff;
+      position: relative;
+      &:checked:after {
+        position: absolute;
+        left: 0.2em;
+        content: '✔';
+        color: black;
+      }
+    }
+    &[type='radio'] {
+      border-radius: 0.5em;
+    }
+    &[type='date'], &[type='datetime-local'], &[type='time'] {
+      appearance: none;
+    }
+  }
+}
+
+filter-form form .ff-tab-pane {
+  padding: 0 !important;
+}
+
+filter-form {
+  &.ui-tabs {
+    padding: 0;
+  }
+
+  &.ui-widget-content {
+    border: none;
+  }
+}
+
+.ff-submit {
+  background-color: $button-green;
+  font-size: small !important;
+  border: none;
+  color: white;
+  padding: 0.5em 1em;
+  border-radius: 0.3em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  &:hover {
+    background-color: darken($button-green, 10%);
+    cursor: pointer;
+  }
+}
+
+.ff-footer {
+  margin: 0.5em;
+}
+
+.ui-datepicker {
+  width: 250px;
+  height: auto;
+  background: white;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+  a {
+    text-decoration: none;
+  }
+  table {
+    width: 100%;
+  }
+  &-header {
+    box-shadow: inset 0px 1px 1px 0px rgba(250, 250, 250, .2);
+    filter: dropshadow(color=#000, offx=1, offy=-1);
+    line-height: 30px;
+  }
+  &-title {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 0.3em;
+  }
+  &-prev {
+    float: left;
+  }
+  &-next, &-close {
+    float: right;
+  }
+  &-prev, &-next {
+    padding: 0 0.4em;
+    cursor: pointer;
+  }
+  td span, td a {
+    display: inline-block;
+    font-weight: bold;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: #666666;
+  }
+  &-calendar .ui-state-default {
+    box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
+  }
+  &-unselectable .ui-state-default {
+    background: #f4f4f4;
+    color: #b4b3b3;
+  }
+  &-calendar .ui-state-hover {
+    background: darken($button-green, 10%);
+    color: whitesmoke;
+  }
+  &-calendar .ui-state-active {
+    color: white;
+    background: $button-green;
+  }
+  button {
+    @extend .ff-submit;
+    margin: 0.2em;
+  }
+  select {
+    width: auto;
+    padding: 0.2em;
+    font-size: 1em;
+    border: 1px solid $label-grey;
+    border-radius: 0.2em;
+    height: 2em;
+    appearance: none;
+    background: url("../images/br_down.png") no-repeat transparent right;
+    background-position-x: calc(100% - 0.2em);
+    padding-right: 25px;
+  }
+  .ui-timepicker-div .ui_tpicker_time .ui_tpicker_time_input {
+    outline: none;
+    display: inline-block;
+    border: 1px solid $label-grey;
+    border-radius: 4px;
+    padding: 0.2em 0.5em;
+    background: none;
+    width: 4em;
+  }
+  .ui-timepicker-div .ui_tpicker_unit_hide {
+    display: none;
+  }
+  .ui_tpicker_time_label {
+    font-weight: bold;
+  }
+  .ui-timepicker-div.ui-timepicker-oneLine dl {
+    text-align: left;
+  }
+  .ui-timepicker-div.ui-timepicker-oneLine .ui_tpicker_time_label {
+    padding-top: 0.4em;
+    margin-right: 0.5em;
+  }
+}
