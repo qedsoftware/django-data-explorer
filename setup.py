@@ -36,6 +36,5 @@ setup(
     install_requires=[
         "django>=1.8.0",
         "django-filter>=0.10.0, <1.0.0a0",
-        "django-jenkins"
     ]
 )
