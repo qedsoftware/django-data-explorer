@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import Cookie from 'js-cookie';
 import 'datatables.net-responsive';
+import moment from 'moment';
 
 if (window.dataExplorerDataTable !== undefined) {
     $.fn.dataTable = window.dataExplorerDataTable;
@@ -31,7 +32,7 @@ const datatableview = {
             var column_options = [];
             var sorting_options = [];
 
-            datatable.find('thead th').each(function(){
+            datatable.find('thead th').each(function(index){
                 var header = $(this);
                 datatableview.options = {};
                 for (var i = 0; i < header[0].attributes.length; i++) {
@@ -55,6 +56,9 @@ const datatableview = {
                         }
 
                         datatableview.options[name] = value;
+                    }
+                    if (opts.datetimeFormats && opts.datetimeFormats[index]) {
+                      datatableview.options['mRender'] = format_datetimes_if_possible(opts.datetimeFormats[index]);
                     }
                 }
                 column_options.push(datatableview.options);
@@ -137,6 +141,16 @@ function get_ordering_params(order_data) {
         };
     }
     else return { iSortingCols: 0 };
+}
+
+function format_datetimes_if_possible(datetimeFormats) {
+  return function(data) {
+    var date = moment(data, datetimeFormats[0], true);
+    if (date.isValid()) {
+        return date.format(datetimeFormats[1])
+    }
+    return data;
+  }
 }
 
 export default datatableview;

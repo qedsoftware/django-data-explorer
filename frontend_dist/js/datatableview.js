@@ -14,6 +14,10 @@ var _jsCookie2 = _interopRequireDefault(_jsCookie);
 
 require('datatables.net-responsive');
 
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 if (window.dataExplorerDataTable !== undefined) {
@@ -47,7 +51,7 @@ var datatableview = {
             var column_options = [];
             var sorting_options = [];
 
-            datatable.find('thead th').each(function () {
+            datatable.find('thead th').each(function (index) {
                 var header = (0, _jquery2.default)(this);
                 datatableview.options = {};
                 for (var i = 0; i < header[0].attributes.length; i++) {
@@ -71,6 +75,9 @@ var datatableview = {
                         }
 
                         datatableview.options[name] = value;
+                    }
+                    if (opts.datetimeFormats && opts.datetimeFormats[index]) {
+                        datatableview.options['mRender'] = format_datetimes_if_possible(opts.datetimeFormats[index]);
                     }
                 }
                 column_options.push(datatableview.options);
@@ -155,6 +162,16 @@ function get_ordering_params(order_data) {
             sSortDir_0: order_data[0].dir
         };
     } else return { iSortingCols: 0 };
+}
+
+function format_datetimes_if_possible(datetimeFormats) {
+    return function (data) {
+        var date = (0, _moment2.default)(data, datetimeFormats[0], true);
+        if (date.isValid()) {
+            return date.format(datetimeFormats[1]);
+        }
+        return data;
+    };
 }
 
 exports.default = datatableview;

@@ -68,7 +68,6 @@ class QuerysetDatatable(LegacyDatatable):
 
         return column.value(obj, **kwargs)
 
-
 def parse_response(datatable):
     return {
         'sEcho': datatable.query_config.get('sEcho', None),
@@ -97,6 +96,7 @@ class Table(Widget):
     model = None
     columns = None
     filterform = None
+    datetime_formats = None # Moment.js supported formats
     template_name = 'django_data_explorer/table_widget.html'
 
     def is_accessible(self, request):
@@ -139,6 +139,7 @@ class Table(Widget):
             'endpointUrl': self.endpoint.get_url(),
             'table_id': self.name,
             'params': json.dumps(self.params),
+            'datetimeFormats': self.datetime_formats,
         }
         table_text = render_to_string(
             self.template_name, {

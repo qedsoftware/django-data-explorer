@@ -98,6 +98,136 @@
   }
 },
 {
+  "model": "data_explorer_example.book",
+  "pk": 2,
+  "fields": {
+    "author": 2,
+    "title": "DUMMY BOOK 2",
+    "pages": 100,
+    "publication_date": "2010-01-01T12:00:00Z"
+  }
+},
+{
+  "model": "data_explorer_example.book",
+  "pk": 3,
+  "fields": {
+    "author": 6,
+    "title": "DUMMY BOOK 3",
+    "pages": 56,
+    "publication_date": "2000-05-01T12:00:00Z"
+  }
+},
+{
+  "model": "data_explorer_example.book",
+  "pk": 4,
+  "fields": {
+    "author": 8,
+    "title": "DUMMY BOOK 4",
+    "pages": 1565,
+    "publication_date": "2008-01-11T12:00:00Z"
+  }
+},
+{
+  "model": "data_explorer_example.book",
+  "pk": 5,
+  "fields": {
+    "author": 8,
+    "title": "DUMMY BOOK 5",
+    "pages": 6565,
+    "publication_date": "2016-06-11T12:00:00Z"
+  }
+},
+{
+  "model": "data_explorer_example.book",
+  "pk": 6,
+  "fields": {
+    "author": 5,
+    "title": "DUMMY BOOK 6",
+    "pages": 75,
+    "publication_date": "2008-01-01T12:00:00Z"
+  }
+},
+{
+  "model": "data_explorer_example.book",
+  "pk": 7,
+  "fields": {
+    "author": 2,
+    "title": "DUMMY BOOK 7",
+    "pages": 865,
+    "publication_date": "2011-11-11T12:00:00Z"
+  }
+},
+{
+  "model": "data_explorer_example.book",
+  "pk": 8,
+  "fields": {
+    "author": 3,
+    "title": "DUMMY BOOK 8",
+    "pages": 165,
+    "publication_date": "2007-07-01T12:00:00Z"
+  }
+},
+{
+  "model": "data_explorer_example.book",
+  "pk": 9,
+  "fields": {
+    "author": 4,
+    "title": "DUMMY BOOK 9",
+    "pages": 65,
+    "publication_date": "2001-05-01T12:00:00Z"
+  }
+},
+{
+  "model": "data_explorer_example.book",
+  "pk": 10,
+  "fields": {
+    "author": 10,
+    "title": "DUMMY BOOK 10",
+    "pages": 765,
+    "publication_date": "2010-06-20T12:00:00Z"
+  }
+},
+{
+  "model": "data_explorer_example.book",
+  "pk": 11,
+  "fields": {
+    "author": 6,
+    "title": "DUMMY BOOK 11",
+    "pages": 95,
+    "publication_date": "2007-08-01T12:00:00Z"
+  }
+},
+{
+  "model": "data_explorer_example.book",
+  "pk": 12,
+  "fields": {
+    "author": 7,
+    "title": "DUMMY BOOK 12",
+    "pages": 565,
+    "publication_date": "2010-01-09T12:00:00Z"
+  }
+},
+{
+  "model": "data_explorer_example.book",
+  "pk": 13,
+  "fields": {
+    "author": 6,
+    "title": "DUMMY BOOK 13",
+    "pages": 65,
+    "publication_date": "2000-08-08T12:00:00Z"
+  }
+},
+{
+  "model": "data_explorer_example.book",
+  "pk": 14,
+  "fields": {
+    "author": 2,
+    "title": "DUMMY BOOK 14",
+    "pages": 5365,
+    "publication_date": "1800-01-01T12:00:00Z"
+  }
+},
+{
   "model": "data_explorer_example.city",
   "pk": 1,
   "fields": {

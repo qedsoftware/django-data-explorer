@@ -84,3 +84,4 @@ class BookTable(Table):
         'publication_date'
     ]
     filterform = BookFilter("book-filter")
+    datetime_formats = {3: ['YYYY-MM-DD HH:mm:ssZ', 'Do MMM YYYY, HH:mm']}

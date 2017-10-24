@@ -38,10 +38,13 @@ if (_datatableview2.default.auto_initialize) {
  * @param api {DataExplorerAPI} - data source
  * @param widgetParams {string} - manually defined data that will be passed
  to the API together with the request
+ * @param datetimeFormats {map of [string, string] for columns} - mapping of column index
+ to Moment.js datetime formats: old and new
+ datetime formats used when rendering values
  */
 
 var Table = function () {
-    function Table(containerID, formID, endpointName, api, widgetParams) {
+    function Table(containerID, formID, endpointName, api, widgetParams, datetimeFormats) {
         _classCallCheck(this, Table);
 
         this.containerID = containerID;
@@ -49,6 +52,7 @@ var Table = function () {
         this.api = api;
         this.widgetParams = widgetParams;
         this.formID = formID;
+        this.datetimeFormats = datetimeFormats;
         this._linkWithFilterForm(formID);
         this._storeTableInDOM();
         this._initializeTableView();
@@ -98,6 +102,7 @@ var Table = function () {
             this.tableview = _datatableview2.default.initialize((0, _jquery2.default)(this.containerID + '_t'), {
                 tableID: this.containerID,
                 endpointName: this.endpointName,
+                datetimeFormats: this.datetimeFormats,
                 initComplete: this._initSubmit.bind(this)
             });
         }
@@ -113,7 +118,7 @@ var Table = function () {
         value: function register(element) {
             var tableData = (0, _jquery2.default)(element).data("django-data-explorer-table");
             var api = new _dataexplorerapi2.default(tableData.endpointUrl);
-            return new Table(tableData.containerID, tableData.formID, tableData.endpointName, api, tableData.params);
+            return new Table(tableData.containerID, tableData.formID, tableData.endpointName, api, tableData.params, tableData.datetimeFormats);
         }
     }]);
 
