@@ -1,6 +1,6 @@
 astroid==1.4.4
 colorama==0.3.7
-Django==1.9.4
+Django==1.11.28
 django-filter==0.13.0
 django-jenkins==0.18.1
 flake8==2.5.4
